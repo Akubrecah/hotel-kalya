@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Send, CheckCircle2, Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
+import Link from "next/link";
+import { Send, CheckCircle2, Phone, Mail, MapPin, Clock, MessageCircle, FileText } from "lucide-react";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { BRAND, SERVICE_CATEGORIES } from "@/lib/constants";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { GoogleMap } from "@/components/maps/GoogleMap";
 import { DirectionsButton } from "@/components/maps/DirectionsButton";
+import { MpesaModal } from "@/components/payments/MpesaModal";
 
 export default function BookPage() {
   const [form, setForm] = useState({
@@ -19,13 +21,37 @@ export default function BookPage() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [createdBookingId, setCreatedBookingId] = useState("BK-88421");
+  const [isMpesaOpen, setIsMpesaOpen] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const generatedId = "BK-" + Math.floor(10000 + Math.random() * 90000);
+    setCreatedBookingId(generatedId);
     setSubmitted(true);
+
+    // Sync reservation to backend API
+    try {
+      fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          guestName: form.name,
+          guestPhone: form.phone,
+          guestEmail: form.email,
+          service: form.service,
+          checkInDate: form.date || new Date().toISOString().split("T")[0],
+          guestsCount: form.guests,
+          specialRequests: form.message,
+        }),
+      });
+    } catch {
+      // Offline fallback
+    }
 
     const textMsg = encodeURIComponent(
       `*New Website Booking Enquiry - Hotel Kalya Kapenguria*\n\n` +
+        `🔖 *Reference:* #${generatedId}\n` +
         `👤 *Name:* ${form.name || "Guest"}\n` +
         `📞 *Phone:* ${form.phone}\n` +
         `✉️ *Email:* ${form.email || "Not specified"}\n` +
@@ -74,25 +100,48 @@ export default function BookPage() {
               </div>
 
               {submitted ? (
-                <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 text-center space-y-3">
-                  <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
-                    <CheckCircle2 className="w-7 h-7" />
+                <div className="bg-emerald-50 border border-emerald-200 rounded-3xl p-6 sm:p-8 text-center space-y-4 animate-in fade-in duration-200">
+                  <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto shadow-sm">
+                    <CheckCircle2 className="w-8 h-8" />
                   </div>
-                  <h3 className="font-serif text-xl font-bold text-emerald-900">
-                    Enquiry Initiated!
-                  </h3>
-                  <p className="text-xs sm:text-sm text-emerald-800 leading-relaxed">
-                    Thank you, <strong>{form.name || "Guest"}</strong>. We are
-                    transferring your enquiry details directly to our
-                    reservations desk on WhatsApp (
-                    <strong>{BRAND.phone}</strong>).
-                  </p>
-                  <button
-                    onClick={() => setSubmitted(false)}
-                    className="text-xs text-brand-maroon underline font-bold"
-                  >
-                    Submit another enquiry
-                  </button>
+                  <div>
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-800">
+                      Booking Registered • Reference #{createdBookingId}
+                    </span>
+                    <h3 className="font-serif text-2xl font-bold text-emerald-950 mt-1">
+                      Enquiry &amp; Reservation Logged!
+                    </h3>
+                    <p className="text-xs sm:text-sm text-emerald-800 leading-relaxed mt-1 max-w-md mx-auto">
+                      Thank you, <strong>{form.name || "Guest"}</strong>. Your booking request has been entered into the Hotel Kalya reservations desk under reference <strong>#{createdBookingId}</strong>.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                    <Link
+                      href={`/book/confirmation/${createdBookingId}`}
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-brand-maroon text-white text-xs font-bold uppercase tracking-wider hover:bg-brand-maroon-dark transition-colors shadow-md"
+                    >
+                      <FileText className="w-4 h-4 text-brand-amber" />
+                      <span>View &amp; Print Booking Voucher</span>
+                    </Link>
+
+                    <button
+                      type="button"
+                      onClick={() => setIsMpesaOpen(true)}
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#00A859] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#008f4c] transition-colors shadow-md"
+                    >
+                      <span>Pay Deposit (M-Pesa STK)</span>
+                    </button>
+                  </div>
+
+                  <div className="pt-2 border-t border-emerald-200/60">
+                    <button
+                      onClick={() => setSubmitted(false)}
+                      className="text-xs text-brand-maroon hover:underline font-bold"
+                    >
+                      ← Submit another reservation enquiry
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -321,6 +370,17 @@ export default function BookPage() {
           </div>
         </div>
       </section>
+
+      <MpesaModal
+        isOpen={isMpesaOpen}
+        onClose={() => setIsMpesaOpen(false)}
+        amount={2500}
+        reference={createdBookingId}
+        defaultPhone={form.phone}
+        onSuccess={(receipt) => {
+          console.log("M-Pesa booking deposit received:", receipt);
+        }}
+      />
     </>
   );
 }

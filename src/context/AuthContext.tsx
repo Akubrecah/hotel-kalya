@@ -20,11 +20,21 @@ const AUTH_STORAGE_KEY = "hotel_kalya_auth_user";
 const DEMO_USER: UserProfile = {
   id: "user_kalya_demo_01",
   name: "James Chemosit",
-  email: "guest@hotelkalya.co.ke",
+  email: "guest@hotelkalya.com",
   phone: "+254 712 345678",
   role: "guest",
   dietaryPreferences: ["Halal", "Local Cuisine"],
   createdAt: "2026-09-01T10:00:00Z",
+};
+
+// Front-desk & operations manager account
+const DEMO_ADMIN: UserProfile = {
+  id: "user_kalya_admin_01",
+  name: "Sarah Rotich (Duty Manager)",
+  email: "admin@hotelkalya.com",
+  phone: "+254 719 766649",
+  role: "staff",
+  createdAt: "2026-08-01T08:00:00Z",
 };
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -54,9 +64,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return { success: false, error: "Password must be at least 6 characters long." };
       }
 
-      // If demo user or saved credentials
+      // If demo admin, demo user or saved credentials
       let authenticatedUser: UserProfile;
-      if (email.toLowerCase() === DEMO_USER.email.toLowerCase()) {
+      if (email.toLowerCase() === DEMO_ADMIN.email.toLowerCase()) {
+        authenticatedUser = DEMO_ADMIN;
+      } else if (email.toLowerCase() === DEMO_USER.email.toLowerCase()) {
         authenticatedUser = DEMO_USER;
       } else {
         authenticatedUser = {

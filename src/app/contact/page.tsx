@@ -42,7 +42,7 @@ export default function ContactPage() {
             alternateName: "Hotel Kalya Kapenguria",
             description:
               "Premier hospitality destination in Kapenguria, West Pokot County offering executive rooms, dining, conferences, catering, and garden functions.",
-            url: "https://hotelkalya.co.ke",
+            url: "https://hotelkalya.com",
             telephone: BRAND.phone,
             email: BRAND.email,
             address: {

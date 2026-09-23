@@ -18,6 +18,7 @@ import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { BRAND } from "@/lib/constants";
 import { OrderType } from "@/types";
+import { MpesaModal } from "@/components/payments/MpesaModal";
 
 export default function CartPage() {
   const { items, updateQuantity, removeFromCart, clearCart, subtotal, serviceFee, total } = useCart();
@@ -29,13 +30,14 @@ export default function CartPage() {
   const [locationDetail, setLocationDetail] = useState("");
   const [specialNotes, setSpecialNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isMpesaOpen, setIsMpesaOpen] = useState(false);
   const [orderConfirmed, setOrderConfirmed] = useState<{
     orderId: string;
     itemsSummary: string;
     totalAmount: number;
   } | null>(null);
 
-  const handleCheckout = (e: React.FormEvent) => {
+  const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
     if (items.length === 0) return;
 
@@ -78,6 +80,27 @@ ${itemsText}
 _Submitted via Hotel Kalya Digital Menu_`;
 
     const whatsappUrl = `https://wa.me/${BRAND.phoneClean}?text=${encodeURIComponent(message)}`;
+
+    // Sync order to backend API
+    try {
+      await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items,
+          customerName,
+          customerPhone,
+          orderType,
+          roomOrTableNumber: locationDetail || "TBD",
+          specialNotes,
+          subtotal,
+          serviceFee,
+          total,
+        }),
+      });
+    } catch {
+      // Offline fallback
+    }
 
     // Save active order locally
     try {
@@ -176,7 +199,17 @@ _Submitted via Hotel Kalya Digital Menu_`;
                 Payment is accepted upon delivery via M-Pesa Till or cash, or charged directly to your hotel room folio.
               </p>
 
-              <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsMpesaOpen(true)}
+                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#00A859] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#008f4c] transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 mx-auto"
+                >
+                  <span>Pay Now via M-Pesa STK Push</span>
+                </button>
+              </div>
+
+              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link
                   href="/menu"
                   className="w-full sm:w-auto px-6 py-3 rounded-xl bg-brand-maroon text-white font-bold text-xs uppercase tracking-wider hover:bg-brand-maroon-dark transition-colors"
@@ -456,6 +489,19 @@ _Submitted via Hotel Kalya Digital Menu_`;
           )}
         </div>
       </section>
+
+      {orderConfirmed && (
+        <MpesaModal
+          isOpen={isMpesaOpen}
+          onClose={() => setIsMpesaOpen(false)}
+          amount={orderConfirmed.totalAmount}
+          reference={orderConfirmed.orderId}
+          defaultPhone={customerPhone}
+          onSuccess={(receipt) => {
+            console.log("M-Pesa payment received:", receipt);
+          }}
+        />
+      )}
     </div>
   );
 }

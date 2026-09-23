@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = "https://hotelkalya.co.ke";
+  const baseUrl = "https://hotelkalya.com";
 
   return {
     rules: {

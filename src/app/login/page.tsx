@@ -54,14 +54,23 @@ export default function LoginPage() {
     setIsLoading(false);
 
     if (result.success) {
-      router.push("/account");
+      if (email.toLowerCase().includes("admin") || email.toLowerCase().includes("staff")) {
+        router.push("/admin");
+      } else {
+        router.push("/account");
+      }
     } else {
       setError(result.error || "Invalid email or password.");
     }
   };
 
   const handleFillDemo = () => {
-    setEmail("guest@hotelkalya.co.ke");
+    setEmail("guest@hotelkalya.com");
+    setPassword("kalya2026");
+  };
+
+  const handleFillAdmin = () => {
+    setEmail("admin@hotelkalya.com");
     setPassword("kalya2026");
   };
 
@@ -149,14 +158,26 @@ export default function LoginPage() {
           </form>
 
           {/* Demo account quick login */}
-          <div className="pt-2 border-t border-brand-cream text-center">
-            <button
-              type="button"
-              onClick={handleFillDemo}
-              className="text-[11px] font-semibold text-brand-maroon hover:underline py-1"
-            >
-              ⚡ Quick Fill Demo Guest Credentials
-            </button>
+          <div className="pt-2 border-t border-brand-cream/80 space-y-1.5 text-center">
+            <span className="text-[10px] uppercase font-bold tracking-wider text-brand-dark/40 block">
+              Quick Test Credentials
+            </span>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={handleFillDemo}
+                className="w-full sm:w-auto px-3 py-1.5 rounded-lg border border-brand-maroon/20 bg-brand-cream/50 text-[11px] font-bold text-brand-maroon hover:bg-brand-cream transition-colors"
+              >
+                👤 Guest (James)
+              </button>
+              <button
+                type="button"
+                onClick={handleFillAdmin}
+                className="w-full sm:w-auto px-3 py-1.5 rounded-lg border border-brand-amber bg-brand-amber/15 text-[11px] font-bold text-brand-maroon hover:bg-brand-amber/25 transition-colors"
+              >
+                🛡️ Staff Manager (Sarah)
+              </button>
+            </div>
           </div>
 
           <div className="text-center text-xs text-brand-dark/70">

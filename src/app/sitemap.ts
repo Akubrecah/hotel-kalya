@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://hotelkalya.co.ke";
+  const baseUrl = "https://hotelkalya.com";
   const currentDate = new Date().toISOString();
 
   const routes = [

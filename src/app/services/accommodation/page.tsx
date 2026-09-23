@@ -54,7 +54,7 @@ export default function AccommodationServicePage() {
             name: "Hotel Kalya Accommodation",
             description:
               "Executive suites, standard rooms, and serviced AirBnB short-stay apartments in Kapenguria, West Pokot County.",
-            url: "https://hotelkalya.co.ke/services/accommodation",
+            url: "https://hotelkalya.com/services/accommodation",
             telephone: BRAND.phone,
             priceRange: "$$",
             amenityFeature: [

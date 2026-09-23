@@ -22,6 +22,7 @@ import {
   Star,
   Flame,
   Wine,
+  ShieldCheck,
 } from "lucide-react";
 import { BrandLogo } from "./BrandLogo";
 import { NAV_LINKS, NAV_SERVICES, NAV_MENU_ITEMS, BRAND } from "@/lib/constants";
@@ -438,6 +439,15 @@ export function Navbar() {
                         <p className="text-xs font-bold text-brand-maroon truncate">{user.name}</p>
                         <p className="text-[10px] text-brand-dark/60 truncate">{user.email}</p>
                       </div>
+                      {(user.role === "staff" || user.role === "admin") && (
+                        <Link
+                          href="/admin"
+                          className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold text-brand-maroon bg-brand-amber/25 hover:bg-brand-amber/35 transition-colors border border-brand-amber/40"
+                        >
+                          <ShieldCheck className="w-3.5 h-3.5 text-brand-maroon" />
+                          <span>Admin Portal</span>
+                        </Link>
+                      )}
                       <Link
                         href="/account/profile"
                         className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-brand-dark hover:bg-brand-cream transition-colors"
@@ -564,6 +574,20 @@ export function Navbar() {
                 <span>Cart ({cartCount})</span>
               </Link>
             </div>
+
+            {user && (user.role === "staff" || user.role === "admin") && (
+              <Link
+                href="/admin"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between p-3 rounded-xl bg-brand-amber/20 border border-brand-amber/40 text-brand-maroon font-bold text-xs"
+              >
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-brand-maroon" />
+                  <span>Front-Desk Operations Dashboard</span>
+                </div>
+                <ChevronRight className="w-4 h-4" />
+              </Link>
+            )}
 
             {/* Navigation Links */}
             <nav className="space-y-1" aria-label="Mobile Navigation">
