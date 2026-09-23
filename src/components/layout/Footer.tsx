@@ -99,14 +99,29 @@ export function Footer() {
 
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-white/60 gap-4">
           <p>
-            © {new Date().getFullYear()} Hotel Kalya (Kapenguria). All rights
-            reserved.
+            © {new Date().getFullYear()} Hotel Kalya (Kapenguria). All rights reserved.
           </p>
-          <p className="flex items-center gap-1">
-            <span>Crafted for Hotel Kalya</span>
-            <span className="text-brand-amber">•</span>
-            <span>Hospitality Redefined</span>
-          </p>
+          <div className="flex items-center gap-4 text-white/70 text-[11px]">
+            <Link href="/location" className="hover:text-brand-amber transition-colors">
+              Find Us
+            </Link>
+            <span className="text-white/30">•</span>
+            <Link href="/reviews" className="hover:text-brand-amber transition-colors">
+              Guest Reviews
+            </Link>
+            <span className="text-white/30">•</span>
+            <Link href="/privacy" className="hover:text-brand-amber transition-colors">
+              Privacy Policy
+            </Link>
+            <span className="text-white/30">•</span>
+            <Link href="/terms" className="hover:text-brand-amber transition-colors">
+              Terms of Service
+            </Link>
+            <span className="text-white/30">•</span>
+            <Link href="/cookies" className="hover:text-brand-amber transition-colors">
+              Cookie Notice
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

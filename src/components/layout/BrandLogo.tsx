@@ -5,11 +5,18 @@ import { cn } from "@/lib/utils";
 interface BrandLogoProps {
   className?: string;
   light?: boolean;
+  size?: "sm" | "md" | "lg";
 }
 
-export function BrandLogo({ className, light = false }: BrandLogoProps) {
+export function BrandLogo({ className, light = false, size = "md" }: BrandLogoProps) {
+  const sizeClasses = {
+    sm: "scale-90 origin-left",
+    md: "",
+    lg: "scale-110 origin-left",
+  }[size];
+
   return (
-    <div className={cn("flex items-center gap-3 select-none", className)}>
+    <div className={cn("flex items-center gap-3 select-none", sizeClasses, className)}>
       {/* Hexagon with Dove and HK monogram */}
       <div className="relative flex-shrink-0 w-11 h-12 flex items-center justify-center">
         <svg viewBox="0 0 100 115" className="w-full h-full drop-shadow-sm">

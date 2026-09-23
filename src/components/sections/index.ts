@@ -8,3 +8,5 @@ export { CateringBanner } from "./CateringBanner";
 export { GardenShowcase } from "./GardenShowcase";
 export { GalleryGrid } from "./GalleryGrid";
 export { ContactForm } from "./ContactForm";
+export { ReviewsSection } from "./ReviewsSection";
+export { LocationSection } from "./LocationSection";

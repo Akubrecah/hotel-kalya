@@ -15,10 +15,18 @@ import {
   Coffee,
   Sparkles,
   Trees,
-  Grid,
+  ShoppingBag,
+  User,
+  LogOut,
+  Calendar,
+  Star,
+  Flame,
+  Wine,
 } from "lucide-react";
 import { BrandLogo } from "./BrandLogo";
-import { NAV_LINKS, NAV_SERVICES, BRAND } from "@/lib/constants";
+import { NAV_LINKS, NAV_SERVICES, NAV_MENU_ITEMS, BRAND } from "@/lib/constants";
+import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 
 const SERVICE_ICONS: Record<string, React.ElementType> = {
@@ -30,14 +38,31 @@ const SERVICE_ICONS: Record<string, React.ElementType> = {
   "/services/garden-experience": Trees,
 };
 
+const MENU_ICONS: Record<string, React.ElementType> = {
+  "/menu": Utensils,
+  "/menu/breakfast": Coffee,
+  "/menu/lunch": Utensils,
+  "/menu/dinner": Flame,
+  "/menu/drinks": Wine,
+  "/menu/specials": Star,
+};
+
 export function Navbar() {
   const pathname = usePathname();
+  const { cartCount } = useCart();
+  const { user, logout } = useAuth();
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
-  const [desktopDropdownOpen, setDesktopDropdownOpen] = useState(false);
+  const [mobileMenuCatOpen, setMobileMenuCatOpen] = useState(false);
+  const [desktopServicesOpen, setDesktopServicesOpen] = useState(false);
+  const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
+  const [desktopUserMenuOpen, setDesktopUserMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const dropdownTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const servicesTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const menuTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const userTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Track window scroll for sticky navbar shadow
   useEffect(() => {
@@ -63,32 +88,48 @@ export function Navbar() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setMobileMenuOpen(false);
-        setDesktopDropdownOpen(false);
+        setDesktopServicesOpen(false);
+        setDesktopMenuOpen(false);
+        setDesktopUserMenuOpen(false);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // Close mobile menu and dropdown on route change without an effect
+  // Close menus on route change without triggering useEffect setState error
   const [prevPathname, setPrevPathname] = useState(pathname);
   if (prevPathname !== pathname) {
     setPrevPathname(pathname);
     setMobileMenuOpen(false);
-    setDesktopDropdownOpen(false);
+    setDesktopServicesOpen(false);
+    setDesktopMenuOpen(false);
+    setDesktopUserMenuOpen(false);
   }
 
-  const handleMouseEnter = () => {
-    if (dropdownTimerRef.current) {
-      clearTimeout(dropdownTimerRef.current);
-    }
-    setDesktopDropdownOpen(true);
+  // Dropdown hover handlers with slight debounce
+  const handleServicesEnter = () => {
+    if (servicesTimerRef.current) clearTimeout(servicesTimerRef.current);
+    setDesktopServicesOpen(true);
+  };
+  const handleServicesLeave = () => {
+    servicesTimerRef.current = setTimeout(() => setDesktopServicesOpen(false), 160);
   };
 
-  const handleMouseLeave = () => {
-    dropdownTimerRef.current = setTimeout(() => {
-      setDesktopDropdownOpen(false);
-    }, 180);
+  const handleMenuEnter = () => {
+    if (menuTimerRef.current) clearTimeout(menuTimerRef.current);
+    setDesktopMenuOpen(true);
+  };
+  const handleMenuLeave = () => {
+    menuTimerRef.current = setTimeout(() => setDesktopMenuOpen(false), 160);
+  };
+
+  const handleUserEnter = () => {
+    if (userTimerRef.current) clearTimeout(userTimerRef.current);
+    setDesktopUserMenuOpen(true);
+  };
+  const handleUserLeave = () => {
+    userTimerRef.current = setTimeout(() => setDesktopUserMenuOpen(false), 160);
   };
 
   // Helper to determine if a route is active
@@ -99,366 +140,597 @@ export function Navbar() {
     if (href === "/services") {
       return pathname === "/services" || pathname.startsWith("/services/");
     }
-    return pathname === href || pathname.startsWith(`${href}/`);
+    if (href === "/menu") {
+      return pathname === "/menu" || pathname.startsWith("/menu/");
+    }
+    if (href === "/account") {
+      return pathname === "/account" || pathname.startsWith("/account/");
+    }
+    return pathname === href;
   };
 
   return (
-    <nav
+    <header
       className={cn(
-        "sticky top-0 w-full z-40 transition-all duration-300",
+        "sticky top-0 z-40 w-full transition-all duration-300",
         scrolled
-          ? "bg-white/95 backdrop-blur-md shadow-md py-2.5"
-          : "bg-white py-3 sm:py-4 border-b border-brand-amber-light"
+          ? "bg-white/95 backdrop-blur-md shadow-md border-b border-brand-maroon/10"
+          : "bg-white border-b border-brand-cream/80"
       )}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        {/* Brand Logo */}
-        <Link
-          href="/"
-          className="flex items-center focus:outline-none focus:ring-2 focus:ring-brand-amber rounded-lg p-1"
-          aria-label="Hotel Kalya Homepage"
-        >
-          <BrandLogo />
-        </Link>
-
-        {/* Desktop Navigation Links */}
-        <div className="hidden lg:flex items-center gap-1.5 xl:gap-3 text-sm font-medium text-brand-maroon-dark">
-          {NAV_LINKS.map((link) => {
-            const active = isRouteActive(link.href);
-
-            if (link.hasDropdown) {
-              return (
-                <div
-                  key={link.href}
-                  ref={dropdownRef}
-                  className="relative"
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <button
-                    onClick={() => setDesktopDropdownOpen((prev) => !prev)}
-                    aria-expanded={desktopDropdownOpen}
-                    aria-haspopup="true"
-                    aria-current={active ? "page" : undefined}
-                    className={cn(
-                      "flex items-center gap-1.5 px-3.5 py-2 rounded-full transition-all text-xs uppercase tracking-wider font-semibold focus:outline-none focus:ring-2 focus:ring-brand-amber",
-                      active
-                        ? "bg-brand-maroon/10 text-brand-maroon font-bold border-b-2 border-brand-amber shadow-xs"
-                        : "text-brand-maroon-dark hover:text-brand-amber hover:bg-brand-amber-light/30"
-                    )}
-                  >
-                    <span>{link.label}</span>
-                    <ChevronDown
-                      className={cn(
-                        "w-3.5 h-3.5 transition-transform duration-200",
-                        desktopDropdownOpen ? "rotate-180" : ""
-                      )}
-                    />
-                  </button>
-
-                  {/* Dropdown Menu */}
-                  {desktopDropdownOpen && (
-                    <div
-                      role="menu"
-                      className="absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border-2 border-brand-amber-light p-3 z-50 animate-in fade-in slide-in-from-top-2 duration-200"
-                    >
-                      {/* Overview Link */}
-                      <Link
-                        href="/services"
-                        role="menuitem"
-                        className={cn(
-                          "flex items-center gap-3 p-2.5 rounded-xl transition-colors mb-1.5 border border-transparent",
-                          pathname === "/services"
-                            ? "bg-brand-amber/15 text-brand-maroon-dark font-bold border-brand-amber/40"
-                            : "hover:bg-brand-amber-light/40 text-brand-maroon-dark"
-                        )}
-                      >
-                        <div className="w-8 h-8 rounded-lg bg-brand-maroon text-brand-amber flex items-center justify-center flex-shrink-0">
-                          <Grid className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-xs font-bold uppercase tracking-wider">
-                            All Services Overview
-                          </div>
-                          <div className="text-[11px] text-gray-500">
-                            Explore full portfolio of hospitality services
-                          </div>
-                        </div>
-                      </Link>
-
-                      <div className="h-px bg-brand-amber-light/60 my-1" />
-
-                      {/* Sub-Services Links */}
-                      <div className="space-y-1">
-                        {NAV_SERVICES.map((sub) => {
-                          const SubIcon = SERVICE_ICONS[sub.href] || ChevronRight;
-                          const isSubActive = pathname === sub.href;
-
-                          return (
-                            <Link
-                              key={sub.href}
-                              href={sub.href}
-                              role="menuitem"
-                              aria-current={isSubActive ? "page" : undefined}
-                              className={cn(
-                                "flex items-start gap-3 p-2.5 rounded-xl transition-all",
-                                isSubActive
-                                  ? "bg-brand-amber-light/80 text-brand-maroon-dark font-bold border-l-4 border-brand-amber shadow-xs"
-                                  : "hover:bg-brand-amber-light/40 text-gray-700 hover:text-brand-maroon"
-                              )}
-                            >
-                              <div
-                                className={cn(
-                                  "w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5",
-                                  isSubActive
-                                    ? "bg-brand-maroon text-brand-amber"
-                                    : "bg-brand-cream text-brand-maroon border border-brand-amber-light"
-                                )}
-                              >
-                                <SubIcon className="w-3.5 h-3.5" />
-                              </div>
-                              <div>
-                                <span className="text-xs font-bold block">
-                                  {sub.label}
-                                </span>
-                                <span className="text-[11px] text-gray-500 line-clamp-1">
-                                  {sub.desc}
-                                </span>
-                              </div>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            }
-
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                aria-current={active ? "page" : undefined}
-                className={cn(
-                  "px-3.5 py-2 rounded-full transition-all text-xs uppercase tracking-wider font-semibold focus:outline-none focus:ring-2 focus:ring-brand-amber",
-                  active
-                    ? "bg-brand-maroon/10 text-brand-maroon font-bold border-b-2 border-brand-amber shadow-xs"
-                    : "text-brand-maroon-dark hover:text-brand-amber hover:bg-brand-amber-light/30"
-                )}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* Primary CTA (Book Now) */}
-        <div className="hidden sm:flex items-center gap-3">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          {/* Brand Logo */}
           <Link
-            href="/book"
-            aria-current={pathname === "/book" ? "page" : undefined}
-            className={cn(
-              "px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm hover:shadow transition-all flex items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-brand-amber",
-              pathname === "/book"
-                ? "bg-brand-amber text-brand-maroon-dark ring-2 ring-brand-maroon"
-                : "bg-brand-maroon hover:bg-brand-maroon-dark text-white"
-            )}
+            href="/"
+            className="flex items-center focus:outline-none focus:ring-2 focus:ring-brand-amber rounded-lg py-1"
+            aria-label="Hotel Kalya Home"
           >
-            <span>Book Now</span>
-            <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            <BrandLogo />
           </Link>
-        </div>
 
-        {/* Mobile Menu Trigger Button */}
-        <div className="flex items-center lg:hidden">
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-expanded={mobileMenuOpen}
-            aria-label="Toggle navigation menu"
-            className="p-2 text-brand-maroon hover:bg-brand-amber-light/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-amber"
+          {/* Desktop Navigation Links */}
+          <nav
+            className="hidden xl:flex items-center space-x-1 lg:space-x-2"
+            aria-label="Main Navigation"
           >
-            {mobileMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
-        </div>
-      </div>
+            {NAV_LINKS.map((link) => {
+              const active = isRouteActive(link.href);
 
-      {/* Mobile Navigation Off-Canvas Drawer */}
-      {mobileMenuOpen && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label="Mobile Navigation"
-          className="lg:hidden fixed inset-x-0 top-[65px] bottom-0 bg-black/50 backdrop-blur-xs z-50 flex flex-col"
-          onClick={() => setMobileMenuOpen(false)}
-        >
-          <div
-            className="bg-white border-t border-brand-amber-light px-6 py-6 shadow-2xl overflow-y-auto max-h-[85vh] animate-in slide-in-from-top-4 duration-300"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex flex-col space-y-1.5">
-              {/* Home */}
-              <Link
-                href="/"
-                aria-current={pathname === "/" ? "page" : undefined}
-                onClick={() => setMobileMenuOpen(false)}
-                className={cn(
-                  "p-3 rounded-xl text-sm font-bold uppercase tracking-wider flex items-center justify-between",
-                  pathname === "/"
-                    ? "bg-brand-maroon text-brand-amber"
-                    : "text-brand-maroon-dark hover:bg-brand-amber-light/40"
-                )}
-              >
-                <span>Home</span>
-                {pathname === "/" && <ChevronRight className="w-4 h-4" />}
-              </Link>
-
-              {/* About */}
-              <Link
-                href="/about"
-                aria-current={pathname === "/about" ? "page" : undefined}
-                onClick={() => setMobileMenuOpen(false)}
-                className={cn(
-                  "p-3 rounded-xl text-sm font-bold uppercase tracking-wider flex items-center justify-between",
-                  pathname === "/about"
-                    ? "bg-brand-maroon text-brand-amber"
-                    : "text-brand-maroon-dark hover:bg-brand-amber-light/40"
-                )}
-              >
-                <span>About</span>
-                {pathname === "/about" && <ChevronRight className="w-4 h-4" />}
-              </Link>
-
-              {/* Services Accordion */}
-              <div className="rounded-xl border border-brand-amber-light/80 overflow-hidden">
-                <button
-                  type="button"
-                  onClick={() => setMobileServicesOpen((prev) => !prev)}
-                  aria-expanded={mobileServicesOpen}
-                  className={cn(
-                    "w-full p-3 text-sm font-bold uppercase tracking-wider flex items-center justify-between text-left",
-                    pathname.startsWith("/services")
-                      ? "bg-brand-maroon/10 text-brand-maroon"
-                      : "text-brand-maroon-dark bg-brand-cream/50"
-                  )}
-                >
-                  <span className="flex items-center gap-2">
-                    <span>Services</span>
-                    {pathname.startsWith("/services") && (
-                      <span className="text-[10px] bg-brand-amber text-brand-maroon-dark px-2 py-0.5 rounded-full font-bold">
-                        Active
-                      </span>
-                    )}
-                  </span>
-                  <ChevronDown
-                    className={cn(
-                      "w-4 h-4 text-brand-maroon transition-transform duration-200",
-                      mobileServicesOpen ? "rotate-180" : ""
-                    )}
-                  />
-                </button>
-
-                {mobileServicesOpen && (
-                  <div className="bg-brand-cream/30 p-2 space-y-1 border-t border-brand-amber-light/60">
+              // Services Dropdown Item
+              if (link.dropdownType === "services") {
+                return (
+                  <div
+                    key={link.href}
+                    className="relative"
+                    onMouseEnter={handleServicesEnter}
+                    onMouseLeave={handleServicesLeave}
+                  >
                     <Link
-                      href="/services"
-                      onClick={() => setMobileMenuOpen(false)}
+                      href={link.href}
                       className={cn(
-                        "block p-2.5 rounded-lg text-xs font-bold uppercase tracking-wider",
-                        pathname === "/services"
-                          ? "bg-brand-amber text-brand-maroon-dark"
-                          : "text-brand-maroon-dark hover:bg-brand-amber-light/50"
+                        "relative flex items-center gap-1 px-3 py-2 text-sm font-semibold rounded-md transition-all duration-200",
+                        active
+                          ? "text-brand-maroon font-bold bg-brand-amber/10"
+                          : "text-brand-dark/80 hover:text-brand-maroon hover:bg-brand-cream"
                       )}
+                      aria-haspopup="true"
+                      aria-expanded={desktopServicesOpen}
+                      aria-current={active ? "page" : undefined}
                     >
-                      All Services Directory
+                      <span>{link.label}</span>
+                      <ChevronDown
+                        className={cn(
+                          "w-3.5 h-3.5 transition-transform duration-200",
+                          desktopServicesOpen ? "rotate-180 text-brand-amber" : "text-brand-dark/50"
+                        )}
+                        aria-hidden="true"
+                      />
+                      {active && (
+                        <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-brand-amber rounded-full" />
+                      )}
                     </Link>
 
-                    {NAV_SERVICES.map((sub) => {
-                      const isSubActive = pathname === sub.href;
-                      const SubIcon = SERVICE_ICONS[sub.href] || ChevronRight;
+                    {/* Services Dropdown Menu */}
+                    {desktopServicesOpen && (
+                      <div className="absolute top-full left-0 w-80 pt-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                        <div className="bg-white rounded-xl shadow-xl border border-brand-maroon/10 p-2.5 space-y-1">
+                          <Link
+                            href="/services"
+                            className={cn(
+                              "flex items-center justify-between p-2 rounded-lg text-xs font-semibold uppercase tracking-wider text-brand-maroon hover:bg-brand-cream transition-colors",
+                              pathname === "/services" && "bg-brand-amber/15 text-brand-maroon font-bold"
+                            )}
+                          >
+                            <span>Services Directory Overview</span>
+                            <ChevronRight className="w-3.5 h-3.5 text-brand-amber" />
+                          </Link>
+                          <div className="h-px bg-brand-cream my-1" />
+                          {NAV_SERVICES.map((subItem) => {
+                            const subActive = pathname === subItem.href;
+                            const IconComponent = SERVICE_ICONS[subItem.href] || Sparkles;
+                            return (
+                              <Link
+                                key={subItem.href}
+                                href={subItem.href}
+                                className={cn(
+                                  "flex items-start gap-3 p-2.5 rounded-lg transition-colors group",
+                                  subActive
+                                    ? "bg-brand-amber/15 text-brand-maroon"
+                                    : "hover:bg-brand-cream text-brand-dark"
+                                )}
+                              >
+                                <div
+                                  className={cn(
+                                    "p-1.5 rounded-md mt-0.5 transition-colors",
+                                    subActive
+                                      ? "bg-brand-amber text-brand-maroon"
+                                      : "bg-brand-maroon/5 text-brand-maroon group-hover:bg-brand-amber/20"
+                                  )}
+                                >
+                                  <IconComponent className="w-4 h-4" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-1.5">
+                                    <span className="text-xs font-bold leading-snug">{subItem.label}</span>
+                                    {subActive && (
+                                      <span className="w-1.5 h-1.5 rounded-full bg-brand-amber" />
+                                    )}
+                                  </div>
+                                  <p className="text-[11px] text-brand-dark/60 leading-tight mt-0.5 line-clamp-1">
+                                    {subItem.desc}
+                                  </p>
+                                </div>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
 
-                      return (
-                        <Link
-                          key={sub.href}
-                          href={sub.href}
-                          aria-current={isSubActive ? "page" : undefined}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className={cn(
-                            "flex items-center gap-2.5 p-2.5 rounded-lg text-xs font-medium transition-colors",
-                            isSubActive
-                              ? "bg-brand-maroon text-brand-amber font-bold"
-                              : "text-gray-700 hover:bg-brand-amber-light/50"
-                          )}
-                        >
-                          <SubIcon className="w-3.5 h-3.5 flex-shrink-0" />
-                          <span>{sub.label}</span>
-                        </Link>
-                      );
-                    })}
+              // Menu Dropdown Item
+              if (link.dropdownType === "menu") {
+                return (
+                  <div
+                    key={link.href}
+                    className="relative"
+                    onMouseEnter={handleMenuEnter}
+                    onMouseLeave={handleMenuLeave}
+                  >
+                    <Link
+                      href={link.href}
+                      className={cn(
+                        "relative flex items-center gap-1 px-3 py-2 text-sm font-semibold rounded-md transition-all duration-200",
+                        active
+                          ? "text-brand-maroon font-bold bg-brand-amber/10"
+                          : "text-brand-dark/80 hover:text-brand-maroon hover:bg-brand-cream"
+                      )}
+                      aria-haspopup="true"
+                      aria-expanded={desktopMenuOpen}
+                      aria-current={active ? "page" : undefined}
+                    >
+                      <span>{link.label}</span>
+                      <ChevronDown
+                        className={cn(
+                          "w-3.5 h-3.5 transition-transform duration-200",
+                          desktopMenuOpen ? "rotate-180 text-brand-amber" : "text-brand-dark/50"
+                        )}
+                        aria-hidden="true"
+                      />
+                      {active && (
+                        <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-brand-amber rounded-full" />
+                      )}
+                    </Link>
+
+                    {/* Menu Dropdown Panel */}
+                    {desktopMenuOpen && (
+                      <div className="absolute top-full left-0 w-80 pt-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                        <div className="bg-white rounded-xl shadow-xl border border-brand-maroon/10 p-2.5 space-y-1">
+                          <Link
+                            href="/menu"
+                            className={cn(
+                              "flex items-center justify-between p-2 rounded-lg text-xs font-semibold uppercase tracking-wider text-brand-maroon hover:bg-brand-cream transition-colors",
+                              pathname === "/menu" && "bg-brand-amber/15 text-brand-maroon font-bold"
+                            )}
+                          >
+                            <span>Explore Full Digital Menu</span>
+                            <ChevronRight className="w-3.5 h-3.5 text-brand-amber" />
+                          </Link>
+                          <div className="h-px bg-brand-cream my-1" />
+                          {NAV_MENU_ITEMS.slice(1).map((subItem) => {
+                            const subActive = pathname === subItem.href;
+                            const IconComponent = MENU_ICONS[subItem.href] || Utensils;
+                            return (
+                              <Link
+                                key={subItem.href}
+                                href={subItem.href}
+                                className={cn(
+                                  "flex items-start gap-3 p-2 rounded-lg transition-colors group",
+                                  subActive
+                                    ? "bg-brand-amber/15 text-brand-maroon"
+                                    : "hover:bg-brand-cream text-brand-dark"
+                                )}
+                              >
+                                <div
+                                  className={cn(
+                                    "p-1.5 rounded-md mt-0.5 transition-colors",
+                                    subActive
+                                      ? "bg-brand-amber text-brand-maroon"
+                                      : "bg-brand-maroon/5 text-brand-maroon group-hover:bg-brand-amber/20"
+                                  )}
+                                >
+                                  <IconComponent className="w-4 h-4" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-1.5">
+                                    <span className="text-xs font-bold leading-snug">{subItem.label}</span>
+                                    {subActive && (
+                                      <span className="w-1.5 h-1.5 rounded-full bg-brand-amber" />
+                                    )}
+                                  </div>
+                                  <p className="text-[11px] text-brand-dark/60 leading-tight mt-0.5 line-clamp-1">
+                                    {subItem.desc}
+                                  </p>
+                                </div>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              // Standard Top-Level Nav Link
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "relative px-3 py-2 text-sm font-semibold rounded-md transition-all duration-200",
+                    active
+                      ? "text-brand-maroon font-bold bg-brand-amber/10"
+                      : "text-brand-dark/80 hover:text-brand-maroon hover:bg-brand-cream"
+                  )}
+                  aria-current={active ? "page" : undefined}
+                >
+                  <span>{link.label}</span>
+                  {active && (
+                    <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-brand-amber rounded-full" />
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Action CTAs (Cart, Account, Book Now) */}
+          <div className="hidden lg:flex items-center space-x-3">
+            {/* Food Order Cart Button */}
+            <Link
+              href="/cart"
+              className={cn(
+                "relative p-2.5 rounded-full border transition-all duration-200 flex items-center justify-center",
+                pathname === "/cart"
+                  ? "border-brand-maroon bg-brand-amber/15 text-brand-maroon"
+                  : "border-brand-maroon/20 hover:border-brand-maroon hover:bg-brand-cream text-brand-dark/80"
+              )}
+              aria-label={`Shopping cart with ${cartCount} items`}
+            >
+              <ShoppingBag className="w-5 h-5" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-brand-amber text-brand-maroon text-[11px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-sm animate-in zoom-in">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+
+            {/* Customer Account / Sign In */}
+            {user ? (
+              <div
+                className="relative"
+                onMouseEnter={handleUserEnter}
+                onMouseLeave={handleUserLeave}
+              >
+                <Link
+                  href="/account"
+                  className={cn(
+                    "flex items-center gap-2 px-3 py-2 rounded-full border text-xs font-bold transition-all",
+                    isRouteActive("/account")
+                      ? "border-brand-amber bg-brand-amber/15 text-brand-maroon"
+                      : "border-brand-maroon/20 hover:border-brand-maroon bg-white text-brand-dark"
+                  )}
+                >
+                  <div className="w-6 h-6 rounded-full bg-brand-maroon text-brand-amber flex items-center justify-center text-xs font-black">
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <span className="max-w-[90px] truncate">{user.name.split(" ")[0]}</span>
+                  <ChevronDown className="w-3.5 h-3.5 text-brand-dark/60" />
+                </Link>
+
+                {desktopUserMenuOpen && (
+                  <div className="absolute top-full right-0 w-52 pt-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                    <div className="bg-white rounded-xl shadow-xl border border-brand-maroon/10 p-2 space-y-1">
+                      <div className="px-3 py-2 border-b border-brand-cream">
+                        <p className="text-xs font-bold text-brand-maroon truncate">{user.name}</p>
+                        <p className="text-[10px] text-brand-dark/60 truncate">{user.email}</p>
+                      </div>
+                      <Link
+                        href="/account/profile"
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-brand-dark hover:bg-brand-cream transition-colors"
+                      >
+                        <User className="w-3.5 h-3.5 text-brand-amber" />
+                        <span>Profile Details</span>
+                      </Link>
+                      <Link
+                        href="/account/bookings"
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-brand-dark hover:bg-brand-cream transition-colors"
+                      >
+                        <Calendar className="w-3.5 h-3.5 text-brand-amber" />
+                        <span>My Bookings</span>
+                      </Link>
+                      <Link
+                        href="/account/orders"
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-brand-dark hover:bg-brand-cream transition-colors"
+                      >
+                        <ShoppingBag className="w-3.5 h-3.5 text-brand-amber" />
+                        <span>Food Orders</span>
+                      </Link>
+                      <button
+                        onClick={() => logout()}
+                        className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-red-600 hover:bg-red-50 transition-colors text-left"
+                      >
+                        <LogOut className="w-3.5 h-3.5" />
+                        <span>Sign Out</span>
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
-
-              {/* Gallery */}
+            ) : (
               <Link
-                href="/gallery"
-                aria-current={pathname === "/gallery" ? "page" : undefined}
-                onClick={() => setMobileMenuOpen(false)}
-                className={cn(
-                  "p-3 rounded-xl text-sm font-bold uppercase tracking-wider flex items-center justify-between",
-                  pathname === "/gallery"
-                    ? "bg-brand-maroon text-brand-amber"
-                    : "text-brand-maroon-dark hover:bg-brand-amber-light/40"
-                )}
+                href="/login"
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold text-brand-maroon hover:bg-brand-cream transition-colors border border-brand-maroon/20"
               >
-                <span>Gallery</span>
-                {pathname === "/gallery" && <ChevronRight className="w-4 h-4" />}
+                <User className="w-3.5 h-3.5 text-brand-amber" />
+                <span>Sign In</span>
               </Link>
+            )}
 
-              {/* Contact */}
-              <Link
-                href="/contact"
-                aria-current={pathname === "/contact" ? "page" : undefined}
-                onClick={() => setMobileMenuOpen(false)}
-                className={cn(
-                  "p-3 rounded-xl text-sm font-bold uppercase tracking-wider flex items-center justify-between",
-                  pathname === "/contact"
-                    ? "bg-brand-maroon text-brand-amber"
-                    : "text-brand-maroon-dark hover:bg-brand-amber-light/40"
-                )}
-              >
-                <span>Contact</span>
-                {pathname === "/contact" && <ChevronRight className="w-4 h-4" />}
-              </Link>
+            {/* Direct Booking CTA */}
+            <Link
+              href="/book"
+              className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-brand-maroon text-white text-xs font-bold uppercase tracking-wider hover:bg-brand-maroon-dark transition-all duration-200 shadow-md hover:shadow-lg active:scale-95"
+            >
+              Reserve Now
+            </Link>
+          </div>
 
-              {/* Action Buttons in Drawer */}
-              <div className="pt-4 border-t border-brand-amber-light flex flex-col gap-2.5">
+          {/* Mobile Menu & Cart Trigger */}
+          <div className="flex xl:hidden items-center space-x-2">
+            <Link
+              href="/cart"
+              className="relative p-2 text-brand-dark hover:text-brand-maroon focus:outline-none"
+              aria-label={`Shopping cart with ${cartCount} items`}
+            >
+              <ShoppingBag className="w-6 h-6" />
+              {cartCount > 0 && (
+                <span className="absolute top-0 right-0 bg-brand-amber text-brand-maroon text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-lg text-brand-maroon hover:bg-brand-cream focus:outline-none focus:ring-2 focus:ring-brand-amber"
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Off-Canvas / Slide-Down Menu */}
+      {mobileMenuOpen && (
+        <div className="xl:hidden fixed inset-0 top-20 z-50 bg-brand-dark/50 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white max-h-[calc(100vh-5rem)] overflow-y-auto px-5 py-6 space-y-4 shadow-2xl border-t border-brand-maroon/10">
+            {/* Quick Actions Bar in Mobile Menu */}
+            <div className="flex items-center justify-between p-3 bg-brand-cream/80 rounded-xl">
+              {user ? (
                 <Link
-                  href="/book"
-                  aria-current={pathname === "/book" ? "page" : undefined}
+                  href="/account"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full bg-brand-maroon text-brand-amber py-3.5 rounded-xl text-center font-bold tracking-wider uppercase text-xs shadow-md flex items-center justify-center gap-2"
+                  className="flex items-center gap-2.5"
                 >
-                  <span>Book / Make Reservation</span>
-                  <ChevronRight className="w-4 h-4" />
+                  <div className="w-8 h-8 rounded-full bg-brand-maroon text-brand-amber flex items-center justify-center text-xs font-black">
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-brand-maroon leading-tight">{user.name}</p>
+                    <p className="text-[10px] text-brand-dark/60">My Account Portal</p>
+                  </div>
                 </Link>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Link
+                    href="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="px-3 py-1.5 rounded-lg bg-brand-maroon text-white text-xs font-bold"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/signup"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="px-3 py-1.5 rounded-lg border border-brand-maroon text-brand-maroon text-xs font-bold"
+                  >
+                    Register
+                  </Link>
+                </div>
+              )}
 
-                <a
-                  href={`tel:${BRAND.phone}`}
-                  className="w-full border border-brand-maroon text-brand-maroon py-3 rounded-xl text-center font-semibold text-xs flex items-center justify-center gap-2 hover:bg-brand-amber-light/30 transition-colors"
-                >
-                  <Phone className="w-3.5 h-3.5 text-brand-amber" />
-                  <span>Call Front Desk: {BRAND.phone}</span>
-                </a>
-              </div>
+              <Link
+                href="/cart"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-brand-amber text-brand-maroon text-xs font-bold"
+              >
+                <ShoppingBag className="w-4 h-4" />
+                <span>Cart ({cartCount})</span>
+              </Link>
             </div>
+
+            {/* Navigation Links */}
+            <nav className="space-y-1" aria-label="Mobile Navigation">
+              {NAV_LINKS.map((link) => {
+                const active = isRouteActive(link.href);
+
+                // Mobile Services Accordion
+                if (link.dropdownType === "services") {
+                  return (
+                    <div key={link.href} className="border-b border-brand-cream/80 pb-1">
+                      <div className="flex items-center justify-between">
+                        <Link
+                          href={link.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className={cn(
+                            "flex-1 py-2.5 text-base font-bold transition-colors",
+                            active ? "text-brand-maroon" : "text-brand-dark hover:text-brand-maroon"
+                          )}
+                          aria-current={active ? "page" : undefined}
+                        >
+                          {link.label}
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                          className="p-2 text-brand-dark/60 hover:text-brand-maroon focus:outline-none"
+                          aria-label={mobileServicesOpen ? "Collapse Services" : "Expand Services"}
+                          aria-expanded={mobileServicesOpen}
+                        >
+                          <ChevronDown
+                            className={cn(
+                              "w-5 h-5 transition-transform duration-200",
+                              mobileServicesOpen && "rotate-180 text-brand-amber"
+                            )}
+                          />
+                        </button>
+                      </div>
+
+                      {mobileServicesOpen && (
+                        <div className="pl-3 pr-1 py-1 space-y-1 bg-brand-cream/40 rounded-xl my-1 border-l-2 border-brand-amber">
+                          {NAV_SERVICES.map((subItem) => {
+                            const subActive = pathname === subItem.href;
+                            const IconComponent = SERVICE_ICONS[subItem.href] || Sparkles;
+                            return (
+                              <Link
+                                key={subItem.href}
+                                href={subItem.href}
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={cn(
+                                  "flex items-center gap-2.5 py-2 px-2.5 rounded-lg text-xs font-semibold transition-colors",
+                                  subActive
+                                    ? "bg-brand-amber/20 text-brand-maroon font-bold"
+                                    : "text-brand-dark/80 hover:bg-brand-cream hover:text-brand-maroon"
+                                )}
+                              >
+                                <IconComponent className="w-3.5 h-3.5 text-brand-amber" />
+                                <span>{subItem.label}</span>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+
+                // Mobile Menu Accordion
+                if (link.dropdownType === "menu") {
+                  return (
+                    <div key={link.href} className="border-b border-brand-cream/80 pb-1">
+                      <div className="flex items-center justify-between">
+                        <Link
+                          href={link.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className={cn(
+                            "flex-1 py-2.5 text-base font-bold transition-colors",
+                            active ? "text-brand-maroon" : "text-brand-dark hover:text-brand-maroon"
+                          )}
+                          aria-current={active ? "page" : undefined}
+                        >
+                          {link.label}
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => setMobileMenuCatOpen(!mobileMenuCatOpen)}
+                          className="p-2 text-brand-dark/60 hover:text-brand-maroon focus:outline-none"
+                          aria-label={mobileMenuCatOpen ? "Collapse Menu Categories" : "Expand Menu Categories"}
+                          aria-expanded={mobileMenuCatOpen}
+                        >
+                          <ChevronDown
+                            className={cn(
+                              "w-5 h-5 transition-transform duration-200",
+                              mobileMenuCatOpen && "rotate-180 text-brand-amber"
+                            )}
+                          />
+                        </button>
+                      </div>
+
+                      {mobileMenuCatOpen && (
+                        <div className="pl-3 pr-1 py-1 space-y-1 bg-brand-cream/40 rounded-xl my-1 border-l-2 border-brand-amber">
+                          {NAV_MENU_ITEMS.map((subItem) => {
+                            const subActive = pathname === subItem.href;
+                            const IconComponent = MENU_ICONS[subItem.href] || Utensils;
+                            return (
+                              <Link
+                                key={subItem.href}
+                                href={subItem.href}
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={cn(
+                                  "flex items-center gap-2.5 py-2 px-2.5 rounded-lg text-xs font-semibold transition-colors",
+                                  subActive
+                                    ? "bg-brand-amber/20 text-brand-maroon font-bold"
+                                    : "text-brand-dark/80 hover:bg-brand-cream hover:text-brand-maroon"
+                                )}
+                              >
+                                <IconComponent className="w-3.5 h-3.5 text-brand-amber" />
+                                <span>{subItem.label}</span>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+
+                // Standard Top-Level Link
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={cn(
+                      "block py-2.5 text-base font-bold transition-colors border-b border-brand-cream/80",
+                      active ? "text-brand-maroon" : "text-brand-dark hover:text-brand-maroon"
+                    )}
+                    aria-current={active ? "page" : undefined}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* Mobile Booking CTA */}
+            <div className="pt-2">
+              <Link
+                href="/book"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-brand-maroon text-white font-bold text-sm uppercase tracking-wider rounded-xl shadow-md hover:bg-brand-maroon-dark transition-colors"
+              >
+                <span>Book a Reservation</span>
+                <ChevronRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            {/* Direct Call Button */}
+            <a
+              href={`tel:${BRAND.phoneClean}`}
+              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 border border-brand-maroon/20 rounded-xl text-brand-maroon font-semibold text-xs transition-colors hover:bg-brand-cream"
+            >
+              <Phone className="w-3.5 h-3.5 text-brand-amber" />
+              <span>Call Reception ({BRAND.phone})</span>
+            </a>
           </div>
         </div>
       )}
-    </nav>
+    </header>
   );
 }

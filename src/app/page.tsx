@@ -7,6 +7,8 @@ import {
   ConferencePreview,
   CateringBanner,
   GardenShowcase,
+  ReviewsSection,
+  LocationSection,
 } from "@/components/sections";
 
 export default function HomePage() {
@@ -20,6 +22,8 @@ export default function HomePage() {
       <ConferencePreview />
       <CateringBanner />
       <GardenShowcase />
+      <ReviewsSection />
+      <LocationSection />
     </>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
+import { ClientProviders } from "@/components/providers/ClientProviders";
 import { TopBar, Navbar, Footer, WhatsAppFAB } from "@/components/layout";
 import "./globals.css";
 
@@ -95,11 +96,13 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-brand-cream text-brand-dark font-sans antialiased">
-        <TopBar />
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-        <WhatsAppFAB />
+        <ClientProviders>
+          <TopBar />
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+          <WhatsAppFAB />
+        </ClientProviders>
       </body>
     </html>
   );

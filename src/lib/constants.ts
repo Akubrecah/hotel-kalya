@@ -85,17 +85,32 @@ export const NAV_SERVICES: NavSubItem[] = [
   { label: "Garden Experience", href: "/services/garden-experience", desc: "Lush grounds, photoshoots & dining" },
 ];
 
+export const NAV_MENU_ITEMS: NavSubItem[] = [
+  { label: "All Menu Items", href: "/menu", desc: "Explore our complete digital dining menu" },
+  { label: "Breakfast", href: "/menu/breakfast", desc: "Farm breakfast, Kalya special tea, fresh fruits" },
+  { label: "Lunch", href: "/menu/lunch", desc: "Hearty stews, grilled specialties, fresh accompaniments" },
+  { label: "Dinner", href: "/menu/dinner", desc: "Chef's gourmet courses, tender nyama choma & fish" },
+  { label: "Drinks & Refreshments", href: "/menu/drinks", desc: "Fresh juices, spiced tea, smoothies & sodas" },
+  { label: "Chef's Specials", href: "/menu/specials", desc: "Signature Kapenguria kienyeji chicken & platter" },
+];
+
 export interface NavLinkItem {
   label: string;
   href: string;
   hasDropdown?: boolean;
+  dropdownType?: "services" | "menu";
 }
 
 export const NAV_LINKS: NavLinkItem[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  { label: "Services", href: "/services", hasDropdown: true },
+  { label: "Rooms", href: "/rooms" },
+  { label: "Services", href: "/services", hasDropdown: true, dropdownType: "services" },
+  { label: "Menu", href: "/menu", hasDropdown: true, dropdownType: "menu" },
+  { label: "Events", href: "/events" },
   { label: "Gallery", href: "/gallery" },
+  { label: "Reviews", href: "/reviews" },
+  { label: "Location", href: "/location" },
   { label: "Contact", href: "/contact" },
 ];
 

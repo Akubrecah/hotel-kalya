@@ -38,22 +38,12 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/rooms",
-        destination: "/services/accommodation",
-        permanent: true,
-      },
-      {
         source: "/catering",
         destination: "/services/outside-catering",
         permanent: true,
       },
       {
         source: "/gardens",
-        destination: "/services/garden-experience",
-        permanent: true,
-      },
-      {
-        source: "/events",
         destination: "/services/garden-experience",
         permanent: true,
       },

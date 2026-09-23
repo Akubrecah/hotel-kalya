@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Send, CheckCircle2, Phone, Mail, MapPin, Clock, MessageCircle, ExternalLink } from "lucide-react";
+import { Send, CheckCircle2, Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { BRAND, SERVICE_CATEGORIES } from "@/lib/constants";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { GoogleMap } from "@/components/maps/GoogleMap";
+import { DirectionsButton } from "@/components/maps/DirectionsButton";
 
 export default function BookPage() {
   const [form, setForm] = useState({
@@ -310,25 +312,9 @@ export default function BookPage() {
                   parking.
                 </p>
 
-                <div className="h-44 w-full bg-brand-amber-light/30 rounded-xl border border-brand-amber-light flex flex-col items-center justify-center text-center p-4">
-                  <div className="w-12 h-12 rounded-full bg-brand-maroon-dark text-brand-amber flex items-center justify-center mb-2 shadow">
-                    <MapPin className="w-6 h-6" />
-                  </div>
-                  <span className="font-serif font-bold text-sm text-brand-maroon-dark">
-                    Kapenguria, West Pokot
-                  </span>
-                  <span className="text-[11px] text-gray-500">
-                    Google Maps Coordinate Marker
-                  </span>
-                  <a
-                    href={BRAND.googleMapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-2.5 inline-flex items-center gap-1.5 text-xs text-brand-maroon font-bold hover:underline"
-                  >
-                    <span>Open in Google Maps</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
+                <div className="space-y-3">
+                  <GoogleMap height="200px" zoom={14} showCard={false} />
+                  <DirectionsButton size="sm" className="w-full" />
                 </div>
               </div>
             </div>
