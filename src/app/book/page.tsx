@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Send, CheckCircle2, Phone, Mail, MapPin, Clock, MessageCircle, ExternalLink } from "lucide-react";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { BRAND, SERVICE_CATEGORIES } from "@/lib/constants";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 export default function BookPage() {
   const [form, setForm] = useState({
@@ -44,7 +45,14 @@ export default function BookPage() {
 
   return (
     <>
-      <section className="py-20 bg-white border-t border-brand-amber-light">
+      {/* Breadcrumbs Strip */}
+      <section className="bg-brand-cream border-b border-brand-amber-light/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumbs items={[{ label: "Direct Reservations & Bookings" }]} />
+        </div>
+      </section>
+
+      <section className="py-16 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             {/* Form Column */}

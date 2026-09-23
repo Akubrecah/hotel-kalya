@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { BRAND, IMAGES } from "@/lib/constants";
 import { ContactForm } from "@/components/sections/ContactForm";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Contact & Location — Directions & Inquiries",
@@ -105,6 +106,13 @@ export default function ContactPage() {
             We are always happy to hear from you. Reach our front desk team 24/7
             for reservations, inquiries, or directions.
           </p>
+        </div>
+      </section>
+
+      {/* Breadcrumbs Strip */}
+      <section className="bg-brand-cream border-b border-brand-amber-light/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumbs items={[{ label: "Contact & Location" }]} />
         </div>
       </section>
 

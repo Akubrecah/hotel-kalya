@@ -94,12 +94,19 @@ export function ConferencePreview() {
               })}
             </div>
 
-            <div className="pt-2">
+            <div className="pt-2 flex flex-wrap items-center gap-3">
               <Link
-                href="/book"
-                className="bg-brand-maroon hover:bg-brand-maroon-dark text-brand-amber px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider shadow"
+                href="/services/conferences"
+                className="bg-brand-maroon hover:bg-brand-maroon-dark text-brand-amber px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider shadow flex items-center gap-1.5 transition-colors"
               >
-                Request Conference Quotation
+                <span>View Halls & Packages</span>
+                <span>→</span>
+              </Link>
+              <Link
+                href="/book?service=Conference"
+                className="border border-brand-maroon text-brand-maroon hover:bg-brand-amber-light px-5 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-colors"
+              >
+                Request Quotation
               </Link>
             </div>
           </div>

@@ -15,6 +15,50 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/accommodation",
+        destination: "/services/accommodation",
+        permanent: true,
+      },
+      {
+        source: "/dining",
+        destination: "/services/food-service",
+        permanent: true,
+      },
+      {
+        source: "/conference",
+        destination: "/services/conferences",
+        permanent: true,
+      },
+      {
+        source: "/conferences",
+        destination: "/services/conferences",
+        permanent: true,
+      },
+      {
+        source: "/rooms",
+        destination: "/services/accommodation",
+        permanent: true,
+      },
+      {
+        source: "/catering",
+        destination: "/services/outside-catering",
+        permanent: true,
+      },
+      {
+        source: "/gardens",
+        destination: "/services/garden-experience",
+        permanent: true,
+      },
+      {
+        source: "/events",
+        destination: "/services/garden-experience",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

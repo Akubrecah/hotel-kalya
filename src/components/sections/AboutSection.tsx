@@ -93,13 +93,20 @@ export function AboutSection() {
               </div>
             </div>
 
-            <div className="pt-2">
+            <div className="pt-2 flex flex-wrap items-center gap-4">
+              <Link
+                href="/about"
+                className="bg-brand-maroon hover:bg-brand-maroon-dark text-brand-amber px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider shadow flex items-center gap-2 transition-all"
+              >
+                <span>Read Our Full Story</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 text-brand-maroon font-bold text-sm group hover:text-brand-amber-dark transition-colors"
+                className="inline-flex items-center gap-2 text-brand-maroon font-bold text-xs uppercase tracking-wider group hover:text-brand-amber-dark transition-colors py-2"
               >
-                <span>Connect with our reception desk</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <span>Connect with Reception</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </div>

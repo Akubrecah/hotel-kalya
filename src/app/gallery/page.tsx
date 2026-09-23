@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Camera, ChevronRight, Phone } from "lucide-react";
 import { BRAND, IMAGES } from "@/lib/constants";
 import { GalleryGrid } from "@/components/sections/GalleryGrid";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Photo Gallery — Experience Hotel Kalya in Kapenguria",
@@ -42,6 +43,13 @@ export default function GalleryPage() {
             A visual glimpse into our executive rooms, gourmet cuisine, conference
             venues, and tranquil garden landscapes in Kapenguria.
           </p>
+        </div>
+      </section>
+
+      {/* Breadcrumbs Strip */}
+      <section className="bg-brand-cream border-b border-brand-amber-light/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumbs items={[{ label: "Gallery" }]} />
         </div>
       </section>
 

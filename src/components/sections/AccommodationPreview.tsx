@@ -21,13 +21,22 @@ export function AccommodationPreview() {
               private balconies, and seamless guest assistance.
             </p>
           </div>
-          <a
-            href={`tel:${BRAND.phone}`}
-            className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-maroon bg-brand-amber-light/50 border border-brand-amber-light px-4 py-2.5 rounded-lg hover:bg-brand-amber-light transition-colors"
-          >
-            <Phone className="w-3.5 h-3.5 text-brand-amber" />
-            Call Desk: {BRAND.phone}
-          </a>
+          <div className="flex flex-wrap items-center gap-3">
+            <Link
+              href="/services/accommodation"
+              className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-maroon bg-white border border-brand-maroon px-4 py-2.5 rounded-lg hover:bg-brand-maroon hover:text-brand-amber transition-colors"
+            >
+              <span>Explore All Rooms</span>
+              <span>→</span>
+            </Link>
+            <a
+              href={`tel:${BRAND.phone}`}
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-maroon bg-brand-amber-light/50 border border-brand-amber-light px-4 py-2.5 rounded-lg hover:bg-brand-amber-light transition-colors"
+            >
+              <Phone className="w-3.5 h-3.5 text-brand-amber" />
+              Call Desk: {BRAND.phone}
+            </a>
+          </div>
         </div>
 
         {/* Room Cards */}
@@ -114,10 +123,10 @@ export function AccommodationPreview() {
             </p>
           </div>
           <Link
-            href="/book"
+            href="/services/airbnb"
             className="bg-brand-amber hover:bg-brand-amber-dark text-brand-maroon-dark px-6 py-3 rounded-full font-bold text-xs uppercase tracking-wider shadow whitespace-nowrap"
           >
-            Enquire AirBnB Availability
+            Explore AirBnB Apartments
           </Link>
         </div>
       </div>

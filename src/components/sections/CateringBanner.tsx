@@ -48,19 +48,25 @@ export function CateringBanner() {
               </div>
             </div>
 
-            <div className="pt-2 flex flex-wrap gap-4">
+            <div className="pt-2 flex flex-wrap items-center gap-3">
               <Link
-                href="/book"
-                className="bg-brand-amber hover:bg-brand-amber-dark text-brand-maroon-dark px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider shadow"
+                href="/services/outside-catering"
+                className="bg-brand-amber hover:bg-brand-amber-dark text-brand-maroon-dark px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider shadow flex items-center gap-1.5 transition-all"
               >
-                Request Catering Quote
+                <span>Explore Catering Services</span>
+                <span>→</span>
+              </Link>
+              <Link
+                href="/book?service=Outside%20Catering"
+                className="bg-transparent border border-white/40 hover:bg-white/10 text-white px-5 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all"
+              >
+                Request Quote
               </Link>
               <a
                 href={`tel:${BRAND.phone}`}
-                className="bg-transparent border border-white/40 hover:bg-white/10 text-white px-6 py-3 rounded-full text-xs font-semibold flex items-center gap-2"
+                className="text-xs font-semibold text-white/80 hover:text-brand-amber flex items-center gap-1.5 py-2"
               >
-                <Phone className="w-3.5 h-3.5 text-brand-amber" /> Speak with
-                Catering Manager
+                <Phone className="w-3.5 h-3.5 text-brand-amber" /> Call: {BRAND.phone}
               </a>
             </div>
           </div>

@@ -4,12 +4,12 @@ import { Sparkles, ArrowRight, MessageCircle } from "lucide-react";
 import { BRAND, IMAGES } from "@/lib/constants";
 
 const SERVICE_BADGES = [
-  "Accommodation",
-  "Food Service",
-  "Conference",
-  "Outside Catering",
-  "AirBnB",
-  "Kalya Gardens",
+  { label: "Accommodation", href: "/services/accommodation" },
+  { label: "Food Service", href: "/services/food-service" },
+  { label: "Conference", href: "/services/conferences" },
+  { label: "Outside Catering", href: "/services/outside-catering" },
+  { label: "AirBnB", href: "/services/airbnb" },
+  { label: "Kalya Gardens", href: "/services/garden-experience" },
 ];
 
 export function HeroSection() {
@@ -45,12 +45,13 @@ export function HeroSection() {
             {/* Service Badges */}
             <div className="flex flex-wrap gap-2 pt-1">
               {SERVICE_BADGES.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs bg-brand-maroon border border-brand-amber/50 px-3 py-1 rounded-md text-brand-amber-light font-medium"
+                <Link
+                  key={tag.label}
+                  href={tag.href}
+                  className="text-xs bg-brand-maroon border border-brand-amber/50 hover:border-brand-amber px-3 py-1 rounded-md text-brand-amber-light hover:text-white font-medium transition-colors"
                 >
-                  {tag}
-                </span>
+                  {tag.label}
+                </Link>
               ))}
             </div>
 

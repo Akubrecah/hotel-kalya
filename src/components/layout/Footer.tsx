@@ -4,13 +4,12 @@ import { BrandLogo } from "./BrandLogo";
 import { BRAND, NAV_LINKS } from "@/lib/constants";
 
 const FOOTER_SERVICES = [
-  { label: "Executive Accommodation", href: "/accommodation" },
-  { label: "Restaurant & Food Service", href: "/dining" },
-  { label: "Conference & Seminar Halls", href: "/conference" },
-  { label: "Outside Event Catering", href: "/catering" },
-  { label: "AirBnB Short-Stays", href: "/accommodation#airbnb" },
-  { label: "Kalya Garden Experience", href: "/gardens" },
-  { label: "Wedding & Birthday Functions", href: "/events" },
+  { label: "Executive Accommodation", href: "/services/accommodation" },
+  { label: "Restaurant & Food Service", href: "/services/food-service" },
+  { label: "Conference & Seminar Halls", href: "/services/conferences" },
+  { label: "Outside Event Catering", href: "/services/outside-catering" },
+  { label: "AirBnB Short-Stays", href: "/services/airbnb" },
+  { label: "Kalya Garden Experience", href: "/services/garden-experience" },
 ];
 
 export function Footer() {

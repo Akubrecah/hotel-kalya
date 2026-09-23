@@ -6,10 +6,14 @@ import { Bed, Utensils, Presentation, Trees, Camera, Phone, Home, ArrowLeft } fr
 export default function NotFound() {
   const quickLinks = [
     { label: "Home", href: "/", icon: Home },
-    { label: "Accommodation", href: "/accommodation", icon: Bed },
-    { label: "Dining & Cuisine", href: "/dining", icon: Utensils },
-    { label: "Conferences", href: "/conference", icon: Presentation },
-    { label: "Kalya Gardens", href: "/gardens", icon: Trees },
+    { label: "About", href: "/about", icon: Home },
+    { label: "All Services", href: "/services", icon: Bed },
+    { label: "Accommodation", href: "/services/accommodation", icon: Bed },
+    { label: "Dining & Cuisine", href: "/services/food-service", icon: Utensils },
+    { label: "Conferences", href: "/services/conferences", icon: Presentation },
+    { label: "Outside Catering", href: "/services/outside-catering", icon: Utensils },
+    { label: "AirBnB Stays", href: "/services/airbnb", icon: Bed },
+    { label: "Kalya Gardens", href: "/services/garden-experience", icon: Trees },
     { label: "Photo Gallery", href: "/gallery", icon: Camera },
   ];
 

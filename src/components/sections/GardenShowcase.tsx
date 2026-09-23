@@ -87,12 +87,20 @@ export function GardenShowcase() {
               );
             })}
 
-            <Link
-              href="/book"
-              className="w-full block bg-brand-maroon hover:bg-brand-maroon-dark text-brand-amber py-3 rounded-xl font-bold text-xs uppercase tracking-wider shadow transition-colors text-center"
-            >
-              Book Garden for Event / Shoot
-            </Link>
+            <div className="space-y-2 pt-2">
+              <Link
+                href="/services/garden-experience"
+                className="w-full block bg-brand-maroon hover:bg-brand-maroon-dark text-brand-amber py-3 rounded-xl font-bold text-xs uppercase tracking-wider shadow transition-colors text-center"
+              >
+                Explore Kalya Gardens →
+              </Link>
+              <Link
+                href="/book?service=Garden%20Experience"
+                className="w-full block border border-brand-maroon text-brand-maroon hover:bg-brand-amber-light py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-colors text-center"
+              >
+                Book Garden for Event / Shoot
+              </Link>
+            </div>
           </div>
         </div>
       </div>

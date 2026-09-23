@@ -68,19 +68,36 @@ export const IMAGES = {
 } as const;
 
 // ---------------------------------------------------------------------------
-// Navigation links
+// Navigation links & Services Submenu
 // ---------------------------------------------------------------------------
-export const NAV_LINKS = [
+export interface NavSubItem {
+  label: string;
+  href: string;
+  desc: string;
+}
+
+export const NAV_SERVICES: NavSubItem[] = [
+  { label: "Accommodation", href: "/services/accommodation", desc: "Executive suites, standard rooms & cottages" },
+  { label: "Food Service & Dining", href: "/services/food-service", desc: "Farm-fresh Kenyan & continental cuisine" },
+  { label: "Conference Facilities", href: "/services/conferences", desc: "Modern seminar halls & boardroom" },
+  { label: "Outside Catering", href: "/services/outside-catering", desc: "Professional mobile event catering" },
+  { label: "AirBnB Short-Stays", href: "/services/airbnb", desc: "Self-contained serviced apartments" },
+  { label: "Garden Experience", href: "/services/garden-experience", desc: "Lush grounds, photoshoots & dining" },
+];
+
+export interface NavLinkItem {
+  label: string;
+  href: string;
+  hasDropdown?: boolean;
+}
+
+export const NAV_LINKS: NavLinkItem[] = [
   { label: "Home", href: "/" },
-  { label: "Accommodation", href: "/accommodation" },
-  { label: "Dining", href: "/dining" },
-  { label: "Conference", href: "/conference" },
-  { label: "Catering", href: "/catering" },
-  { label: "Gardens", href: "/gardens" },
-  { label: "Events", href: "/events" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services", hasDropdown: true },
   { label: "Gallery", href: "/gallery" },
   { label: "Contact", href: "/contact" },
-] as const;
+];
 
 // ---------------------------------------------------------------------------
 // Service Categories (for booking form dropdown)
@@ -138,7 +155,7 @@ export const SERVICES_LIST: ServiceItem[] = [
       "24/7 Room Service",
     ],
     cta: "Explore Rooms",
-    href: "/accommodation",
+    href: "/services/accommodation",
   },
   {
     id: "food-service",
@@ -154,7 +171,7 @@ export const SERVICES_LIST: ServiceItem[] = [
       "Express Takeaways",
     ],
     cta: "View Restaurant",
-    href: "/dining",
+    href: "/services/food-service",
   },
   {
     id: "conference",
@@ -170,7 +187,7 @@ export const SERVICES_LIST: ServiceItem[] = [
       "High-speed Connectivity",
     ],
     cta: "Book Conference",
-    href: "/conference",
+    href: "/services/conferences",
   },
   {
     id: "outside-catering",
@@ -186,7 +203,7 @@ export const SERVICES_LIST: ServiceItem[] = [
       "Hygiene-first Service",
     ],
     cta: "Request Catering",
-    href: "/catering",
+    href: "/services/outside-catering",
   },
   {
     id: "airbnb",
@@ -202,7 +219,7 @@ export const SERVICES_LIST: ServiceItem[] = [
       "Secure Parking",
     ],
     cta: "View AirBnB",
-    href: "/accommodation#airbnb",
+    href: "/services/airbnb",
   },
   {
     id: "garden",
@@ -218,23 +235,7 @@ export const SERVICES_LIST: ServiceItem[] = [
       "Children-friendly Spaces",
     ],
     cta: "Explore Gardens",
-    href: "/gardens",
-  },
-  {
-    id: "events",
-    title: "Events & Functions",
-    tagline: "Memorable Gatherings",
-    desc: "Whether celebrating birthdays, graduations, family reunions, or official county receptions, our dedicated team makes every moment special.",
-    iconName: "party-popper",
-    image: IMAGES.weddingSetup,
-    features: [
-      "Themed Décor Services",
-      "Sound & Lighting Layouts",
-      "Dedicated Event Manager",
-      "Ample Secure Parking",
-    ],
-    cta: "Plan an Event",
-    href: "/events",
+    href: "/services/garden-experience",
   },
 ];
 

@@ -58,18 +58,25 @@ export function DiningPreview() {
             </div>
 
             {/* CTAs */}
-            <div className="pt-2 flex flex-wrap gap-4">
+            <div className="pt-2 flex flex-wrap items-center gap-3">
               <Link
-                href="/book"
-                className="bg-brand-maroon hover:bg-brand-maroon-dark text-brand-amber px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider shadow"
+                href="/services/food-service"
+                className="bg-brand-maroon hover:bg-brand-maroon-dark text-brand-amber px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider shadow flex items-center gap-1.5 transition-colors"
+              >
+                <span>View Full Menu</span>
+                <span>→</span>
+              </Link>
+              <Link
+                href="/book?service=Food%20Service"
+                className="border border-brand-maroon text-brand-maroon hover:bg-brand-amber-light px-5 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-colors"
               >
                 Reserve a Table
               </Link>
               <a
                 href={`tel:${BRAND.phone}`}
-                className="border border-brand-maroon text-brand-maroon px-6 py-3 rounded-full text-xs font-semibold hover:bg-brand-amber-light transition-colors flex items-center gap-2"
+                className="text-xs font-semibold text-gray-700 hover:text-brand-maroon flex items-center gap-1.5 py-2"
               >
-                <Phone className="w-3.5 h-3.5" /> Order Ahead: {BRAND.phone}
+                <Phone className="w-3.5 h-3.5 text-brand-amber" /> Order: {BRAND.phone}
               </a>
             </div>
           </div>
