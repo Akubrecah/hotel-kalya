@@ -7,11 +7,9 @@ import {
   Utensils,
   PartyPopper,
   Sparkles,
-  Phone,
-  CheckCircle2,
   ChevronRight,
 } from "lucide-react";
-import { BRAND, IMAGES } from "@/lib/constants";
+import { IMAGES } from "@/lib/constants";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 export const metadata: Metadata = {

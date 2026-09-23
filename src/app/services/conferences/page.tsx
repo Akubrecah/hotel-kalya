@@ -7,10 +7,6 @@ import {
   Users,
   CheckCircle2,
   ChevronRight,
-  Wifi,
-  Tv,
-  Coffee,
-  Car,
 } from "lucide-react";
 import { BRAND, IMAGES } from "@/lib/constants";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";

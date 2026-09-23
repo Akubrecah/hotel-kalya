@@ -6,11 +6,7 @@ import {
   CheckCircle2,
   Coffee,
   ChevronRight,
-  ShieldCheck,
-  Users,
   Utensils,
-  Truck,
-  Sparkles,
 } from "lucide-react";
 import { BRAND, IMAGES } from "@/lib/constants";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";

@@ -7,14 +7,13 @@ import {
   HeartHandshake,
   MapPin,
   ChevronRight,
-  Phone,
   Bed,
   Utensils,
   Presentation,
   Trees,
   Sparkles,
 } from "lucide-react";
-import { BRAND, IMAGES } from "@/lib/constants";
+import { IMAGES } from "@/lib/constants";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 export const metadata: Metadata = {

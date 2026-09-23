@@ -9,7 +9,6 @@ import {
   Coffee,
   ShieldCheck,
   Bed,
-  Sparkles,
   ChevronRight,
   Clock,
 } from "lucide-react";

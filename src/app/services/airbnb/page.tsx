@@ -3,17 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Sparkles,
-  Bed,
   Coffee,
   Wifi,
   Tv,
-  Car,
   ShieldCheck,
-  CheckCircle2,
   ChevronRight,
   Phone,
   Home,
-  Clock,
 } from "lucide-react";
 import { BRAND, IMAGES } from "@/lib/constants";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";

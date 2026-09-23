@@ -70,11 +70,13 @@ export function Navbar() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // Close mobile menu on route change
-  useEffect(() => {
+  // Close mobile menu and dropdown on route change without an effect
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
     setMobileMenuOpen(false);
     setDesktopDropdownOpen(false);
-  }, [pathname]);
+  }
 
   const handleMouseEnter = () => {
     if (dropdownTimerRef.current) {
