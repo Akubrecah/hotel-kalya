@@ -21,6 +21,8 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { OperationalAnalytics, Booking, Room, HousekeepingStatus } from "@/types/hospitality";
 import { FoodOrder } from "@/types";
+import { hasPermission } from "@/lib/rbac";
+import { staffFetch } from "@/lib/api-client";
 
 const ROLE_LABELS: Record<string, { label: string; dept: string }> = {
   RECEPTIONIST: { label: "Front Desk & Reservations", dept: "Front Office" },
@@ -57,74 +59,70 @@ export default function StaffDashboardPage() {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const [analyticsRes, bookingsRes, roomsRes, ordersRes] = await Promise.all([
-        fetch("/api/analytics"),
-        fetch("/api/bookings"),
-        fetch("/api/rooms"),
-        fetch("/api/orders"),
-      ]);
+      const promises: Promise<void>[] = [];
 
-      const [aData, bData, rData, oData] = await Promise.all([
-        analyticsRes.json(),
-        bookingsRes.json(),
-        roomsRes.json(),
-        ordersRes.json(),
-      ]);
+      if (hasPermission(user, "view_reports")) {
+        promises.push(
+          staffFetch("/api/analytics")
+            .then((r) => r.json())
+            .then((data) => {
+              if (data.success && data.analytics) setAnalytics(data.analytics);
+            })
+            .catch(() => {})
+        );
+      }
 
-      if (aData.success) setAnalytics(aData.analytics);
-      if (bData.success && Array.isArray(bData.bookings)) setBookings(bData.bookings);
-      if (rData.success && Array.isArray(rData.rooms)) setRooms(rData.rooms);
-      if (oData.success && Array.isArray(oData.orders)) setOrders(oData.orders);
+      if (hasPermission(user, "view_reservations")) {
+        promises.push(
+          staffFetch("/api/bookings")
+            .then((r) => r.json())
+            .then((data) => {
+              if (data.success && Array.isArray(data.reservations)) setBookings(data.reservations);
+              else if (data.success && Array.isArray(data.bookings)) setBookings(data.bookings);
+            })
+            .catch(() => {})
+        );
+      }
+
+      if (hasPermission(user, "view_rooms")) {
+        promises.push(
+          staffFetch("/api/rooms")
+            .then((r) => r.json())
+            .then((data) => {
+              if (data.success && Array.isArray(data.rooms)) setRooms(data.rooms);
+            })
+            .catch(() => {})
+        );
+      }
+
+      if (hasPermission(user, "view_orders")) {
+        promises.push(
+          staffFetch("/api/orders")
+            .then((r) => r.json())
+            .then((data) => {
+              if (data.success && Array.isArray(data.orders)) setOrders(data.orders);
+            })
+            .catch(() => {})
+        );
+      }
+
+      await Promise.all(promises);
     } catch (err) {
       console.error("Failed to load staff dashboard operational data", err);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
-    let ignore = false;
-    async function fetchInitialDashboardData() {
-      try {
-        const [analyticsRes, bookingsRes, roomsRes, ordersRes] = await Promise.all([
-          fetch("/api/analytics"),
-          fetch("/api/bookings"),
-          fetch("/api/rooms"),
-          fetch("/api/orders"),
-        ]);
-
-        const [aData, bData, rData, oData] = await Promise.all([
-          analyticsRes.json(),
-          bookingsRes.json(),
-          roomsRes.json(),
-          ordersRes.json(),
-        ]);
-
-        if (!ignore) {
-          if (aData.success) setAnalytics(aData.analytics);
-          if (bData.success && Array.isArray(bData.bookings)) setBookings(bData.bookings);
-          if (rData.success && Array.isArray(rData.rooms)) setRooms(rData.rooms);
-          if (oData.success && Array.isArray(oData.orders)) setOrders(oData.orders);
-        }
-      } catch (err) {
-        console.error("Failed to load initial dashboard operational data", err);
-      } finally {
-        if (!ignore) {
-          setLoading(false);
-        }
-      }
-    }
-    fetchInitialDashboardData();
-    return () => {
-      ignore = true;
-    };
-  }, []);
+    loadData();
+  }, [loadData]);
 
   // Housekeeping status update
   const handleUpdateHousekeeping = async (roomId: string, newStatus: HousekeepingStatus) => {
     setUpdatingId(roomId);
     try {
-      const res = await fetch("/api/housekeeping", {
+      const res = await staffFetch("/api/housekeeping", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -156,7 +154,7 @@ export default function StaffDashboardPage() {
   ) => {
     setUpdatingId(bookingId);
     try {
-      const res = await fetch("/api/bookings", {
+      const res = await staffFetch("/api/bookings", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -181,7 +179,7 @@ export default function StaffDashboardPage() {
   const handleUpdateOrderStatus = async (orderId: string, newStatus: string) => {
     setUpdatingId(orderId);
     try {
-      const res = await fetch("/api/orders", {
+      const res = await staffFetch("/api/orders", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

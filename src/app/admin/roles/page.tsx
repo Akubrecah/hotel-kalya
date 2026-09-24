@@ -14,6 +14,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { RoleDefinition, PermissionKey } from "@/types/hospitality";
+import { staffFetch } from "@/lib/api-client";
 
 const PERMISSION_GROUPS: {
   category: string;
@@ -86,7 +87,7 @@ export default function AdminRolesPage() {
   const loadRoles = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/roles");
+      const res = await staffFetch("/api/roles");
       const data = await res.json();
       if (data.success && Array.isArray(data.roles)) {
         setRoles(data.roles);
@@ -102,7 +103,7 @@ export default function AdminRolesPage() {
     let ignore = false;
     async function fetchInitialRoles() {
       try {
-        const res = await fetch("/api/roles");
+        const res = await staffFetch("/api/roles");
         const data = await res.json();
         if (!ignore && data.success && Array.isArray(data.roles)) {
           setRoles(data.roles);
@@ -163,7 +164,7 @@ export default function AdminRolesPage() {
     try {
       if (editingRole) {
         // PATCH
-        const res = await fetch("/api/roles", {
+        const res = await staffFetch("/api/roles", {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -186,7 +187,7 @@ export default function AdminRolesPage() {
       } else {
         // POST
         const cleanCode = formCode.trim().toUpperCase().replace(/[^A-Z0-9_]/g, "_");
-        const res = await fetch("/api/roles", {
+        const res = await staffFetch("/api/roles", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -222,7 +223,7 @@ export default function AdminRolesPage() {
     }
 
     try {
-      const res = await fetch(`/api/roles?id=${role.id}`, { method: "DELETE" });
+      const res = await staffFetch(`/api/roles?id=${role.id}`, { method: "DELETE" });
       const data = await res.json();
       if (data.success) {
         setRoles((prev) => prev.filter((r) => r.id !== role.id));

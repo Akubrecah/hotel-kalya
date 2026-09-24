@@ -32,6 +32,7 @@ export const DEMO_ACCOUNTS: Record<string, UserProfile> = {
     role: "staff",
     staffRole: "HOUSEKEEPING",
     department: "Housekeeping",
+    additionalDepartments: ["Events & Conferences"],
     createdAt: "2026-08-20T08:00:00Z",
   },
   waiter: {
@@ -74,6 +75,26 @@ export const DEMO_ACCOUNTS: Record<string, UserProfile> = {
     department: "Outside Catering",
     createdAt: "2026-08-25T08:00:00Z",
   },
+  maintenance: {
+    id: "staff_kipchumba_01",
+    name: "John Kipchumba",
+    email: "maintenance@hotelkalya.com",
+    phone: "+254 778 112233",
+    role: "staff",
+    staffRole: "MAINTENANCE",
+    department: "Engineering & Maintenance",
+    createdAt: "2026-08-05T08:00:00Z",
+  },
+  manager: {
+    id: "staff_kimutai_01",
+    name: "James Kimutai",
+    email: "manager@hotelkalya.com",
+    phone: "+254 789 223344",
+    role: "staff",
+    staffRole: "MANAGER",
+    department: "Operations Management",
+    createdAt: "2026-08-01T08:00:00Z",
+  },
   guest: {
     id: "user_kalya_demo_01",
     name: "James Chemosit",
@@ -91,6 +112,7 @@ export interface AuthContextType {
   isLoaded: boolean;
   activeStaffRole: string;
   setActiveStaffRole: (role: string) => void;
+  switchWorkspaceDepartment: (department: string) => void;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   signup: (name: string, email: string, password: string, phone?: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
@@ -140,6 +162,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setActiveStaffRoleState(role);
     try {
       localStorage.setItem(ROLE_STORAGE_KEY, role);
+    } catch {
+      // ignore
+    }
+  };
+
+  const switchWorkspaceDepartment = (dept: string) => {
+    if (!user) return;
+    const updated = { ...user, activeWorkspaceDepartment: dept };
+    setUser(updated);
+    try {
+      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(updated));
     } catch {
       // ignore
     }
@@ -282,6 +315,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         isLoaded,
         activeStaffRole,
         setActiveStaffRole,
+        switchWorkspaceDepartment,
         login,
         signup,
         logout,

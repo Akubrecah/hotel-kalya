@@ -6,6 +6,7 @@ import {
   Trees,
 } from "lucide-react";
 import { EventBooking } from "@/types/hospitality";
+import { staffFetch } from "@/lib/api-client";
 
 export default function StaffEventsPage() {
   const [events, setEvents] = useState<EventBooking[]>([]);
@@ -14,7 +15,7 @@ export default function StaffEventsPage() {
 
   const loadData = React.useCallback(async () => {
     try {
-      const res = await fetch("/api/events");
+      const res = await staffFetch("/api/events");
       const data = await res.json();
       if (data.success && Array.isArray(data.events)) {
         setEvents(data.events);
@@ -30,7 +31,7 @@ export default function StaffEventsPage() {
     let ignore = false;
     async function fetchData() {
       try {
-        const res = await fetch("/api/events");
+        const res = await staffFetch("/api/events");
         const data = await res.json();
         if (!ignore && data.success && Array.isArray(data.events)) {
           setEvents(data.events);
@@ -52,7 +53,7 @@ export default function StaffEventsPage() {
   const handleUpdateStatus = async (id: string, status: EventBooking["status"]) => {
     setUpdatingId(id);
     try {
-      const res = await fetch("/api/events", {
+      const res = await staffFetch("/api/events", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, status, operatorName: "Kevin Lokor (Events Coord)" }),

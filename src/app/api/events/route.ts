@@ -3,10 +3,36 @@ import {
   getEventBookings,
   createEventBooking,
   updateEventBookingStatus,
+  logAuditEvent,
 } from "@/lib/db";
+import { authorizeApiRequest } from "@/lib/rbac";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const auth = authorizeApiRequest(request, "view_events", [
+      "EVENTS",
+      "CONFERENCES",
+      "MANAGEMENT",
+      "EXECUTIVE",
+    ]);
+
+    if (!auth.authorized) {
+      await logAuditEvent({
+        userId: auth.user?.id || "unauthorized_caller",
+        userName: auth.user?.name || "Unknown Caller",
+        role: auth.user?.staffRole || "UNKNOWN",
+        department: auth.user?.department || "UNKNOWN",
+        action: "UNAUTHORIZED_EVENTS_ACCESS",
+        target: "/api/events",
+        details: auth.error || "Blocked cross-department event data query.",
+        status: "DENIED",
+      });
+      return NextResponse.json(
+        { success: false, error: auth.error },
+        { status: auth.status }
+      );
+    }
+
     const events = await getEventBookings();
     return NextResponse.json({ success: true, count: events.length, events });
   } catch (error) {
@@ -39,6 +65,30 @@ export async function POST(req: Request) {
 
 export async function PATCH(req: Request) {
   try {
+    const auth = authorizeApiRequest(req, "manage_events", [
+      "EVENTS",
+      "CONFERENCES",
+      "MANAGEMENT",
+      "EXECUTIVE",
+    ]);
+
+    if (!auth.authorized) {
+      await logAuditEvent({
+        userId: auth.user?.id || "unauthorized_caller",
+        userName: auth.user?.name || "Unknown Caller",
+        role: auth.user?.staffRole || "UNKNOWN",
+        department: auth.user?.department || "UNKNOWN",
+        action: "UNAUTHORIZED_EVENTS_UPDATE",
+        target: "/api/events",
+        details: auth.error || "Blocked events status update.",
+        status: "DENIED",
+      });
+      return NextResponse.json(
+        { success: false, error: auth.error },
+        { status: auth.status }
+      );
+    }
+
     const body = await req.json();
     if (!body.id || !body.status) {
       return NextResponse.json(

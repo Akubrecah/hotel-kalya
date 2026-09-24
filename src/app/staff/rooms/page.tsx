@@ -7,6 +7,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { Room } from "@/types/hospitality";
+import { staffFetch } from "@/lib/api-client";
 
 export default function StaffRoomsPage() {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -17,7 +18,7 @@ export default function StaffRoomsPage() {
 
   const loadRooms = React.useCallback(async () => {
     try {
-      const res = await fetch("/api/rooms");
+      const res = await staffFetch("/api/rooms");
       const data = await res.json();
       if (data.success && Array.isArray(data.rooms)) {
         setRooms(data.rooms);
@@ -33,7 +34,7 @@ export default function StaffRoomsPage() {
     let ignore = false;
     async function fetchRooms() {
       try {
-        const res = await fetch("/api/rooms");
+        const res = await staffFetch("/api/rooms");
         const data = await res.json();
         if (!ignore && data.success && Array.isArray(data.rooms)) {
           setRooms(data.rooms);

@@ -1,8 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getStaffMembers, createStaffMember, updateStaffMember } from "@/lib/db";
+import { getStaffMembers, createStaffMember, updateStaffMember, logAuditEvent } from "@/lib/db";
+import { authorizeApiRequest } from "@/lib/rbac";
 
 export async function GET(request: NextRequest) {
   try {
+    const auth = authorizeApiRequest(request, "manage_staff", ["MANAGEMENT", "EXECUTIVE"]);
+    if (!auth.authorized) {
+      await logAuditEvent({
+        userId: auth.user?.id || "unauthorized_caller",
+        userName: auth.user?.name || "Unknown Caller",
+        role: auth.user?.staffRole || "UNKNOWN",
+        department: auth.user?.department || "UNKNOWN",
+        action: "UNAUTHORIZED_STAFF_ROSTER_ACCESS",
+        target: "/api/staff",
+        details: auth.error || "Blocked unauthorized HR staff roster query.",
+        status: "DENIED",
+      });
+      return NextResponse.json(
+        { success: false, error: auth.error },
+        { status: auth.status }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const department = searchParams.get("department");
     const role = searchParams.get("role");
@@ -31,6 +50,24 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = authorizeApiRequest(request, "manage_staff", ["MANAGEMENT", "EXECUTIVE"]);
+    if (!auth.authorized) {
+      await logAuditEvent({
+        userId: auth.user?.id || "unauthorized_caller",
+        userName: auth.user?.name || "Unknown Caller",
+        role: auth.user?.staffRole || "UNKNOWN",
+        department: auth.user?.department || "UNKNOWN",
+        action: "UNAUTHORIZED_STAFF_CREATION",
+        target: "/api/staff",
+        details: auth.error || "Blocked staff member creation.",
+        status: "DENIED",
+      });
+      return NextResponse.json(
+        { success: false, error: auth.error },
+        { status: auth.status }
+      );
+    }
+
     const body = await request.json();
     if (!body.name || !body.email || !body.role || !body.department) {
       return NextResponse.json(
@@ -52,6 +89,17 @@ export async function POST(request: NextRequest) {
       assignedTables: body.assignedTables || [],
     });
 
+    await logAuditEvent({
+      userId: auth.user?.id || "admin",
+      userName: auth.user?.name || "Administrator",
+      role: auth.user?.staffRole || "ADMIN",
+      department: "Management",
+      action: "CREATE_STAFF_MEMBER",
+      target: newStaff.name,
+      details: `Created new staff member (${newStaff.role} - ${newStaff.department})`,
+      status: "SUCCESS",
+    });
+
     return NextResponse.json({
       success: true,
       staff: newStaff,
@@ -67,6 +115,24 @@ export async function POST(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
+    const auth = authorizeApiRequest(request, "manage_staff", ["MANAGEMENT", "EXECUTIVE"]);
+    if (!auth.authorized) {
+      await logAuditEvent({
+        userId: auth.user?.id || "unauthorized_caller",
+        userName: auth.user?.name || "Unknown Caller",
+        role: auth.user?.staffRole || "UNKNOWN",
+        department: auth.user?.department || "UNKNOWN",
+        action: "UNAUTHORIZED_STAFF_UPDATE",
+        target: "/api/staff",
+        details: auth.error || "Blocked staff profile modification.",
+        status: "DENIED",
+      });
+      return NextResponse.json(
+        { success: false, error: auth.error },
+        { status: auth.status }
+      );
+    }
+
     const body = await request.json();
     const { id, ...updates } = body;
 
@@ -84,6 +150,17 @@ export async function PATCH(request: NextRequest) {
         { status: 404 }
       );
     }
+
+    await logAuditEvent({
+      userId: auth.user?.id || "admin",
+      userName: auth.user?.name || "Administrator",
+      role: auth.user?.staffRole || "ADMIN",
+      department: "Management",
+      action: "UPDATE_STAFF_MEMBER",
+      target: updated.name,
+      details: `Updated staff profile ${id}`,
+      status: "SUCCESS",
+    });
 
     return NextResponse.json({
       success: true,

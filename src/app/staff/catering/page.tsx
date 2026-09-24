@@ -9,6 +9,7 @@ import {
   PhoneCall,
 } from "lucide-react";
 import { CateringBooking } from "@/types/hospitality";
+import { staffFetch } from "@/lib/api-client";
 
 export default function StaffCateringPage() {
   const [caterings, setCaterings] = useState<CateringBooking[]>([]);
@@ -17,7 +18,7 @@ export default function StaffCateringPage() {
 
   const loadData = React.useCallback(async () => {
     try {
-      const res = await fetch("/api/catering");
+      const res = await staffFetch("/api/catering");
       const data = await res.json();
       if (data.success && Array.isArray(data.caterings)) {
         setCaterings(data.caterings);
@@ -33,7 +34,7 @@ export default function StaffCateringPage() {
     let ignore = false;
     async function fetchData() {
       try {
-        const res = await fetch("/api/catering");
+        const res = await staffFetch("/api/catering");
         const data = await res.json();
         if (!ignore && data.success && Array.isArray(data.caterings)) {
           setCaterings(data.caterings);
@@ -55,7 +56,7 @@ export default function StaffCateringPage() {
   const handleUpdateStatus = async (id: string, status: CateringBooking["status"]) => {
     setUpdatingId(id);
     try {
-      const res = await fetch("/api/catering", {
+      const res = await staffFetch("/api/catering", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, status, operatorName: "Grace Chepkorir (Catering Mgr)" }),

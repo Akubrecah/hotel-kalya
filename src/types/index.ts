@@ -54,6 +54,8 @@ export interface UserProfile {
   role: "guest" | "staff" | "admin";
   staffRole?: string;
   department?: string;
+  additionalDepartments?: string[];
+  activeWorkspaceDepartment?: string;
   permissions?: string[];
   dietaryPreferences?: string[];
   createdAt: string;

@@ -1,9 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getRooms, updateHousekeepingStatus, getHousekeepingLogs } from "@/lib/db";
+import { getRooms, updateHousekeepingStatus, getHousekeepingLogs, logAuditEvent } from "@/lib/db";
 import { HousekeepingStatus } from "@/types/hospitality";
+import { authorizeApiRequest } from "@/lib/rbac";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const auth = authorizeApiRequest(request, "view_housekeeping", [
+      "HOUSEKEEPING",
+      "FRONT_OFFICE",
+      "MANAGEMENT",
+      "EXECUTIVE",
+    ]);
+
+    if (!auth.authorized) {
+      await logAuditEvent({
+        userId: auth.user?.id || "unauthorized_caller",
+        userName: auth.user?.name || "Unknown Caller",
+        role: auth.user?.staffRole || "UNKNOWN",
+        department: auth.user?.department || "UNKNOWN",
+        action: "UNAUTHORIZED_HOUSEKEEPING_ACCESS",
+        target: "/api/housekeeping",
+        details: auth.error || "Blocked unauthorized cross-department data request.",
+        status: "DENIED",
+      });
+      return NextResponse.json(
+        { success: false, error: auth.error },
+        { status: auth.status }
+      );
+    }
+
     const rooms = await getRooms();
     const logs = await getHousekeepingLogs();
 
@@ -32,6 +57,30 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = authorizeApiRequest(request, "update_room_status", [
+      "HOUSEKEEPING",
+      "FRONT_OFFICE",
+      "MANAGEMENT",
+      "EXECUTIVE",
+    ]);
+
+    if (!auth.authorized) {
+      await logAuditEvent({
+        userId: auth.user?.id || "unauthorized_caller",
+        userName: auth.user?.name || "Unknown Caller",
+        role: auth.user?.staffRole || "UNKNOWN",
+        department: auth.user?.department || "UNKNOWN",
+        action: "UNAUTHORIZED_HOUSEKEEPING_MUTATION",
+        target: "/api/housekeeping",
+        details: auth.error || "Blocked cross-department status update.",
+        status: "DENIED",
+      });
+      return NextResponse.json(
+        { success: false, error: auth.error },
+        { status: auth.status }
+      );
+    }
+
     const body = await request.json();
     const { roomId, status, staffName, notes } = body;
 
@@ -42,10 +91,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const effectiveStaffName = auth.user?.name || staffName || "Housekeeping Staff";
     const result = await updateHousekeepingStatus(
       roomId,
       status as HousekeepingStatus,
-      staffName || "Housekeeping Staff",
+      effectiveStaffName,
       notes
     );
 
@@ -55,6 +105,17 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+
+    await logAuditEvent({
+      userId: auth.user?.id || "staff",
+      userName: effectiveStaffName,
+      role: auth.user?.staffRole || "HOUSEKEEPING",
+      department: auth.user?.department || "Housekeeping",
+      action: "UPDATE_ROOM_CLEANLINESS",
+      target: `Room ${roomId}`,
+      details: `Status set to ${status}${notes ? ` - ${notes}` : ""}`,
+      status: "SUCCESS",
+    });
 
     return NextResponse.json({
       success: true,

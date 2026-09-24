@@ -1,0 +1,80 @@
+[
+  {
+    "id": "sc-01",
+    "serviceKey": "accommodation",
+    "serviceTitle": "Room Reservations Desk",
+    "department": "Front Office & Reservations",
+    "responsibleStaff": "Dennis Kiplagat",
+    "roleTitle": "Reservations Officer",
+    "whatsappNumber": "254719766649",
+    "email": "reservations@hotelkalya.com",
+    "phone": "+254 719 766649",
+    "availabilityHours": "24 Hours Daily",
+    "quickGreeting": "Hello Reservations Desk, I would like to inquire about room booking at Hotel Kalya."
+  },
+  {
+    "id": "sc-02",
+    "serviceKey": "restaurant",
+    "serviceTitle": "Restaurant & Dining Desk",
+    "department": "Food & Beverage",
+    "responsibleStaff": "Faith Jepchirchir",
+    "roleTitle": "Restaurant Service Lead",
+    "whatsappNumber": "254719766649",
+    "email": "dining@hotelkalya.com",
+    "phone": "+254 719 766649",
+    "availabilityHours": "6:30 AM – 10:00 PM Daily",
+    "quickGreeting": "Hello Kalya Dining, I would like to reserve a table / inquire about the restaurant menu."
+  },
+  {
+    "id": "sc-03",
+    "serviceKey": "conference",
+    "serviceTitle": "Conference & Seminar Facilities",
+    "department": "Corporate Events & Seminars",
+    "responsibleStaff": "Kevin Lokor",
+    "roleTitle": "Conference & Events Coordinator",
+    "whatsappNumber": "254719766649",
+    "email": "conferences@hotelkalya.com",
+    "phone": "+254 719 766649",
+    "availabilityHours": "7:30 AM – 7:00 PM Daily",
+    "quickGreeting": "Hello Conference Coordinator, I would like to request availability and quote for our upcoming workshop."
+  },
+  {
+    "id": "sc-04",
+    "serviceKey": "catering",
+    "serviceTitle": "Outside Catering Services",
+    "department": "Catering Operations",
+    "responsibleStaff": "Grace Chepkorir",
+    "roleTitle": "Outside Catering Operations Manager",
+    "whatsappNumber": "254719766649",
+    "email": "catering@hotelkalya.com",
+    "phone": "+254 719 766649",
+    "availabilityHours": "8:00 AM – 6:00 PM Daily",
+    "quickGreeting": "Hello Catering Team, I would like to discuss outside catering for our upcoming event in West Pokot."
+  },
+  {
+    "id": "sc-05",
+    "serviceKey": "garden",
+    "serviceTitle": "Garden Experience & Photoshoots",
+    "department": "Grounds & Events",
+    "responsibleStaff": "Kevin Lokor",
+    "roleTitle": "Events & Grounds Coordinator",
+    "whatsappNumber": "254719766649",
+    "email": "gardens@hotelkalya.com",
+    "phone": "+254 719 766649",
+    "availabilityHours": "8:00 AM – 6:30 PM Daily",
+    "quickGreeting": "Hello Kalya Gardens, I would like to book the lush garden grounds for our photography session / private party."
+  },
+  {
+    "id": "sc-06",
+    "serviceKey": "general",
+    "serviceTitle": "General Hotel Reception",
+    "department": "Executive Management",
+    "responsibleStaff": "Sarah Rotich",
+    "roleTitle": "Front Office Duty Manager",
+    "whatsappNumber": "254719766649",
+    "email": "hotelkalya@gmail.com",
+    "phone": "+254 719 766649",
+    "availabilityHours": "24 Hours Daily",
+    "quickGreeting": "Hello Hotel Kalya Reception, I have a general inquiry."
+  }
+]

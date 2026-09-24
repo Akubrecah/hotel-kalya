@@ -7,6 +7,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { FoodOrder } from "@/types";
+import { staffFetch } from "@/lib/api-client";
 
 export default function StaffKitchenKDSPage() {
   const [orders, setOrders] = useState<FoodOrder[]>([]);
@@ -16,7 +17,7 @@ export default function StaffKitchenKDSPage() {
 
   const loadOrders = React.useCallback(async () => {
     try {
-      const res = await fetch("/api/orders");
+      const res = await staffFetch("/api/orders");
       const data = await res.json();
       if (data.success && Array.isArray(data.orders)) {
         setOrders(data.orders);
@@ -32,7 +33,7 @@ export default function StaffKitchenKDSPage() {
     let ignore = false;
     async function fetchOrders() {
       try {
-        const res = await fetch("/api/orders");
+        const res = await staffFetch("/api/orders");
         const data = await res.json();
         if (!ignore && data.success && Array.isArray(data.orders)) {
           setOrders(data.orders);
@@ -56,7 +57,7 @@ export default function StaffKitchenKDSPage() {
   const handleUpdateStatus = async (id: string, newStatus: FoodOrder["status"]) => {
     setUpdatingId(id);
     try {
-      const res = await fetch("/api/orders", {
+      const res = await staffFetch("/api/orders", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, status: newStatus }),

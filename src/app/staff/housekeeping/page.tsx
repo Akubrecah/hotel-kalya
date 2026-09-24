@@ -7,6 +7,7 @@ import {
   History,
 } from "lucide-react";
 import { Room, HousekeepingStatus, HousekeepingTask } from "@/types/hospitality";
+import { staffFetch } from "@/lib/api-client";
 
 export default function StaffHousekeepingPage() {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -18,7 +19,7 @@ export default function StaffHousekeepingPage() {
 
   const loadData = React.useCallback(async () => {
     try {
-      const res = await fetch("/api/housekeeping");
+      const res = await staffFetch("/api/housekeeping");
       const data = await res.json();
       if (data.success) {
         setRooms(data.rooms || []);
@@ -35,7 +36,7 @@ export default function StaffHousekeepingPage() {
     let ignore = false;
     async function fetchData() {
       try {
-        const res = await fetch("/api/housekeeping");
+        const res = await staffFetch("/api/housekeeping");
         const data = await res.json();
         if (!ignore && data.success) {
           setRooms(data.rooms || []);
@@ -62,7 +63,7 @@ export default function StaffHousekeepingPage() {
   ) => {
     setUpdatingRoomId(roomId);
     try {
-      const res = await fetch("/api/housekeeping", {
+      const res = await staffFetch("/api/housekeeping", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -79,7 +80,7 @@ export default function StaffHousekeepingPage() {
           prev.map((r) => (r.id === roomId ? { ...r, ...data.room } : r))
         );
         // Refresh logs
-        const refresh = await fetch("/api/housekeeping");
+        const refresh = await staffFetch("/api/housekeeping");
         const json = await refresh.json();
         if (json.success && Array.isArray(json.logs)) {
           setTasks(json.logs);

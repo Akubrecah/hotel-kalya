@@ -6,6 +6,7 @@ import {
   RefreshCw,
   PhoneCall,
 } from "lucide-react";
+import { staffFetch } from "@/lib/api-client";
 
 interface Inquiry {
   id: string;
@@ -26,7 +27,7 @@ export default function StaffMessagesPage() {
 
   const loadInquiries = React.useCallback(async () => {
     try {
-      const res = await fetch("/api/inquiries");
+      const res = await staffFetch("/api/inquiries");
       const data = await res.json();
       if (data.success && Array.isArray(data.inquiries)) {
         setInquiries(data.inquiries);
@@ -42,7 +43,7 @@ export default function StaffMessagesPage() {
     let ignore = false;
     async function fetchInquiries() {
       try {
-        const res = await fetch("/api/inquiries");
+        const res = await staffFetch("/api/inquiries");
         const data = await res.json();
         if (!ignore && data.success && Array.isArray(data.inquiries)) {
           setInquiries(data.inquiries);

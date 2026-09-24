@@ -5,6 +5,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { ConferenceBooking } from "@/types/hospitality";
+import { staffFetch } from "@/lib/api-client";
 
 export default function StaffConferencePage() {
   const [conferences, setConferences] = useState<ConferenceBooking[]>([]);
@@ -13,7 +14,7 @@ export default function StaffConferencePage() {
 
   const loadData = React.useCallback(async () => {
     try {
-      const res = await fetch("/api/conference");
+      const res = await staffFetch("/api/conference");
       const data = await res.json();
       if (data.success && Array.isArray(data.conferences)) {
         setConferences(data.conferences);
@@ -29,7 +30,7 @@ export default function StaffConferencePage() {
     let ignore = false;
     async function fetchData() {
       try {
-        const res = await fetch("/api/conference");
+        const res = await staffFetch("/api/conference");
         const data = await res.json();
         if (!ignore && data.success && Array.isArray(data.conferences)) {
           setConferences(data.conferences);
@@ -51,7 +52,7 @@ export default function StaffConferencePage() {
   const handleUpdateStatus = async (id: string, status: ConferenceBooking["status"]) => {
     setUpdatingId(id);
     try {
-      const res = await fetch("/api/conference", {
+      const res = await staffFetch("/api/conference", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, status, operatorName: "Kevin Lokor (Events Coord)" }),

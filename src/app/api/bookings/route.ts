@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getBookings, createBooking } from "@/lib/db";
+import { getBookings, createBooking, logAuditEvent } from "@/lib/db";
 import { Booking } from "@/types/hospitality";
+import { authorizeApiRequest } from "@/lib/rbac";
 
 // Retain compatibility interface for any components referencing ReservationRecord
 export type ReservationRecord = Booking & {
@@ -11,9 +12,36 @@ export type ReservationRecord = Booking & {
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
+    const guestPhone = searchParams.get("phone");
+
+    // If not a specific guest phone lookup, enforce Front Office / Executive staff authorization
+    if (!guestPhone) {
+      const auth = authorizeApiRequest(request, "view_reservations", [
+        "FRONT_OFFICE",
+        "MANAGEMENT",
+        "EXECUTIVE",
+      ]);
+
+      if (!auth.authorized) {
+        await logAuditEvent({
+          userId: auth.user?.id || "unauthorized_caller",
+          userName: auth.user?.name || "Unknown Caller",
+          role: auth.user?.staffRole || "UNKNOWN",
+          department: auth.user?.department || "UNKNOWN",
+          action: "UNAUTHORIZED_RESERVATIONS_ACCESS",
+          target: "/api/bookings",
+          details: auth.error || "Blocked cross-department reservation roster access.",
+          status: "DENIED",
+        });
+        return NextResponse.json(
+          { success: false, error: auth.error },
+          { status: auth.status }
+        );
+      }
+    }
+
     const statusFilter = searchParams.get("status");
     const roomId = searchParams.get("roomId");
-    const guestPhone = searchParams.get("phone");
 
     let bookings = await getBookings();
 

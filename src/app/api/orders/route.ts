@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { FoodOrder, OrderType } from "@/types";
+import { authorizeApiRequest, sanitizeOrderForKitchen } from "@/lib/rbac";
+import { logAuditEvent } from "@/lib/db";
 
 const DEFAULT_ORDERS: FoodOrder[] = [
   {
@@ -137,6 +139,30 @@ if (!globalStore.__hotel_kalya_orders) {
 }
 
 export async function GET(request: Request) {
+  const auth = authorizeApiRequest(request, "view_orders", [
+    "KITCHEN",
+    "SERVICE",
+    "MANAGEMENT",
+    "EXECUTIVE",
+  ]);
+
+  if (!auth.authorized) {
+    await logAuditEvent({
+      userId: auth.user?.id || "unauthorized_caller",
+      userName: auth.user?.name || "Unknown Caller",
+      role: auth.user?.staffRole || "UNKNOWN",
+      department: auth.user?.department || "UNKNOWN",
+      action: "UNAUTHORIZED_ORDERS_ACCESS",
+      target: "/api/orders",
+      details: auth.error || "Blocked cross-department food order access.",
+      status: "DENIED",
+    });
+    return NextResponse.json(
+      { success: false, error: auth.error },
+      { status: auth.status }
+    );
+  }
+
   const { searchParams } = new URL(request.url);
   const statusFilter = searchParams.get("status");
 
@@ -146,10 +172,19 @@ export async function GET(request: Request) {
     orders = orders.filter((o) => o.status === statusFilter);
   }
 
+  // Data Privacy: If kitchen/chef personnel, sanitize to operational details only
+  const isChefOrKitchen =
+    auth.user?.staffRole === "CHEF" ||
+    auth.user?.department?.toUpperCase().includes("KITCHEN");
+
+  const sanitizedOrders = isChefOrKitchen
+    ? orders.map(sanitizeOrderForKitchen)
+    : orders;
+
   return NextResponse.json({
     success: true,
-    total: orders.length,
-    orders,
+    total: sanitizedOrders.length,
+    orders: sanitizedOrders,
   });
 }
 
@@ -212,6 +247,30 @@ export async function POST(request: Request) {
 
 export async function PATCH(request: Request) {
   try {
+    const auth = authorizeApiRequest(request, "update_order", [
+      "KITCHEN",
+      "SERVICE",
+      "MANAGEMENT",
+      "EXECUTIVE",
+    ]);
+
+    if (!auth.authorized) {
+      await logAuditEvent({
+        userId: auth.user?.id || "unauthorized_caller",
+        userName: auth.user?.name || "Unknown Caller",
+        role: auth.user?.staffRole || "UNKNOWN",
+        department: auth.user?.department || "UNKNOWN",
+        action: "UNAUTHORIZED_ORDER_STATUS_UPDATE",
+        target: "/api/orders",
+        details: auth.error || "Blocked cross-department order modification.",
+        status: "DENIED",
+      });
+      return NextResponse.json(
+        { success: false, error: auth.error },
+        { status: auth.status }
+      );
+    }
+
     const body = await request.json();
     const { id, status } = body;
 
@@ -230,6 +289,17 @@ export async function PATCH(request: Request) {
     }
 
     order.status = status;
+
+    await logAuditEvent({
+      userId: auth.user?.id || "staff",
+      userName: auth.user?.name || "Kitchen Staff",
+      role: auth.user?.staffRole || "CHEF",
+      department: auth.user?.department || "Kitchen",
+      action: "UPDATE_ORDER_STATUS",
+      target: `Order ${id}`,
+      details: `Status updated to ${status}`,
+      status: "SUCCESS",
+    });
 
     return NextResponse.json({
       success: true,

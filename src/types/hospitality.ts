@@ -150,12 +150,17 @@ export interface StaffMember {
   email: string;
   phone: string;
   department: string;
+  additionalDepartments?: string[];
   role: StaffRole;
+  permissions?: string[];
   whatsapp: string;
   status: "ACTIVE" | "ON_LEAVE" | "INACTIVE";
   shift?: "Morning (6AM - 2PM)" | "Evening (2PM - 10PM)" | "Night (10PM - 6AM)";
   assignedRooms?: string[];
   assignedTables?: string[];
+  assignedLocation?: string;
+  profilePhoto?: string;
+  lastLogin?: string;
   joinedDate: string;
 }
 
@@ -189,9 +194,12 @@ export interface AuditLog {
   userId: string;
   userName: string;
   role: string;
+  department?: string;
   action: string;
   target: string;
   details: string;
+  status?: "SUCCESS" | "DENIED" | "FAILURE";
+  ip?: string;
   timestamp: string;
 }
 

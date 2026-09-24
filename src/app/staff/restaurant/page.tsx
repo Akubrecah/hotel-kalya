@@ -6,6 +6,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { FoodOrder } from "@/types";
+import { staffFetch } from "@/lib/api-client";
 
 interface DiningTable {
   id: string;
@@ -47,7 +48,7 @@ export default function StaffRestaurantPage() {
 
   const loadOrders = React.useCallback(async () => {
     try {
-      const res = await fetch("/api/orders");
+      const res = await staffFetch("/api/orders");
       const data = await res.json();
       if (data.success && Array.isArray(data.orders)) {
         setOrders(data.orders);
@@ -63,7 +64,7 @@ export default function StaffRestaurantPage() {
     let ignore = false;
     async function fetchOrders() {
       try {
-        const res = await fetch("/api/orders");
+        const res = await staffFetch("/api/orders");
         const data = await res.json();
         if (!ignore && data.success && Array.isArray(data.orders)) {
           setOrders(data.orders);
@@ -103,7 +104,7 @@ export default function StaffRestaurantPage() {
       const pricePerDish = dish.includes("Chicken") ? 1400 : dish.includes("Tilapia") ? 1100 : 950;
       const subtotal = pricePerDish * quantity;
 
-      const res = await fetch("/api/orders", {
+      const res = await staffFetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
