@@ -89,9 +89,9 @@ export function MpesaModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-brand-dark/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-brand-maroon/15 overflow-hidden">
+      <div className="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-brand-maroon/15 overflow-hidden max-h-[90vh] flex flex-col">
         {/* M-Pesa Branded Header */}
-        <div className="bg-[#00A859] p-5 text-white flex items-center justify-between">
+        <div className="bg-[#00A859] p-5 text-white flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-white text-[#00A859] flex items-center justify-center font-bold text-lg shadow-sm">
               M
@@ -117,7 +117,7 @@ export function MpesaModal({
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 space-y-5">
+        <div className="p-6 space-y-5 overflow-y-auto">
           {/* Bill summary card */}
           <div className="bg-brand-cream/60 rounded-2xl p-4 border border-brand-maroon/10 flex items-center justify-between">
             <div>

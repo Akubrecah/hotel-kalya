@@ -343,7 +343,7 @@ export default function RoomsPage() {
       {/* CUSTOMER ROOM AVAILABILITY MODAL */}
       {selectedCalendarRoom && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-gray-200 space-y-6">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-gray-200 space-y-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-gray-100 pb-4">
               <div>
                 <span className="text-[10px] font-extrabold uppercase tracking-wider text-brand-maroon">
@@ -404,19 +404,19 @@ export default function RoomsPage() {
               </div>
             </div>
 
-            <div className="pt-2 flex items-center justify-end gap-2">
+            <div className="pt-2 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
               <a
                 href={getWhatsAppLink(selectedCalendarRoom)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2 rounded-xl bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5"
               >
                 <MessageCircle className="w-3.5 h-3.5" />
                 <span>Enquire Dates on WhatsApp</span>
               </a>
               <Link
                 href={`/booking?roomId=${encodeURIComponent(selectedCalendarRoom.id)}`}
-                className="px-4 py-2 rounded-xl bg-brand-maroon text-brand-amber font-bold text-xs"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-brand-maroon text-brand-amber font-bold text-xs text-center"
               >
                 Proceed to Reservation
               </Link>

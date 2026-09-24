@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -96,6 +96,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const { user, isLoaded, switchAccount, logout } = useAuth();
   const mounted = useMounted();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  // Lock body scroll when mobile nav drawer is open
+  useEffect(() => {
+    if (mobileNavOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [mobileNavOpen]);
+
+  // Close mobile drawer on route change
+  useEffect(() => {
+    setMobileNavOpen(false);
+  }, [pathname]);
 
   // Safe SSR & initial hydration gate: identical render output on server and first client frame
   if (!mounted || !isLoaded) {
@@ -207,6 +224,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </Link>
       </div>
 
+      {/* Mobile Drawer Backdrop */}
+      {mobileNavOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden animate-in fade-in duration-200"
+          onClick={() => setMobileNavOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Sidebar Navigation */}
       <aside
         className={cn(
@@ -217,7 +243,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="p-6 space-y-6 overflow-y-auto">
           {/* Logo & Operational Badge */}
           <div className="space-y-3">
-            <BrandLogo light size="sm" />
+            <div className="flex items-center justify-between">
+              <BrandLogo light size="sm" />
+              <button
+                type="button"
+                onClick={() => setMobileNavOpen(false)}
+                className="lg:hidden p-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white transition-colors"
+                aria-label="Close sidebar"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-brand-amber/15 border border-brand-amber/30 text-brand-amber text-[10px] font-bold uppercase tracking-wider">
               <ShieldCheck className="w-3.5 h-3.5" />
               <span>Operations Portal</span>

@@ -542,8 +542,14 @@ export function Navbar() {
 
       {/* Mobile Off-Canvas / Slide-Down Menu */}
       {mobileMenuOpen && (
-        <div className="xl:hidden fixed inset-0 top-20 z-50 bg-brand-dark/50 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white max-h-[calc(100vh-5rem)] overflow-y-auto px-5 py-6 space-y-4 shadow-2xl border-t border-brand-maroon/10">
+        <div
+          onClick={() => setMobileMenuOpen(false)}
+          className="xl:hidden fixed inset-0 top-20 z-50 bg-brand-dark/50 backdrop-blur-sm animate-in fade-in duration-200"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white max-h-[calc(100vh-5rem)] overflow-y-auto px-5 py-6 space-y-4 shadow-2xl border-t border-brand-maroon/10"
+          >
             {/* Quick Actions Bar in Mobile Menu */}
             <div className="flex items-center justify-between p-3 bg-brand-cream/80 rounded-xl">
               {user ? (

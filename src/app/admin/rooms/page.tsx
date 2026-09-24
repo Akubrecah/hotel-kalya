@@ -527,7 +527,7 @@ export default function AdminRoomsPage() {
       {/* ADD / EDIT ROOM MODAL */}
       {isEditModalOpen && editingRoom && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-in fade-in">
-          <div className="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl border border-gray-200 my-8 space-y-6">
+          <div className="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl border border-gray-200 my-8 space-y-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-gray-100 pb-4">
               <div>
                 <span className="text-[10px] font-extrabold uppercase tracking-wider text-brand-maroon">
@@ -773,7 +773,7 @@ export default function AdminRoomsPage() {
       {/* ROOM AVAILABILITY CALENDAR MODAL */}
       {isCalendarModalOpen && calendarRoom && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in">
-          <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-gray-200 space-y-6">
+          <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-gray-200 space-y-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-gray-100 pb-4">
               <div>
                 <span className="text-[10px] font-extrabold uppercase tracking-wider text-brand-maroon">

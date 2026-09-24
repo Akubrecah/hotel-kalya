@@ -135,7 +135,7 @@ export default function AdminOrdersKDSPage() {
           return (
             <div
               key={col.status}
-              className="bg-white/80 rounded-2xl p-4 border border-gray-200/80 shadow-sm space-y-4 min-h-[500px]"
+              className="bg-white/80 rounded-2xl p-4 border border-gray-200/80 shadow-sm space-y-4 min-h-[160px] md:min-h-[500px]"
             >
               {/* Column Header */}
               <div className="flex items-center justify-between pb-3 border-b border-gray-100">

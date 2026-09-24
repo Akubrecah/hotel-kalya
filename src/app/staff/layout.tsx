@@ -25,11 +25,14 @@ import {
   Copy,
   Check,
   Lock,
+  Layers,
 } from "lucide-react";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useMounted } from "@/lib/useMounted";
+import { DepartmentAccessGuard } from "@/components/staff/DepartmentAccessGuard";
+import { canAccessRoute } from "@/lib/rbac";
 
 const STAFF_NAV_ITEMS = [
   { label: "My Role Dashboard", href: "/staff/dashboard", icon: LayoutDashboard, roles: ["ALL"] },
@@ -60,7 +63,7 @@ const AVAILABLE_ROLES = [
 export default function StaffLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, isLoaded, switchAccount, logout } = useAuth();
+  const { user, isLoaded, switchAccount, switchWorkspaceDepartment, logout } = useAuth();
   const mounted = useMounted();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [adminModalOpen, setAdminModalOpen] = useState(false);
@@ -88,6 +91,23 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
       clearInterval(interval);
     };
   }, []);
+
+  // Lock body scroll when mobile nav drawer is open
+  useEffect(() => {
+    if (mobileNavOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [mobileNavOpen]);
+
+  // Close mobile nav on route transition
+  useEffect(() => {
+    setMobileNavOpen(false);
+  }, [pathname]);
 
   const handleCopy = (text: string, field: string) => {
     navigator.clipboard.writeText(text);
@@ -290,6 +310,15 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
         </div>
       </div>
 
+      {/* Mobile Nav Backdrop Overlay */}
+      {mobileNavOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden animate-in fade-in duration-200"
+          onClick={() => setMobileNavOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Sidebar Navigation */}
       <aside
         className={cn(
@@ -300,7 +329,17 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
         <div className="p-5 space-y-4 overflow-y-auto">
           {/* Logo & Operational Badge */}
           <div className="space-y-3">
-            <BrandLogo light size="sm" />
+            <div className="flex items-center justify-between">
+              <BrandLogo light size="sm" />
+              <button
+                type="button"
+                onClick={() => setMobileNavOpen(false)}
+                className="lg:hidden p-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white transition-colors"
+                aria-label="Close sidebar"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
             <div className="flex items-center justify-between px-3 py-1.5 rounded-xl bg-brand-amber/15 border border-brand-amber/30 text-brand-amber text-[10px] font-bold uppercase tracking-wider">
               <span className="flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5" />
@@ -331,25 +370,55 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
             </p>
           </div>
 
-          {/* Navigation Links */}
+          {/* Multi-Department Workspace Switcher (for staff assigned across departments) */}
+          {user.additionalDepartments && user.additionalDepartments.length > 0 && (
+            <div className="p-3 bg-amber-950/40 rounded-2xl border border-brand-amber/30 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] uppercase font-bold text-brand-amber tracking-wider flex items-center gap-1.5">
+                  <Layers className="w-3.5 h-3.5 text-brand-amber" />
+                  <span>Workspace Switcher</span>
+                </span>
+                <span className="text-[9px] bg-brand-amber/20 text-brand-amber px-1.5 py-0.5 rounded font-mono font-semibold">
+                  CROSS-DEPT
+                </span>
+              </div>
+              <div className="space-y-1">
+                {[user.department || "Operations", ...user.additionalDepartments].map((dept) => {
+                  const isCurrent = (user.activeWorkspaceDepartment || user.department) === dept;
+                  return (
+                    <button
+                      key={dept}
+                      type="button"
+                      onClick={() => switchWorkspaceDepartment(dept)}
+                      className={cn(
+                        "w-full text-left px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center justify-between",
+                        isCurrent
+                          ? "bg-brand-amber text-brand-maroon shadow-sm font-black"
+                          : "bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white"
+                      )}
+                    >
+                      <span className="truncate">{dept}</span>
+                      {isCurrent && <Check className="w-3.5 h-3.5 text-brand-maroon stroke-[3]" />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Navigation Links - Dynamically filtered by RBAC so unauthorized modules are NEVER rendered */}
           <nav className="space-y-1" aria-label="Staff Navigation">
             <div className="flex items-center justify-between px-3 py-1">
               <span className="text-[10px] uppercase font-bold tracking-widest text-white/40">
-                Workstation Menu
+                Authorized Workstation Menu
               </span>
               <span className="text-[9px] text-brand-amber/80 font-mono">
-                {effectiveRole}
+                {user.activeWorkspaceDepartment || effectiveRole}
               </span>
             </div>
 
-            {STAFF_NAV_ITEMS.map((item) => {
+            {STAFF_NAV_ITEMS.filter((item) => canAccessRoute(user, item.href).allowed).map((item) => {
               const active = pathname === item.href;
-              const isRelevant =
-                item.roles.includes("ALL") ||
-                item.roles.includes(effectiveRole) ||
-                effectiveRole === "MANAGER" ||
-                effectiveRole === "ADMIN";
-
               const IconComp = item.icon;
               return (
                 <Link
@@ -360,9 +429,7 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
                     "flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all group",
                     active
                       ? "bg-brand-amber text-brand-maroon shadow-md font-extrabold"
-                      : isRelevant
-                      ? "text-white/90 hover:bg-white/10 hover:text-white"
-                      : "text-white/40 hover:bg-white/5 hover:text-white/60"
+                      : "text-white/90 hover:bg-white/10 hover:text-white"
                   )}
                 >
                   <div className="flex items-center gap-3">
@@ -371,15 +438,13 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
                         "w-4 h-4 transition-colors",
                         active
                           ? "text-brand-maroon"
-                          : isRelevant
-                          ? "text-brand-amber group-hover:scale-110"
-                          : "text-gray-500"
+                          : "text-brand-amber group-hover:scale-110"
                       )}
                     />
                     <span>{item.label}</span>
                   </div>
-                  {isRelevant && !active && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-brand-amber/70" />
+                  {active && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-brand-maroon" />
                   )}
                 </Link>
               );
@@ -515,14 +580,16 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
 
         {/* Staff Page Body */}
         <div className="p-4 sm:p-7 flex-1 print:p-0 print:m-0">
-          {children}
+          <DepartmentAccessGuard>
+            {children}
+          </DepartmentAccessGuard>
         </div>
       </main>
 
       {/* Admin Login Details & Quick Elevation Modal */}
       {adminModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full space-y-5 shadow-2xl border border-gray-200 relative">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full max-h-[90vh] overflow-y-auto space-y-5 shadow-2xl border border-gray-200 relative">
             <div className="flex items-center justify-between border-b border-gray-100 pb-3">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl bg-brand-maroon text-white flex items-center justify-center font-bold">

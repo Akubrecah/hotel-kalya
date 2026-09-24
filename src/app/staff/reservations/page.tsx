@@ -8,6 +8,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { Booking, ReservationLifecycleStatus } from "@/types/hospitality";
+import { staffFetch } from "@/lib/api-client";
 
 export default function StaffReservationsPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -18,10 +19,11 @@ export default function StaffReservationsPage() {
 
   const loadBookings = React.useCallback(async () => {
     try {
-      const res = await fetch("/api/bookings");
+      const res = await staffFetch("/api/bookings");
       const data = await res.json();
-      if (data.success && Array.isArray(data.bookings)) {
-        setBookings(data.bookings);
+      const list = data.reservations || data.bookings || [];
+      if (data.success && Array.isArray(list)) {
+        setBookings(list);
       }
     } catch (err) {
       console.error("Failed to load reservations", err);
@@ -34,10 +36,11 @@ export default function StaffReservationsPage() {
     let ignore = false;
     async function fetchBookings() {
       try {
-        const res = await fetch("/api/bookings");
+        const res = await staffFetch("/api/bookings");
         const data = await res.json();
-        if (!ignore && data.success && Array.isArray(data.bookings)) {
-          setBookings(data.bookings);
+        const list = data.reservations || data.bookings || [];
+        if (!ignore && data.success && Array.isArray(list)) {
+          setBookings(list);
         }
       } catch (err) {
         console.error("Failed to load reservations", err);
@@ -56,7 +59,7 @@ export default function StaffReservationsPage() {
   const handleStatusChange = async (id: string, newStatus: ReservationLifecycleStatus) => {
     setActionLoading(id);
     try {
-      const res = await fetch(`/api/bookings/${id}`, {
+      const res = await staffFetch(`/api/bookings/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -200,8 +203,120 @@ export default function StaffReservationsPage() {
             <p className="text-xs text-gray-500">Try adjusting your search criteria or status filter.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+          <>
+            {/* Mobile Stacked Cards View (<lg) */}
+            <div className="block lg:hidden divide-y divide-gray-100">
+              {filtered.map((b) => {
+                const isOperating = actionLoading === b.id;
+                const waUrl = `https://wa.me/${b.guestPhone.replace(/\D/g, "")}?text=${encodeURIComponent(
+                  `Hello ${b.guestName}, this is Hotel Kalya Reception desk regarding your stay in Room ${b.roomNumber} (Ref: ${b.id}). How may we assist you today?`
+                )}`;
+
+                return (
+                  <div key={b.id} className="p-4 space-y-3 hover:bg-brand-cream/10">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono font-bold text-brand-maroon text-xs">{b.id}</span>
+                        <span className="px-2 py-0.5 rounded-lg bg-gray-100 font-bold text-gray-900 text-xs">
+                          Room {b.roomNumber}
+                        </span>
+                      </div>
+                      <span
+                        className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase ${
+                          b.status === "CONFIRMED"
+                            ? "bg-blue-100 text-blue-800"
+                            : b.status === "CHECKED_IN"
+                            ? "bg-emerald-100 text-emerald-800"
+                            : b.status === "CANCELLED"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {b.status.replace("_", " ")}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between items-start text-xs">
+                      <div>
+                        <p className="font-bold text-gray-900 text-sm">{b.guestName}</p>
+                        <p className="text-gray-500 text-xs">{b.guestPhone}</p>
+                        <p className="text-gray-400 text-[11px] truncate max-w-[200px]">{b.guestEmail}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-gray-900">KES {b.totalAmount.toLocaleString()}</p>
+                        <span
+                          className={`text-[10px] font-bold ${
+                            b.paymentStatus === "Paid" ? "text-emerald-600" : "text-amber-600"
+                          }`}
+                        >
+                          {b.paymentStatus}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="bg-gray-50 p-2.5 rounded-xl border border-gray-100 text-[11px] text-gray-600 flex justify-between items-center">
+                      <div>
+                        <span className="font-medium">{b.checkInDate} → {b.checkOutDate}</span>
+                        <span className="text-gray-400 block text-[10px]">
+                          {b.nights} {b.nights === 1 ? "night" : "nights"} • {b.adults} Adults
+                        </span>
+                      </div>
+                      <span className="text-gray-500 font-medium truncate max-w-[120px]">{b.roomType}</span>
+                    </div>
+
+                    {/* Touch Action Buttons */}
+                    <div className="flex items-center gap-2 pt-1">
+                      <a
+                        href={waUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 py-2.5 px-3 inline-flex items-center justify-center gap-1.5 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-xs font-bold transition-colors"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5" />
+                        <span>WhatsApp</span>
+                      </a>
+
+                      {b.status === "CONFIRMED" && (
+                        <button
+                          type="button"
+                          disabled={isOperating}
+                          onClick={() => handleStatusChange(b.id, "CHECKED_IN")}
+                          className="flex-1 py-2.5 px-3 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition-colors disabled:opacity-50 text-center"
+                        >
+                          {isOperating ? "..." : "Check In"}
+                        </button>
+                      )}
+
+                      {b.status === "CHECKED_IN" && (
+                        <button
+                          type="button"
+                          disabled={isOperating}
+                          onClick={() => handleStatusChange(b.id, "CHECKED_OUT")}
+                          className="flex-1 py-2.5 px-3 rounded-xl bg-blue-600 text-white font-bold text-xs hover:bg-blue-700 transition-colors disabled:opacity-50 text-center"
+                        >
+                          {isOperating ? "..." : "Check Out"}
+                        </button>
+                      )}
+
+                      {b.status === "CONFIRMED" && (
+                        <button
+                          type="button"
+                          disabled={isOperating}
+                          onClick={() => handleStatusChange(b.id, "CANCELLED")}
+                          className="py-2.5 px-3 rounded-xl bg-red-50 text-red-700 hover:bg-red-100 font-bold text-xs transition-colors disabled:opacity-50"
+                        >
+                          Cancel
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Desktop Table View (lg+) */}
+            <div className="hidden lg:block overflow-x-auto">
+              <table className="w-full text-left text-xs">
               <thead className="bg-[#FAF9F5] border-b border-gray-200 text-gray-500 font-bold uppercase text-[10px] tracking-wider">
                 <tr>
                   <th className="py-3.5 px-4">Ref Number</th>
@@ -341,6 +456,7 @@ export default function StaffReservationsPage() {
               </tbody>
             </table>
           </div>
+          </>
         )}
       </div>
     </div>

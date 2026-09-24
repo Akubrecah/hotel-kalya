@@ -117,7 +117,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-white/60 gap-4">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-white/60 gap-4 text-center sm:text-left">
           <p>© {new Date().getFullYear()} Hotel Kalya Kapenguria. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <Link href="/staff/login" className="hover:text-brand-amber transition-colors">

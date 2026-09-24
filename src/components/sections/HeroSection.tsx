@@ -77,8 +77,8 @@ export function HeroSection() {
           </div>
 
           {/* Hero Right: Circular Image Showcase */}
-          <div className="lg:col-span-5 relative flex items-center justify-center">
-            <div className="relative w-72 h-72 sm:w-96 sm:h-96">
+          <div className="lg:col-span-5 relative flex items-center justify-center pt-4 sm:pt-0">
+            <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96">
               {/* Main Circle — Hotel Exterior */}
               <div className="absolute inset-0 rounded-full border-4 border-brand-amber overflow-hidden shadow-2xl z-10">
                 <Image
@@ -87,50 +87,50 @@ export function HeroSection() {
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-700"
                   priority
-                  sizes="(max-width: 640px) 288px, 384px"
+                  sizes="(max-width: 640px) 256px, (max-width: 768px) 320px, 384px"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-maroon-dark/80 via-transparent to-transparent flex items-end p-6">
-                  <span className="text-white font-serif font-bold text-base drop-shadow">
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-maroon-dark/80 via-transparent to-transparent flex items-end p-4 sm:p-6">
+                  <span className="text-white font-serif font-bold text-xs sm:text-base drop-shadow">
                     Hotel Kalya Main Complex
                   </span>
                 </div>
               </div>
 
               {/* Sub Circle 1: Conference */}
-              <div className="absolute -bottom-6 -left-6 sm:-left-10 w-36 h-36 sm:w-44 sm:h-44 rounded-full border-4 border-brand-amber bg-brand-maroon-dark overflow-hidden shadow-2xl z-20">
+              <div className="absolute -bottom-3 -left-3 sm:-bottom-6 sm:-left-8 w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full border-3 sm:border-4 border-brand-amber bg-brand-maroon-dark overflow-hidden shadow-2xl z-20">
                 <Image
                   src={IMAGES.conferenceRoom}
                   alt="Conference & Seminar Hall"
                   fill
                   className="object-cover"
-                  sizes="176px"
+                  sizes="(max-width: 640px) 112px, 176px"
                 />
                 <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                  <span className="text-[10px] sm:text-xs font-bold text-white bg-brand-maroon/80 px-2 py-0.5 rounded">
+                  <span className="text-[9px] sm:text-xs font-bold text-white bg-brand-maroon/80 px-1.5 sm:px-2 py-0.5 rounded">
                     Conference
                   </span>
                 </div>
               </div>
 
               {/* Sub Circle 2: Events */}
-              <div className="absolute -bottom-4 -right-4 sm:-right-8 w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-brand-amber bg-brand-maroon-dark overflow-hidden shadow-2xl z-20">
+              <div className="absolute -bottom-2 -right-2 sm:-bottom-4 sm:-right-6 w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full border-3 sm:border-4 border-brand-amber bg-brand-maroon-dark overflow-hidden shadow-2xl z-20">
                 <Image
                   src={IMAGES.weddingSetup}
                   alt="Events and Dining Seating"
                   fill
                   className="object-cover"
-                  sizes="160px"
+                  sizes="(max-width: 640px) 96px, 160px"
                 />
                 <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                  <span className="text-[10px] sm:text-xs font-bold text-white bg-brand-maroon/80 px-2 py-0.5 rounded">
+                  <span className="text-[9px] sm:text-xs font-bold text-white bg-brand-maroon/80 px-1.5 sm:px-2 py-0.5 rounded">
                     Events
                   </span>
                 </div>
               </div>
 
               {/* Decorative accent */}
-              <div className="absolute -top-4 -right-4 w-12 h-12 rounded-full bg-brand-sage flex items-center justify-center text-white shadow-md z-20">
-                <Sparkles className="w-6 h-6" />
+              <div className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-brand-sage flex items-center justify-center text-white shadow-md z-20">
+                <Sparkles className="w-4 h-4 sm:w-6 sm:h-6" />
               </div>
             </div>
           </div>

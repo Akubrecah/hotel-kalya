@@ -266,7 +266,7 @@ _Submitted via Hotel Kalya Digital Menu_`;
                   {items.map(({ menuItem, quantity, specialInstructions }) => (
                     <div
                       key={menuItem.id}
-                      className="bg-white p-4 rounded-xl border border-brand-maroon/10 shadow-sm flex items-center justify-between gap-4"
+                      className="bg-white p-4 rounded-xl border border-brand-maroon/10 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4"
                     >
                       <div className="flex items-center gap-3 min-w-0">
                         <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-brand-cream">
@@ -277,7 +277,7 @@ _Submitted via Hotel Kalya Digital Menu_`;
                             className="object-cover"
                           />
                         </div>
-                        <div className="min-w-0">
+                        <div className="min-w-0 flex-1">
                           <h4 className="font-serif font-bold text-sm text-brand-maroon truncate">
                             {menuItem.name}
                           </h4>
@@ -292,34 +292,34 @@ _Submitted via Hotel Kalya Digital Menu_`;
                         </div>
                       </div>
 
-                      {/* Quantity Controls */}
-                      <div className="flex items-center gap-3 flex-shrink-0">
+                      {/* Quantity Controls & Remove */}
+                      <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-0 border-brand-cream/60 flex-shrink-0">
                         <div className="flex items-center border border-brand-maroon/20 rounded-lg overflow-hidden bg-brand-cream/30">
                           <button
                             type="button"
                             onClick={() => updateQuantity(menuItem.id, quantity - 1)}
-                            className="p-1.5 hover:bg-brand-cream text-brand-maroon"
+                            className="p-2 sm:p-1.5 hover:bg-brand-cream text-brand-maroon"
                             aria-label="Decrease quantity"
                           >
-                            <Minus className="w-3 h-3" />
+                            <Minus className="w-3.5 h-3.5" />
                           </button>
-                          <span className="px-2.5 text-xs font-bold text-brand-dark">
+                          <span className="px-3 sm:px-2.5 text-xs font-bold text-brand-dark">
                             {quantity}
                           </span>
                           <button
                             type="button"
                             onClick={() => updateQuantity(menuItem.id, quantity + 1)}
-                            className="p-1.5 hover:bg-brand-cream text-brand-maroon"
+                            className="p-2 sm:p-1.5 hover:bg-brand-cream text-brand-maroon"
                             aria-label="Increase quantity"
                           >
-                            <Plus className="w-3 h-3" />
+                            <Plus className="w-3.5 h-3.5" />
                           </button>
                         </div>
 
                         <button
                           type="button"
                           onClick={() => removeFromCart(menuItem.id)}
-                          className="p-1.5 text-brand-dark/40 hover:text-red-600 transition-colors"
+                          className="p-2 sm:p-1.5 text-brand-dark/40 hover:text-red-600 transition-colors"
                           title="Remove item"
                         >
                           <Trash2 className="w-4 h-4" />

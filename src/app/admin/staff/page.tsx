@@ -9,6 +9,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { StaffMember, StaffRole } from "@/types/hospitality";
+import { staffFetch } from "@/lib/api-client";
 
 export default function AdminStaffManagementPage() {
   const [staff, setStaff] = useState<StaffMember[]>([]);
@@ -31,8 +32,8 @@ export default function AdminStaffManagementPage() {
   const loadStaff = React.useCallback(async () => {
     try {
       const [staffRes, rolesRes] = await Promise.all([
-        fetch("/api/staff"),
-        fetch("/api/roles"),
+        staffFetch("/api/staff"),
+        staffFetch("/api/roles"),
       ]);
       const data = await staffRes.json();
       const rolesData = await rolesRes.json();
@@ -55,8 +56,8 @@ export default function AdminStaffManagementPage() {
     async function fetchStaff() {
       try {
         const [staffRes, rolesRes] = await Promise.all([
-          fetch("/api/staff"),
-          fetch("/api/roles"),
+          staffFetch("/api/staff"),
+          staffFetch("/api/roles"),
         ]);
         const data = await staffRes.json();
         const rolesData = await rolesRes.json();
@@ -85,7 +86,7 @@ export default function AdminStaffManagementPage() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const res = await fetch("/api/staff", {
+      const res = await staffFetch("/api/staff", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -99,8 +100,9 @@ export default function AdminStaffManagementPage() {
         }),
       });
       const data = await res.json();
-      if (data.success && data.member) {
-        setStaff((prev) => [...prev, data.member]);
+      const newMember = data.staff || data.member;
+      if (data.success && newMember) {
+        setStaff((prev) => [...prev, newMember]);
         setShowAddModal(false);
         setName("");
         setEmail("");
@@ -117,15 +119,16 @@ export default function AdminStaffManagementPage() {
 
   const handleUpdateStatus = async (id: string, newStatus: "ACTIVE" | "ON_LEAVE" | "INACTIVE") => {
     try {
-      const res = await fetch("/api/staff", {
+      const res = await staffFetch("/api/staff", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, status: newStatus }),
       });
       const data = await res.json();
-      if (data.success && data.member) {
+      const updatedMember = data.staff || data.member;
+      if (data.success && updatedMember) {
         setStaff((prev) =>
-          prev.map((s) => (s.id === id ? data.member : s))
+          prev.map((s) => (s.id === id ? updatedMember : s))
         );
       }
     } catch {
@@ -297,7 +300,7 @@ export default function AdminStaffManagementPage() {
       {/* Add Employee Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full space-y-4 shadow-2xl border border-gray-200">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full space-y-4 shadow-2xl border border-gray-200 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-gray-100 pb-3">
               <h3 className="font-serif text-lg font-bold text-brand-maroon">
                 Add New Staff Member
@@ -312,7 +315,7 @@ export default function AdminStaffManagementPage() {
             </div>
 
             <form onSubmit={handleCreateStaff} className="space-y-4 text-xs">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block font-bold text-gray-700 mb-1">Full Name</label>
                   <input
@@ -337,7 +340,7 @@ export default function AdminStaffManagementPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block font-bold text-gray-700 mb-1">Phone</label>
                   <input
@@ -362,7 +365,7 @@ export default function AdminStaffManagementPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block font-bold text-gray-700 mb-1">Department</label>
                   <select
