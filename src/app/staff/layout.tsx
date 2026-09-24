@@ -24,14 +24,15 @@ import {
   LogOut,
   Copy,
   Check,
-  ChevronDown,
+  Lock,
 } from "lucide-react";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
+import { useMounted } from "@/lib/useMounted";
 
 const STAFF_NAV_ITEMS = [
-  { label: "Role Dashboard", href: "/staff/dashboard", icon: LayoutDashboard, roles: ["ALL"] },
+  { label: "My Role Dashboard", href: "/staff/dashboard", icon: LayoutDashboard, roles: ["ALL"] },
   { label: "Front Desk & Arrivals", href: "/staff/reservations", icon: Calendar, roles: ["RECEPTIONIST", "MANAGER", "ADMIN"] },
   { label: "Rooms & Status", href: "/staff/rooms", icon: Bed, roles: ["RECEPTIONIST", "HOUSEKEEPING", "MAINTENANCE", "MANAGER", "ADMIN"] },
   { label: "Housekeeping Board", href: "/staff/housekeeping", icon: Sparkles, roles: ["HOUSEKEEPING", "MANAGER", "ADMIN"] },
@@ -59,7 +60,8 @@ const AVAILABLE_ROLES = [
 export default function StaffLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, activeStaffRole, setActiveStaffRole, switchAccount, logout } = useAuth();
+  const { user, isLoaded, switchAccount, logout } = useAuth();
+  const mounted = useMounted();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [adminModalOpen, setAdminModalOpen] = useState(false);
   const [copiedField, setCopiedField] = useState<string | null>(null);
@@ -79,9 +81,12 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
         })
       );
     };
-    updateTime();
+    const timer = setTimeout(updateTime, 0);
     const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
   }, []);
 
   const handleCopy = (text: string, field: string) => {
@@ -92,16 +97,164 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
 
   const handleElevateToAdmin = () => {
     switchAccount("admin");
-    setActiveStaffRole("ADMIN");
     setAdminModalOpen(false);
     router.push("/admin");
   };
 
+  // Safe SSR & initial hydration gate: identical render output on server and first client frame
+  if (!mounted || !isLoaded) {
+    return (
+      <div className="min-h-screen bg-[#F8F9FA] flex items-center justify-center font-sans">
+        <div className="text-center space-y-3">
+          <div className="w-10 h-10 border-4 border-brand-maroon/20 border-t-brand-maroon rounded-full animate-spin mx-auto" />
+          <p className="text-xs font-bold text-gray-500 font-mono">
+            Loading Hotel Kalya Staff Portal...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Auth gate: If user is not authenticated or is a guest, do not render operational dashboard
+  if (!user || user.role === "guest") {
+    return (
+      <div className="min-h-screen bg-[#FAF9F5] flex flex-col justify-between font-sans">
+        <div className="p-4 sm:px-8 border-b border-gray-200 bg-white shadow-sm flex items-center justify-between">
+          <BrandLogo size="sm" />
+          <Link
+            href="/"
+            className="text-xs font-bold text-brand-maroon hover:underline flex items-center gap-1.5"
+          >
+            <span>Return to Public Hotel Website</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        <div className="max-w-xl mx-auto px-4 py-12 w-full">
+          <div className="bg-white rounded-3xl p-7 sm:p-9 border border-gray-200 shadow-xl space-y-6 text-center">
+            <div className="w-16 h-16 rounded-2xl bg-brand-maroon/10 text-brand-maroon flex items-center justify-center mx-auto shadow-inner">
+              <Lock className="w-8 h-8 text-brand-maroon" />
+            </div>
+
+            <div className="space-y-2">
+              <span className="px-3 py-1 rounded-full bg-brand-maroon/10 text-brand-maroon text-[10px] font-extrabold uppercase tracking-wider">
+                Staff Authentication Gate
+              </span>
+              <h1 className="font-serif text-2xl sm:text-3xl font-black text-brand-maroon">
+                Staff Workstation Access
+              </h1>
+              <p className="text-xs text-gray-600 leading-relaxed max-w-md mx-auto">
+                The Hotel Kalya operational terminal is restricted to authorized personnel. Each staff member must sign in with their assigned role credentials to access their operational workstation.
+              </p>
+            </div>
+
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link
+                href="/login"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-brand-maroon text-white font-extrabold text-xs uppercase tracking-wider hover:bg-brand-maroon-dark transition-all shadow-md"
+              >
+                <KeyRound className="w-4 h-4 text-brand-amber" />
+                <span>Go to Staff Sign In</span>
+              </Link>
+              <Link
+                href="/"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gray-100 text-gray-700 font-bold text-xs hover:bg-gray-200 transition-colors"
+              >
+                <span>Back to Home</span>
+              </Link>
+            </div>
+
+            {/* Quick Demo Staff Launchers */}
+            <div className="border-t border-gray-100 pt-5 space-y-3 text-left">
+              <span className="text-[11px] font-extrabold uppercase tracking-wider text-gray-400 block text-center">
+                Launch with demo staff role:
+              </span>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    switchAccount("receptionist");
+                    router.push("/staff/dashboard");
+                  }}
+                  className="p-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-left transition-colors"
+                >
+                  <span className="text-xs font-bold text-blue-900 block truncate">Dennis Kiplagat</span>
+                  <span className="text-[10px] text-blue-700 font-mono font-semibold">Front Desk</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    switchAccount("chef");
+                    router.push("/staff/dashboard");
+                  }}
+                  className="p-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-left transition-colors"
+                >
+                  <span className="text-xs font-bold text-emerald-900 block truncate">Patrick Mwangi</span>
+                  <span className="text-[10px] text-emerald-700 font-mono font-semibold">Chef / KDS</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    switchAccount("housekeeping");
+                    router.push("/staff/dashboard");
+                  }}
+                  className="p-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-left transition-colors"
+                >
+                  <span className="text-xs font-bold text-amber-900 block truncate">Denis Limo</span>
+                  <span className="text-[10px] text-amber-700 font-mono font-semibold">Housekeeping</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    switchAccount("waiter");
+                    router.push("/staff/dashboard");
+                  }}
+                  className="p-2.5 rounded-xl bg-purple-50 hover:bg-purple-100 border border-purple-200 text-left transition-colors"
+                >
+                  <span className="text-xs font-bold text-purple-900 block truncate">Faith Jepchirchir</span>
+                  <span className="text-[10px] text-purple-700 font-mono font-semibold">Waitstaff</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    switchAccount("event_coordinator");
+                    router.push("/staff/dashboard");
+                  }}
+                  className="p-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-left transition-colors"
+                >
+                  <span className="text-xs font-bold text-indigo-900 block truncate">Kevin Lokor</span>
+                  <span className="text-[10px] text-indigo-700 font-mono font-semibold">Conferences</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    switchAccount("admin");
+                    router.push("/staff/dashboard");
+                  }}
+                  className="p-2.5 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-left transition-colors"
+                >
+                  <span className="text-xs font-bold text-red-900 block truncate">Sarah Rotich</span>
+                  <span className="text-[10px] text-red-700 font-mono font-semibold">Executive Admin</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-4 text-center text-xs text-gray-400">
+          Hotel Kalya Operations Platform • Kapenguria, West Pokot County
+        </div>
+      </div>
+    );
+  }
+
+  // Active role is strictly derived from the authenticated staff member - no on-dashboard switching
+  const effectiveRole = user.staffRole || (user.role === "admin" ? "ADMIN" : "RECEPTIONIST");
   const currentRoleObj =
-    AVAILABLE_ROLES.find((r) => r.code === activeStaffRole) || {
-      code: activeStaffRole,
-      label: activeStaffRole,
-      dept: "Operations",
+    AVAILABLE_ROLES.find((r) => r.code === effectiveRole) || {
+      code: effectiveRole,
+      label: effectiveRole,
+      dept: user.department || "Operations",
     };
 
   return (
@@ -121,27 +274,18 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Quick role selector */}
-          <select
-            value={activeStaffRole}
-            onChange={(e) => setActiveStaffRole(e.target.value)}
-            className="text-[11px] bg-brand-maroon/60 border border-brand-amber/40 text-brand-amber font-bold rounded-lg px-2 py-1 focus:outline-none"
-            aria-label="Select active role"
-          >
-            {AVAILABLE_ROLES.map((r) => (
-              <option key={r.code} value={r.code} className="text-gray-900 bg-white">
-                {r.label}
-              </option>
-            ))}
-          </select>
+          {/* Active Logged-in Staff Role Display (No dropdown switching) */}
+          <span className="text-[11px] bg-brand-maroon/80 border border-brand-amber/40 text-brand-amber font-bold rounded-lg px-2.5 py-1">
+            {currentRoleObj.label}
+          </span>
 
           <button
             type="button"
-            onClick={() => setAdminModalOpen(true)}
-            className="p-1.5 rounded-lg bg-brand-amber text-brand-maroon hover:bg-brand-amber-light font-bold text-xs shadow-sm flex items-center gap-1"
-            title="Admin Login & Credentials"
+            onClick={() => logout()}
+            className="p-1.5 rounded-lg bg-white/10 text-white/80 hover:text-red-400 transition-colors"
+            title="Sign Out"
           >
-            <KeyRound className="w-3.5 h-3.5" />
+            <LogOut className="w-4 h-4" />
           </button>
         </div>
       </div>
@@ -163,35 +307,28 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
                 <span>Staff Operations Portal</span>
               </span>
               <span className="px-1.5 py-0.5 rounded bg-brand-amber text-brand-maroon text-[9px] font-extrabold tracking-tight">
-                LIVE
+                ACTIVE
               </span>
             </div>
           </div>
 
-          {/* Interactive Role Switcher in Sidebar */}
-          <div className="p-3 bg-white/5 rounded-2xl border border-white/10 space-y-2">
+          {/* Locked Assigned Workstation Info (Replaces interactive select dropdown) */}
+          <div className="p-3.5 bg-white/5 rounded-2xl border border-white/10 space-y-1">
             <div className="flex items-center justify-between">
-              <label className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">
-                Active Staff Role
-              </label>
-              <span className="text-[9px] font-mono text-brand-amber font-semibold">
-                {currentRoleObj.dept}
+              <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">
+                Assigned Duty Role
+              </span>
+              <span className="text-[9px] font-mono text-emerald-400 font-semibold flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                ON SHIFT
               </span>
             </div>
-            <div className="relative">
-              <select
-                value={activeStaffRole}
-                onChange={(e) => setActiveStaffRole(e.target.value)}
-                className="w-full text-xs bg-brand-maroon/60 border border-brand-amber/40 text-brand-amber font-bold rounded-xl px-3 py-2 pr-8 focus:outline-none focus:ring-1 focus:ring-brand-amber appearance-none cursor-pointer"
-              >
-                {AVAILABLE_ROLES.map((r) => (
-                  <option key={r.code} value={r.code} className="text-gray-900 bg-white">
-                    {r.label}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="w-3.5 h-3.5 text-brand-amber absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-            </div>
+            <p className="text-xs font-black text-brand-amber truncate">
+              {currentRoleObj.label}
+            </p>
+            <p className="text-[10px] text-gray-400 font-mono truncate">
+              Department: {currentRoleObj.dept}
+            </p>
           </div>
 
           {/* Navigation Links */}
@@ -201,7 +338,7 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
                 Workstation Menu
               </span>
               <span className="text-[9px] text-brand-amber/80 font-mono">
-                {activeStaffRole}
+                {effectiveRole}
               </span>
             </div>
 
@@ -209,9 +346,9 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
               const active = pathname === item.href;
               const isRelevant =
                 item.roles.includes("ALL") ||
-                item.roles.includes(activeStaffRole) ||
-                activeStaffRole === "MANAGER" ||
-                activeStaffRole === "ADMIN";
+                item.roles.includes(effectiveRole) ||
+                effectiveRole === "MANAGER" ||
+                effectiveRole === "ADMIN";
 
               const IconComp = item.icon;
               return (
@@ -252,17 +389,17 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
 
         {/* User Card, Admin Quick Details & Exit Footer */}
         <div className="p-4 border-t border-white/10 bg-black/40 space-y-3">
-          {/* Active staff user */}
+          {/* Active staff user identity */}
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-brand-amber text-brand-maroon font-black flex items-center justify-center text-xs shadow-md">
-              {user ? user.name.charAt(0) : "S"}
+              {user.name.charAt(0).toUpperCase()}
             </div>
             <div className="overflow-hidden flex-1 min-w-0">
               <p className="text-xs font-bold text-white truncate">
-                {user ? user.name : "Staff Member"}
+                {user.name}
               </p>
               <p className="text-[10px] text-brand-amber font-mono truncate">
-                {activeStaffRole} • {currentRoleObj.dept}
+                {effectiveRole} • {currentRoleObj.dept}
               </p>
             </div>
           </div>
@@ -284,13 +421,15 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
 
           {/* Quick links to Admin Console & Public Site */}
           <div className="flex items-center gap-2">
-            <Link
-              href="/admin"
-              className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-[11px] font-bold transition-colors"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-brand-amber" />
-              <span>Admin Desk</span>
-            </Link>
+            {(user.role === "admin" || effectiveRole === "ADMIN" || effectiveRole === "MANAGER") && (
+              <Link
+                href="/admin"
+                className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-[11px] font-bold transition-colors"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-brand-amber" />
+                <span>Admin Desk</span>
+              </Link>
+            )}
             <Link
               href="/"
               className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-[11px] font-bold transition-colors"
@@ -329,26 +468,16 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Live Clock */}
+            {/* Live Clock with suppressHydrationWarning */}
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-700 text-xs font-mono font-semibold">
               <Clock className="w-3.5 h-3.5 text-brand-maroon" />
-              <span>EAT: {timeStr || "12:00:00 PM"}</span>
+              <span suppressHydrationWarning>EAT: {timeStr || "12:00:00 PM"}</span>
             </div>
 
-            {/* Quick Role Switcher Dropdown */}
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-brand-cream border border-brand-maroon/15 text-xs">
-              <span className="text-gray-500 font-bold text-[10px] uppercase">Shift Role:</span>
-              <select
-                value={activeStaffRole}
-                onChange={(e) => setActiveStaffRole(e.target.value)}
-                className="bg-transparent font-extrabold text-brand-maroon focus:outline-none cursor-pointer text-xs"
-              >
-                {AVAILABLE_ROLES.map((r) => (
-                  <option key={r.code} value={r.code}>
-                    {r.label}
-                  </option>
-                ))}
-              </select>
+            {/* Static Duty Station Badge (No dropdown switcher) */}
+            <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-brand-cream border border-brand-maroon/15 text-xs">
+              <span className="text-gray-500 font-bold text-[10px] uppercase">Duty Station:</span>
+              <span className="font-extrabold text-brand-maroon">{currentRoleObj.label}</span>
             </div>
 
             {/* Admin Login Details Trigger */}
@@ -361,14 +490,26 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
               <span>Admin Details</span>
             </button>
 
-            {/* Jump to Admin Console */}
-            <Link
-              href="/admin"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-brand-amber text-brand-maroon font-extrabold text-xs hover:bg-brand-amber-light transition-colors shadow-sm"
+            {/* Jump to Admin Console if Manager or Admin */}
+            {(user.role === "admin" || effectiveRole === "ADMIN" || effectiveRole === "MANAGER") && (
+              <Link
+                href="/admin"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-brand-amber text-brand-maroon font-extrabold text-xs hover:bg-brand-amber-light transition-colors shadow-sm"
+              >
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>Admin Desk</span>
+              </Link>
+            )}
+
+            {/* Sign Out Button */}
+            <button
+              type="button"
+              onClick={() => logout()}
+              className="p-2 rounded-xl bg-gray-100 hover:bg-red-50 text-gray-600 hover:text-red-600 transition-colors"
+              title="Sign Out"
             >
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Admin Desk</span>
-            </Link>
+              <LogOut className="w-4 h-4" />
+            </button>
           </div>
         </header>
 

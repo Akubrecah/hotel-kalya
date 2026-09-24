@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Calendar,
@@ -24,9 +24,11 @@ import {
   History,
   Settings,
   UserCheck,
+  KeyRound,
 } from "lucide-react";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { useAuth } from "@/context/AuthContext";
+import { useMounted } from "@/lib/useMounted";
 import { cn } from "@/lib/utils";
 
 const ADMIN_NAV = [
@@ -47,14 +49,100 @@ const ADMIN_NAV = [
   { label: "Project Docs & PDF Exports", href: "/admin/documents", icon: FileText },
 ];
 
-
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { user, logout } = useAuth();
+  const router = useRouter();
+  const { user, isLoaded, switchAccount, logout } = useAuth();
+  const mounted = useMounted();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
+  // Safe SSR & initial hydration gate: identical render output on server and first client frame
+  if (!mounted || !isLoaded) {
+    return (
+      <div className="min-h-screen bg-[#F8F9FA] flex items-center justify-center font-sans">
+        <div className="text-center space-y-3">
+          <div className="w-10 h-10 border-4 border-brand-maroon/20 border-t-brand-maroon rounded-full animate-spin mx-auto" />
+          <p className="text-xs font-bold text-gray-500 font-mono">
+            Loading Hotel Kalya Administration Console...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Admin access gate: Only administrators can view /admin/* routes
+  if (!user || user.role !== "admin") {
+    return (
+      <div className="min-h-screen bg-[#FAF9F5] flex flex-col justify-between font-sans">
+        <div className="p-4 sm:px-8 border-b border-gray-200 bg-white shadow-sm flex items-center justify-between">
+          <BrandLogo size="sm" />
+          <Link
+            href="/"
+            className="text-xs font-bold text-brand-maroon hover:underline flex items-center gap-1.5"
+          >
+            <span>Return to Public Hotel Website</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        <div className="max-w-md mx-auto px-4 py-12 w-full">
+          <div className="bg-white rounded-3xl p-7 sm:p-9 border border-gray-200 shadow-xl space-y-6 text-center">
+            <div className="w-16 h-16 rounded-2xl bg-brand-maroon text-brand-amber flex items-center justify-center mx-auto shadow-md">
+              <ShieldCheck className="w-8 h-8" />
+            </div>
+
+            <div className="space-y-2">
+              <span className="px-3 py-1 rounded-full bg-red-100 text-red-800 text-[10px] font-extrabold uppercase tracking-wider">
+                Restricted Executive Access
+              </span>
+              <h1 className="font-serif text-2xl font-black text-brand-maroon">
+                Administrator Sign In Required
+              </h1>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                The Hotel Kalya Management Console is reserved for general managers and executive staff. Please sign in with administrator credentials.
+              </p>
+            </div>
+
+            <div className="p-3 bg-brand-cream/60 rounded-2xl border border-brand-maroon/15 text-left space-y-1">
+              <span className="text-[10px] uppercase font-bold text-brand-maroon block">
+                Executive Admin Account:
+              </span>
+              <p className="text-xs font-mono font-bold text-gray-800">admin@hotelkalya.com</p>
+              <p className="text-[11px] text-gray-500 font-mono">Password: kalya2026</p>
+            </div>
+
+            <div className="pt-2 flex flex-col gap-2.5">
+              <button
+                type="button"
+                onClick={() => {
+                  switchAccount("admin");
+                  router.push("/admin");
+                }}
+                className="w-full py-3 px-4 rounded-xl bg-brand-maroon text-white font-extrabold text-xs uppercase tracking-wider hover:bg-brand-maroon-dark transition-all shadow-md flex items-center justify-center gap-2"
+              >
+                <KeyRound className="w-4 h-4 text-brand-amber" />
+                <span>One-Click Launch as Admin</span>
+              </button>
+
+              <Link
+                href="/login"
+                className="w-full py-2.5 px-4 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs text-center transition-colors"
+              >
+                Go to Standard Sign In
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-4 text-center text-xs text-gray-400">
+          Hotel Kalya Operations Platform • Kapenguria, West Pokot County
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#F8F9FA] text-[#1E0B0F] flex flex-col lg:flex-row print:block print:bg-white">
+    <div className="min-h-screen bg-[#F8F9FA] text-[#1E0B0F] flex flex-col lg:flex-row print:block print:bg-white font-sans">
       {/* Mobile Top Bar */}
       <div className="lg:hidden bg-brand-maroon text-white p-4 px-5 flex items-center justify-between shadow-md sticky top-0 z-40 print:hidden">
         <div className="flex items-center gap-3">
@@ -126,14 +214,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* User Card & Exit Footer */}
         <div className="p-5 border-t border-white/10 bg-black/20 space-y-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-brand-amber text-brand-maroon font-bold flex items-center justify-center text-sm shadow">
-              {user ? user.name.charAt(0).toUpperCase() : "S"}
+            <div className="w-10 h-10 rounded-xl bg-brand-amber text-brand-maroon font-black flex items-center justify-center text-sm shadow">
+              {user.name.charAt(0).toUpperCase()}
             </div>
             <div className="overflow-hidden">
               <p className="text-xs font-bold text-white truncate">
-                {user ? user.name : "Duty Desk Manager"}
+                {user.name}
               </p>
-              <p className="text-[10px] text-brand-amber-light/80">Kapenguria Staff</p>
+              <p className="text-[10px] text-brand-amber-light/80">Kapenguria Staff • Admin</p>
             </div>
           </div>
 

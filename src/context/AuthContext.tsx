@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { UserProfile } from "@/types";
 
 export const DEMO_ACCOUNTS: Record<string, UserProfile> = {
@@ -88,6 +88,7 @@ export const DEMO_ACCOUNTS: Record<string, UserProfile> = {
 export interface AuthContextType {
   user: UserProfile | null;
   isLoading: boolean;
+  isLoaded: boolean;
   activeStaffRole: string;
   setActiveStaffRole: (role: string) => void;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
@@ -103,28 +104,37 @@ const AUTH_STORAGE_KEY = "hotel_kalya_auth_user";
 const ROLE_STORAGE_KEY = "hotel_kalya_active_staff_role";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<UserProfile | null>(() => {
-    if (typeof window === "undefined") return null;
-    try {
-      const stored = localStorage.getItem(AUTH_STORAGE_KEY);
-      return stored ? JSON.parse(stored) : DEMO_ACCOUNTS.admin;
-    } catch {
-      return DEMO_ACCOUNTS.admin;
-    }
-  });
-
-  const [activeStaffRole, setActiveStaffRoleState] = useState<string>(() => {
-    if (typeof window === "undefined") return "ADMIN";
-    try {
-      const storedRole = localStorage.getItem(ROLE_STORAGE_KEY);
-      if (storedRole) return storedRole;
-      return user?.staffRole || "ADMIN";
-    } catch {
-      return "ADMIN";
-    }
-  });
-
+  // Initialize user as null identically on SSR and first client render to guarantee zero hydration mismatch
+  const [user, setUser] = useState<UserProfile | null>(null);
+  const [activeStaffRole, setActiveStaffRoleState] = useState<string>("RECEPTIONIST");
+  const [isLoaded, setIsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Hydrate session client-side after initial mount asynchronously
+  useEffect(() => {
+    let cancelled = false;
+    const timer = setTimeout(() => {
+      if (cancelled) return;
+      try {
+        const stored = localStorage.getItem(AUTH_STORAGE_KEY);
+        if (stored) {
+          const parsed: UserProfile = JSON.parse(stored);
+          setUser(parsed);
+          const resolvedRole = parsed.staffRole || (parsed.role === "admin" ? "ADMIN" : "RECEPTIONIST");
+          setActiveStaffRoleState(resolvedRole);
+        }
+      } catch (e) {
+        console.error("Failed to load auth user from localStorage", e);
+      } finally {
+        setIsLoaded(true);
+      }
+    }, 0);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, []);
 
   const setActiveStaffRole = (role: string) => {
     setActiveStaffRoleState(role);
@@ -139,11 +149,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const acc = DEMO_ACCOUNTS[accountKey];
     if (acc) {
       setUser(acc);
-      if (acc.staffRole) {
-        setActiveStaffRole(acc.staffRole);
-      }
+      const role = acc.staffRole || (acc.role === "admin" ? "ADMIN" : "RECEPTIONIST");
+      setActiveStaffRoleState(role);
       try {
         localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(acc));
+        localStorage.setItem(ROLE_STORAGE_KEY, role);
       } catch {
         // ignore
       }
@@ -244,8 +254,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async (): Promise<void> => {
     setUser(null);
+    setActiveStaffRoleState("RECEPTIONIST");
     try {
       localStorage.removeItem(AUTH_STORAGE_KEY);
+      localStorage.removeItem(ROLE_STORAGE_KEY);
     } catch {
       // ignore
     }
@@ -267,6 +279,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       value={{
         user,
         isLoading,
+        isLoaded,
         activeStaffRole,
         setActiveStaffRole,
         login,

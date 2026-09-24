@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { useAuth } from "@/context/AuthContext";
+import { useMounted } from "@/lib/useMounted";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { BRAND } from "@/lib/constants";
 
@@ -111,15 +112,16 @@ const QUICK_STAFF_ACCOUNTS = [
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login, switchAccount, setActiveStaffRole, user } = useAuth();
+  const { login, switchAccount, setActiveStaffRole, user, isLoaded } = useAuth();
+  const mounted = useMounted();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
-  // If already logged in, show quick portal entry
-  if (user) {
+  // If already logged in, show quick portal entry only after hydration is fully complete
+  if (mounted && isLoaded && user) {
     return (
       <div className="bg-white min-h-[75vh] flex items-center justify-center px-4">
         <div className="max-w-md w-full text-center space-y-4 bg-brand-cream/40 p-8 rounded-3xl border border-brand-maroon/10 shadow-lg">

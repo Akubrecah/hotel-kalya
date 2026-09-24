@@ -22,19 +22,22 @@ import { useAuth } from "@/context/AuthContext";
 import { OperationalAnalytics, Booking, Room, HousekeepingStatus } from "@/types/hospitality";
 import { FoodOrder } from "@/types";
 
-const ROLE_TABS = [
-  { code: "RECEPTIONIST", label: "Receptionist", icon: Calendar, dept: "Front Desk" },
-  { code: "HOUSEKEEPING", label: "Housekeeping", icon: Sparkles, dept: "Cleanliness" },
-  { code: "WAITER", label: "Waitstaff", icon: UtensilsCrossed, dept: "Dining" },
-  { code: "CHEF", label: "Chef / KDS", icon: ChefHat, dept: "Kitchen" },
-  { code: "EVENT_COORDINATOR", label: "Events", icon: Presentation, dept: "Conferences" },
-  { code: "CATERING_STAFF", label: "Catering", icon: Truck, dept: "Banquets" },
-  { code: "MAINTENANCE", label: "Maintenance", icon: Wrench, dept: "Repairs" },
-  { code: "MANAGER", label: "Manager / Admin", icon: ShieldCheck, dept: "Executive" },
-];
+const ROLE_LABELS: Record<string, { label: string; dept: string }> = {
+  RECEPTIONIST: { label: "Front Desk & Reservations", dept: "Front Office" },
+  HOUSEKEEPING: { label: "Housekeeping & Room Operations", dept: "Housekeeping" },
+  WAITER: { label: "Dining Room & Floor Waitstaff", dept: "Food & Beverage" },
+  CHEF: { label: "Kitchen Display System (KDS)", dept: "Kitchen Operations" },
+  EVENT_COORDINATOR: { label: "Conferences & Events Coordination", dept: "Conferences & Banqueting" },
+  CATERING_STAFF: { label: "Outside Catering Logistics", dept: "Catering Operations" },
+  MAINTENANCE: { label: "Engineering & Repairs", dept: "Maintenance" },
+  MANAGER: { label: "Operations Command & Duty Management", dept: "Operations" },
+  ADMIN: { label: "Executive Administration", dept: "Executive Management" },
+};
 
 export default function StaffDashboardPage() {
-  const { user, activeStaffRole, setActiveStaffRole } = useAuth();
+  const { user } = useAuth();
+  const effectiveRole = user?.staffRole || (user?.role === "admin" ? "ADMIN" : "RECEPTIONIST");
+  const roleMeta = ROLE_LABELS[effectiveRole] || { label: effectiveRole, dept: user?.department || "Operations" };
   const [analytics, setAnalytics] = useState<OperationalAnalytics | null>(null);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -218,24 +221,24 @@ export default function StaffDashboardPage() {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
-      {/* Top Banner & Quick Role Tab Selector */}
-      <div className="bg-white rounded-3xl p-5 sm:p-6 border border-gray-200/80 shadow-sm space-y-4">
+      {/* Top Banner: Authenticated Workstation Header (Role Switching Removed) */}
+      <div className="bg-white rounded-3xl p-5 sm:p-6 border border-gray-200/80 shadow-sm space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
               <span className="px-2.5 py-0.5 rounded-full bg-brand-maroon text-white font-mono text-[10px] font-extrabold uppercase tracking-wider">
-                Active View: {activeStaffRole}
+                Assigned Terminal: {effectiveRole}
               </span>
               <span className="text-xs text-emerald-600 font-bold flex items-center gap-1">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                Shift Synchronized
+                Shift Active • {roleMeta.dept}
               </span>
             </div>
             <h1 className="font-serif text-2xl sm:text-3xl font-bold text-brand-maroon mt-1">
-              Role Workstation Command
+              {roleMeta.label}
             </h1>
             <p className="text-xs text-gray-500">
-              Welcome back, <strong className="text-gray-800">{user?.name || "Staff Member"}</strong>. Dashboard customized for your assigned operational duties.
+              Logged in as <strong className="text-gray-800">{user?.name || "Staff Member"}</strong> ({user?.email}). Terminal locked to your assigned operational duties.
             </p>
           </div>
 
@@ -251,40 +254,12 @@ export default function StaffDashboardPage() {
             </button>
           </div>
         </div>
-
-        {/* Role Switcher Tabs */}
-        <div>
-          <span className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-2">
-            Switch Dashboard Role Workstation:
-          </span>
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-            {ROLE_TABS.map((tab) => {
-              const isActive = activeStaffRole === tab.code;
-              const IconComp = tab.icon;
-              return (
-                <button
-                  key={tab.code}
-                  type="button"
-                  onClick={() => setActiveStaffRole(tab.code)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
-                    isActive
-                      ? "bg-brand-maroon text-white shadow-md font-extrabold scale-102"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900"
-                  }`}
-                >
-                  <IconComp className={`w-3.5 h-3.5 ${isActive ? "text-brand-amber" : "text-gray-500"}`} />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
       </div>
 
       {/* ========================================================================= */}
       {/* 1. RECEPTIONIST / FRONT DESK DASHBOARD VIEW                               */}
       {/* ========================================================================= */}
-      {activeStaffRole === "RECEPTIONIST" && (
+      {effectiveRole === "RECEPTIONIST" && (
         <div className="space-y-6">
           {/* Quick Metrics */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -459,7 +434,7 @@ export default function StaffDashboardPage() {
       {/* ========================================================================= */}
       {/* 2. HOUSEKEEPING DASHBOARD VIEW                                            */}
       {/* ========================================================================= */}
-      {activeStaffRole === "HOUSEKEEPING" && (
+      {effectiveRole === "HOUSEKEEPING" && (
         <div className="space-y-6">
           {/* Cleanliness Summary Banner */}
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
@@ -579,7 +554,7 @@ export default function StaffDashboardPage() {
       {/* ========================================================================= */}
       {/* 3. WAITER / WAITSTAFF DASHBOARD VIEW                                      */}
       {/* ========================================================================= */}
-      {activeStaffRole === "WAITER" && (
+      {effectiveRole === "WAITER" && (
         <div className="space-y-6">
           {/* Restaurant Floor Plan */}
           <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
@@ -714,7 +689,7 @@ export default function StaffDashboardPage() {
       {/* ========================================================================= */}
       {/* 4. CHEF / KITCHEN DISPLAY SYSTEM (KDS) DASHBOARD VIEW                     */}
       {/* ========================================================================= */}
-      {activeStaffRole === "CHEF" && (
+      {effectiveRole === "CHEF" && (
         <div className="space-y-6">
           {/* Active Cooking Tickets */}
           <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
@@ -841,7 +816,7 @@ export default function StaffDashboardPage() {
       {/* ========================================================================= */}
       {/* 5. EVENT COORDINATOR DASHBOARD VIEW                                       */}
       {/* ========================================================================= */}
-      {activeStaffRole === "EVENT_COORDINATOR" && (
+      {effectiveRole === "EVENT_COORDINATOR" && (
         <div className="space-y-6">
           <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
@@ -923,7 +898,7 @@ export default function StaffDashboardPage() {
       {/* ========================================================================= */}
       {/* 6. OUTSIDE CATERING DASHBOARD VIEW                                        */}
       {/* ========================================================================= */}
-      {activeStaffRole === "CATERING_STAFF" && (
+      {effectiveRole === "CATERING_STAFF" && (
         <div className="space-y-6">
           <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
@@ -995,7 +970,7 @@ export default function StaffDashboardPage() {
       {/* ========================================================================= */}
       {/* 7. MAINTENANCE DASHBOARD VIEW                                             */}
       {/* ========================================================================= */}
-      {activeStaffRole === "MAINTENANCE" && (
+      {effectiveRole === "MAINTENANCE" && (
         <div className="space-y-6">
           <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
             <h2 className="font-serif text-lg font-bold text-brand-maroon flex items-center gap-2">
@@ -1035,7 +1010,7 @@ export default function StaffDashboardPage() {
       {/* ========================================================================= */}
       {/* 8. MANAGER / ADMIN 360° DASHBOARD VIEW                                    */}
       {/* ========================================================================= */}
-      {(activeStaffRole === "MANAGER" || activeStaffRole === "ADMIN") && (
+      {(effectiveRole === "MANAGER" || effectiveRole === "ADMIN") && (
         <div className="space-y-6">
           {/* Executive Analytics Ribbon */}
           {analytics && (
