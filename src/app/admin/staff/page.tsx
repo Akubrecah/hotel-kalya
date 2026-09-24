@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   UserPlus,
   RefreshCw,
   Search,
+  ShieldCheck,
 } from "lucide-react";
 import { StaffMember, StaffRole } from "@/types/hospitality";
 
@@ -24,15 +26,25 @@ export default function AdminStaffManagementPage() {
   const [whatsapp, setWhatsapp] = useState("254719766649");
   const [status, setStatus] = useState<"ACTIVE" | "ON_LEAVE" | "INACTIVE">("ACTIVE");
 
+  const [rolesList, setRolesList] = useState<{ roleCode: string; title: string; department: string }[]>([]);
+
   const loadStaff = React.useCallback(async () => {
     try {
-      const res = await fetch("/api/staff");
-      const data = await res.json();
+      const [staffRes, rolesRes] = await Promise.all([
+        fetch("/api/staff"),
+        fetch("/api/roles"),
+      ]);
+      const data = await staffRes.json();
+      const rolesData = await rolesRes.json();
+
       if (data.success && Array.isArray(data.staff)) {
         setStaff(data.staff);
       }
+      if (rolesData.success && Array.isArray(rolesData.roles)) {
+        setRolesList(rolesData.roles);
+      }
     } catch (err) {
-      console.error("Failed to load staff roster", err);
+      console.error("Failed to load staff roster or roles", err);
     } finally {
       setLoading(false);
     }
@@ -42,13 +54,21 @@ export default function AdminStaffManagementPage() {
     let ignore = false;
     async function fetchStaff() {
       try {
-        const res = await fetch("/api/staff");
-        const data = await res.json();
+        const [staffRes, rolesRes] = await Promise.all([
+          fetch("/api/staff"),
+          fetch("/api/roles"),
+        ]);
+        const data = await staffRes.json();
+        const rolesData = await rolesRes.json();
+
         if (!ignore && data.success && Array.isArray(data.staff)) {
           setStaff(data.staff);
         }
+        if (!ignore && rolesData.success && Array.isArray(rolesData.roles)) {
+          setRolesList(rolesData.roles);
+        }
       } catch (err) {
-        console.error("Failed to load staff roster", err);
+        console.error("Failed to load staff roster or roles", err);
       } finally {
         if (!ignore) {
           setLoading(false);
@@ -140,6 +160,14 @@ export default function AdminStaffManagementPage() {
         </div>
 
         <div className="flex items-center gap-3">
+          <Link
+            href="/admin/roles"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-brand-cream border border-brand-maroon/20 text-brand-maroon hover:bg-brand-cream/80 font-bold text-xs shadow-sm transition-colors"
+          >
+            <ShieldCheck className="w-4 h-4 text-brand-amber-dark" />
+            <span>Manage Roles &amp; RBAC</span>
+          </Link>
+
           <button
             type="button"
             onClick={loadStaff}
@@ -356,17 +384,27 @@ export default function AdminStaffManagementPage() {
                   <select
                     value={role}
                     onChange={(e) => setRole(e.target.value as StaffRole)}
-                    className="w-full p-2 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-amber text-xs"
+                    className="w-full p-2 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-amber text-xs font-semibold"
                   >
-                    <option value="RECEPTIONIST">RECEPTIONIST</option>
-                    <option value="HOUSEKEEPING">HOUSEKEEPING</option>
-                    <option value="WAITER">WAITER</option>
-                    <option value="WAITRESS">WAITRESS</option>
-                    <option value="CHEF">CHEF</option>
-                    <option value="EVENT_COORDINATOR">EVENT_COORDINATOR</option>
-                    <option value="CATERING_STAFF">CATERING_STAFF</option>
-                    <option value="MANAGER">MANAGER</option>
-                    <option value="ADMIN">ADMIN</option>
+                    {rolesList.length > 0 ? (
+                      rolesList.map((r) => (
+                        <option key={r.roleCode} value={r.roleCode}>
+                          {r.title} ({r.roleCode})
+                        </option>
+                      ))
+                    ) : (
+                      <>
+                        <option value="RECEPTIONIST">RECEPTIONIST</option>
+                        <option value="HOUSEKEEPING">HOUSEKEEPING</option>
+                        <option value="WAITER">WAITER</option>
+                        <option value="WAITRESS">WAITRESS</option>
+                        <option value="CHEF">CHEF</option>
+                        <option value="EVENT_COORDINATOR">EVENT_COORDINATOR</option>
+                        <option value="CATERING_STAFF">CATERING_STAFF</option>
+                        <option value="MANAGER">MANAGER</option>
+                        <option value="ADMIN">ADMIN</option>
+                      </>
+                    )}
                   </select>
                 </div>
                 <div>

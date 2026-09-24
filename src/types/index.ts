@@ -52,6 +52,9 @@ export interface UserProfile {
   email: string;
   phone?: string;
   role: "guest" | "staff" | "admin";
+  staffRole?: string;
+  department?: string;
+  permissions?: string[];
   dietaryPreferences?: string[];
   createdAt: string;
 }

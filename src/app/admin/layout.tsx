@@ -35,6 +35,7 @@ const ADMIN_NAV = [
   { label: "Rooms & Inventory", href: "/admin/rooms", icon: Bed },
   { label: "Housekeeping Oversight", href: "/admin/housekeeping", icon: Sparkles },
   { label: "Staff & Human Resources", href: "/admin/staff", icon: Users },
+  { label: "Roles & RBAC Permissions", href: "/admin/roles", icon: ShieldCheck },
   { label: "WhatsApp Service Config", href: "/admin/services", icon: PhoneCall },
   { label: "Kitchen Display (KDS)", href: "/admin/orders", icon: UtensilsCrossed },
   { label: "Conferences & Events", href: "/admin/events", icon: PartyPopper },
@@ -181,8 +182,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
 
             <Link
+              href="/staff/dashboard"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-amber text-brand-maroon text-xs font-extrabold hover:bg-brand-amber-light transition-colors shadow-sm"
+            >
+              <Users className="w-3.5 h-3.5" />
+              <span>Staff Portal</span>
+            </Link>
+
+            <Link
               href="/"
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-brand-cream border border-brand-maroon/15 text-brand-maroon text-xs font-bold hover:bg-brand-cream/80 transition-colors shadow-sm"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-cream border border-brand-maroon/15 text-brand-maroon text-xs font-bold hover:bg-brand-cream/80 transition-colors shadow-sm"
             >
               <span>Back to Guest Site</span>
               <ExternalLink className="w-3.5 h-3.5 text-brand-amber-dark" />

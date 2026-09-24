@@ -76,6 +76,7 @@ export interface Booking {
   adults: number;
   children: number;
   totalAmount: number; // in KES
+  totalPrice?: number; // alias
   paymentStatus: "Paid" | "Deposit" | "Pay on Arrival";
   paymentMethod?: string;
   mpesaReceiptNumber?: string;
@@ -100,7 +101,39 @@ export type StaffRole =
   | "EVENT_COORDINATOR"
   | "CATERING_STAFF"
   | "ACCOUNTANT"
-  | "MAINTENANCE";
+  | "MAINTENANCE"
+  | string;
+
+export type PermissionKey =
+  | "reservations:read"
+  | "reservations:write"
+  | "rooms:read"
+  | "rooms:write"
+  | "housekeeping:read"
+  | "housekeeping:write"
+  | "restaurant:orders"
+  | "kitchen:kds"
+  | "conference:manage"
+  | "catering:manage"
+  | "events:manage"
+  | "reports:view"
+  | "staff:manage"
+  | "roles:manage"
+  | "settings:manage"
+  | "audit:view";
+
+export interface RoleDefinition {
+  id: string;
+  roleCode: string; // e.g. "RECEPTIONIST", "HOUSEKEEPING"
+  title: string; // e.g. "Front Desk Receptionist"
+  department: string;
+  description: string;
+  permissions: PermissionKey[];
+  isSystemRole?: boolean;
+  isSystem?: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export interface StaffMember {
   id: string;

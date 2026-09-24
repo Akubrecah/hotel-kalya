@@ -13,6 +13,7 @@ import {
   EventBooking,
   HousekeepingStatus,
   ReservationLifecycleStatus,
+  RoleDefinition,
 } from "@/types/hospitality";
 import { DEFAULT_SERVICE_CONTACTS } from "./whatsapp";
 import { IMAGES } from "./constants";
@@ -1153,5 +1154,281 @@ export async function updateEventBookingStatus(
   });
 
   return events[idx];
+}
+
+// --- ROLES & PERMISSIONS MANAGEMENT ---
+
+export const DEFAULT_ROLES: RoleDefinition[] = [
+  {
+    id: "role_admin",
+    roleCode: "ADMIN",
+    title: "General Manager / Super Admin",
+    department: "Executive Management",
+    description: "Complete unrestricted administrative control, audit logs, system settings, financial accounting, and staff roster.",
+    permissions: [
+      "reservations:read",
+      "reservations:write",
+      "rooms:read",
+      "rooms:write",
+      "housekeeping:read",
+      "housekeeping:write",
+      "restaurant:orders",
+      "kitchen:kds",
+      "conference:manage",
+      "catering:manage",
+      "events:manage",
+      "reports:view",
+      "staff:manage",
+      "roles:manage",
+      "settings:manage",
+      "audit:view",
+    ],
+    isSystemRole: true,
+    createdAt: "2026-09-01T08:00:00Z",
+    updatedAt: "2026-09-01T08:00:00Z",
+  },
+  {
+    id: "role_manager",
+    roleCode: "MANAGER",
+    title: "Operations Duty Manager",
+    department: "Operations & Front Office",
+    description: "Daily shift supervision, guest arrivals/departures, room assignments, departmental overrides, and operations KPIs.",
+    permissions: [
+      "reservations:read",
+      "reservations:write",
+      "rooms:read",
+      "rooms:write",
+      "housekeeping:read",
+      "housekeeping:write",
+      "restaurant:orders",
+      "kitchen:kds",
+      "conference:manage",
+      "catering:manage",
+      "events:manage",
+      "reports:view",
+      "staff:manage",
+      "audit:view",
+    ],
+    isSystemRole: true,
+    createdAt: "2026-09-01T08:00:00Z",
+    updatedAt: "2026-09-01T08:00:00Z",
+  },
+  {
+    id: "role_receptionist",
+    roleCode: "RECEPTIONIST",
+    title: "Front Desk & Reservations Officer",
+    department: "Front Office",
+    description: "Guest check-ins, check-outs, booking folio generation, room key assignments, and WhatsApp guest inquiries.",
+    permissions: [
+      "reservations:read",
+      "reservations:write",
+      "rooms:read",
+      "rooms:write",
+      "housekeeping:read",
+    ],
+    isSystemRole: true,
+    createdAt: "2026-09-01T08:00:00Z",
+    updatedAt: "2026-09-01T08:00:00Z",
+  },
+  {
+    id: "role_housekeeping",
+    roleCode: "HOUSEKEEPING",
+    title: "Housekeeping & Sanitation Attendant",
+    department: "Housekeeping & Laundry",
+    description: "Room cleanliness updates, turnover tracking (Dirty -> Cleaning -> Clean -> Ready), and out-of-order room flagging.",
+    permissions: [
+      "rooms:read",
+      "housekeeping:read",
+      "housekeeping:write",
+    ],
+    isSystemRole: true,
+    createdAt: "2026-09-01T08:00:00Z",
+    updatedAt: "2026-09-01T08:00:00Z",
+  },
+  {
+    id: "role_waiter",
+    roleCode: "WAITER",
+    title: "Dining Waitstaff & Service Captain",
+    department: "Food & Beverage",
+    description: "Table dining orders, customer room service tickets, bill generation, and kitchen order dispatch.",
+    permissions: [
+      "restaurant:orders",
+    ],
+    isSystemRole: true,
+    createdAt: "2026-09-01T08:00:00Z",
+    updatedAt: "2026-09-01T08:00:00Z",
+  },
+  {
+    id: "role_chef",
+    roleCode: "CHEF",
+    title: "Head Chef & Kitchen Line Cook",
+    department: "Kitchen Operations",
+    description: "Kitchen Display System (KDS), ticket timing, food prep progression (Received -> Preparing -> Ready), and pass dispatch.",
+    permissions: [
+      "restaurant:orders",
+      "kitchen:kds",
+    ],
+    isSystemRole: true,
+    createdAt: "2026-09-01T08:00:00Z",
+    updatedAt: "2026-09-01T08:00:00Z",
+  },
+  {
+    id: "role_events",
+    roleCode: "EVENT_COORDINATOR",
+    title: "Conference & Garden Events Coordinator",
+    department: "Corporate Events & Grounds",
+    description: "Mount Elgon & Cherang'any hall bookings, delegate equipment setup, AV gear, and picturesque garden experiences.",
+    permissions: [
+      "conference:manage",
+      "events:manage",
+    ],
+    isSystemRole: true,
+    createdAt: "2026-09-01T08:00:00Z",
+    updatedAt: "2026-09-01T08:00:00Z",
+  },
+  {
+    id: "role_catering",
+    roleCode: "CATERING_STAFF",
+    title: "Outside Catering Logistics Specialist",
+    department: "Outside Catering",
+    description: "County summit banquets, field delivery transport, menu packages, buffet logistics, and equipment registers.",
+    permissions: [
+      "catering:manage",
+    ],
+    isSystemRole: true,
+    createdAt: "2026-09-01T08:00:00Z",
+    updatedAt: "2026-09-01T08:00:00Z",
+  },
+  {
+    id: "role_maintenance",
+    roleCode: "MAINTENANCE",
+    title: "Facilities & Maintenance Engineer",
+    department: "Engineering & Facilities",
+    description: "HVAC, plumbing, electrical repairs, room maintenance blocking, and facilities inspection logs.",
+    permissions: [
+      "rooms:read",
+      "rooms:write",
+      "housekeeping:read",
+    ],
+    isSystemRole: true,
+    createdAt: "2026-09-01T08:00:00Z",
+    updatedAt: "2026-09-01T08:00:00Z",
+  },
+  {
+    id: "role_accountant",
+    roleCode: "ACCOUNTANT",
+    title: "Financial Auditor & Accounts Controller",
+    department: "Finance & Accounts",
+    description: "Revenue audits, Daraja M-Pesa reconciliations, daily folios, ADR, and tax receipts.",
+    permissions: [
+      "reports:view",
+      "reservations:read",
+      "audit:view",
+    ],
+    isSystemRole: true,
+    createdAt: "2026-09-01T08:00:00Z",
+    updatedAt: "2026-09-01T08:00:00Z",
+  },
+];
+
+export async function getRoles(): Promise<RoleDefinition[]> {
+  return readJsonFile<RoleDefinition[]>("roles.json", DEFAULT_ROLES);
+}
+
+export async function getRoleByCode(roleCode: string): Promise<RoleDefinition | null> {
+  const roles = await getRoles();
+  return roles.find((r) => r.roleCode.toUpperCase() === roleCode.toUpperCase()) || null;
+}
+
+export async function createRole(
+  data: Omit<RoleDefinition, "id" | "createdAt" | "updatedAt">
+): Promise<RoleDefinition> {
+  const roles = await getRoles();
+  const cleanCode = data.roleCode.trim().toUpperCase().replace(/[^A-Z0-9_]/g, "_");
+
+  const existing = roles.find((r) => r.roleCode === cleanCode);
+  if (existing) {
+    throw new Error(`Role with code '${cleanCode}' already exists.`);
+  }
+
+  const newRole: RoleDefinition = {
+    ...data,
+    id: `role_${cleanCode.toLowerCase()}_${Date.now().toString(36)}`,
+    roleCode: cleanCode,
+    isSystemRole: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  roles.push(newRole);
+  await writeJsonFile("roles.json", roles);
+
+  await logAuditEvent({
+    userId: "admin",
+    userName: "System Administrator",
+    role: "ADMIN",
+    action: "CREATED_ROLE",
+    target: cleanCode,
+    details: `Created new organizational role: ${data.title} (${data.department}) with ${data.permissions.length} permissions`,
+  });
+
+  return newRole;
+}
+
+export async function updateRole(
+  id: string,
+  data: Partial<Omit<RoleDefinition, "id" | "isSystemRole" | "createdAt">>
+): Promise<RoleDefinition | null> {
+  const roles = await getRoles();
+  const idx = roles.findIndex((r) => r.id === id);
+  if (idx === -1) return null;
+
+  const current = roles[idx];
+  const updated: RoleDefinition = {
+    ...current,
+    ...data,
+    updatedAt: new Date().toISOString(),
+  };
+
+  roles[idx] = updated;
+  await writeJsonFile("roles.json", roles);
+
+  await logAuditEvent({
+    userId: "admin",
+    userName: "System Administrator",
+    role: "ADMIN",
+    action: "UPDATED_ROLE",
+    target: current.roleCode,
+    details: `Updated role definition for ${updated.title}`,
+  });
+
+  return updated;
+}
+
+export async function deleteRole(id: string): Promise<{ success: boolean; error?: string }> {
+  const roles = await getRoles();
+  const idx = roles.findIndex((r) => r.id === id);
+  if (idx === -1) {
+    return { success: false, error: "Role not found." };
+  }
+
+  if (roles[idx].isSystemRole) {
+    return { success: false, error: "Default system roles cannot be deleted." };
+  }
+
+  const deletedRole = roles[idx];
+  roles.splice(idx, 1);
+  await writeJsonFile("roles.json", roles);
+
+  await logAuditEvent({
+    userId: "admin",
+    userName: "System Administrator",
+    role: "ADMIN",
+    action: "DELETED_ROLE",
+    target: deletedRole.roleCode,
+    details: `Deleted custom role ${deletedRole.title}`,
+  });
+
+  return { success: true };
 }
 

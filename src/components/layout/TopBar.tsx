@@ -1,4 +1,5 @@
-import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
+import Link from "next/link";
+import { Phone, Mail, MapPin, MessageCircle, ShieldCheck } from "lucide-react";
 import { BRAND } from "@/lib/constants";
 
 export function TopBar() {
@@ -29,8 +30,16 @@ export function TopBar() {
           </a>
         </div>
 
-        {/* Right: Destination badge + WhatsApp */}
+        {/* Right: Staff Portal link + Destination badge + WhatsApp */}
         <div className="flex items-center gap-3">
+          <Link
+            href="/staff/dashboard"
+            className="hidden sm:inline-flex items-center gap-1 text-[11px] text-brand-amber-light hover:text-brand-amber font-semibold transition-colors"
+          >
+            <ShieldCheck className="w-3 h-3 text-brand-amber" />
+            <span>Staff Portal</span>
+          </Link>
+          <span className="hidden sm:inline text-white/30">•</span>
           <span className="bg-brand-amber text-brand-maroon-dark px-2 py-0.5 rounded text-[11px] font-bold tracking-wider uppercase">
             Kapenguria Destination
           </span>

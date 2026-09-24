@@ -1,5 +1,25 @@
 [
   {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_ROLE",
+    "target": "SPA_THERAPIST",
+    "details": "Deleted custom role Spa & Wellness Therapist",
+    "id": "aud-1790244354681-672",
+    "timestamp": "2026-09-24T10:05:54.681Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_ROLE",
+    "target": "SPA_THERAPIST",
+    "details": "Created new organizational role: Spa & Wellness Therapist (Wellness & Recreation) with 2 permissions",
+    "id": "aud-1790244340820-12",
+    "timestamp": "2026-09-24T10:05:40.821Z"
+  },
+  {
     "userId": "Denis Limo (Lead Attendant)",
     "userName": "Denis Limo (Lead Attendant)",
     "role": "HOUSEKEEPING",

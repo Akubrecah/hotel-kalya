@@ -3,85 +3,197 @@
 import React, { createContext, useContext, useState } from "react";
 import { UserProfile } from "@/types";
 
-interface AuthContextType {
+export const DEMO_ACCOUNTS: Record<string, UserProfile> = {
+  admin: {
+    id: "staff_sarah_01",
+    name: "Sarah Rotich",
+    email: "admin@hotelkalya.com",
+    phone: "+254 719 766649",
+    role: "admin",
+    staffRole: "ADMIN",
+    department: "Executive Management",
+    createdAt: "2026-08-01T08:00:00Z",
+  },
+  receptionist: {
+    id: "staff_dennis_01",
+    name: "Dennis Kiplagat",
+    email: "reception@hotelkalya.com",
+    phone: "+254 712 998877",
+    role: "staff",
+    staffRole: "RECEPTIONIST",
+    department: "Front Office",
+    createdAt: "2026-08-15T08:00:00Z",
+  },
+  housekeeping: {
+    id: "staff_limo_01",
+    name: "Denis Limo",
+    email: "housekeeping@hotelkalya.com",
+    phone: "+254 723 445566",
+    role: "staff",
+    staffRole: "HOUSEKEEPING",
+    department: "Housekeeping",
+    createdAt: "2026-08-20T08:00:00Z",
+  },
+  waiter: {
+    id: "staff_faith_01",
+    name: "Faith Jepchirchir",
+    email: "waiter@hotelkalya.com",
+    phone: "+254 734 556677",
+    role: "staff",
+    staffRole: "WAITER",
+    department: "Food & Beverage",
+    createdAt: "2026-08-22T08:00:00Z",
+  },
+  chef: {
+    id: "staff_patrick_01",
+    name: "Chef Patrick Mwangi",
+    email: "kitchen@hotelkalya.com",
+    phone: "+254 745 667788",
+    role: "staff",
+    staffRole: "CHEF",
+    department: "Kitchen Operations",
+    createdAt: "2026-08-10T08:00:00Z",
+  },
+  event_coordinator: {
+    id: "staff_kevin_01",
+    name: "Kevin Lokor",
+    email: "events@hotelkalya.com",
+    phone: "+254 756 778899",
+    role: "staff",
+    staffRole: "EVENT_COORDINATOR",
+    department: "Events & Conferences",
+    createdAt: "2026-08-18T08:00:00Z",
+  },
+  catering: {
+    id: "staff_grace_01",
+    name: "Grace Chepkorir",
+    email: "catering@hotelkalya.com",
+    phone: "+254 767 889900",
+    role: "staff",
+    staffRole: "CATERING_STAFF",
+    department: "Outside Catering",
+    createdAt: "2026-08-25T08:00:00Z",
+  },
+  guest: {
+    id: "user_kalya_demo_01",
+    name: "James Chemosit",
+    email: "guest@hotelkalya.com",
+    phone: "+254 712 345678",
+    role: "guest",
+    dietaryPreferences: ["Halal", "Local Cuisine"],
+    createdAt: "2026-09-01T10:00:00Z",
+  },
+};
+
+export interface AuthContextType {
   user: UserProfile | null;
   isLoading: boolean;
+  activeStaffRole: string;
+  setActiveStaffRole: (role: string) => void;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   signup: (name: string, email: string, password: string, phone?: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   updateProfile: (details: Partial<UserProfile>) => Promise<void>;
+  switchAccount: (accountKey: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AUTH_STORAGE_KEY = "hotel_kalya_auth_user";
-
-// Pre-seeded demo user for immediate review/testing
-const DEMO_USER: UserProfile = {
-  id: "user_kalya_demo_01",
-  name: "James Chemosit",
-  email: "guest@hotelkalya.com",
-  phone: "+254 712 345678",
-  role: "guest",
-  dietaryPreferences: ["Halal", "Local Cuisine"],
-  createdAt: "2026-09-01T10:00:00Z",
-};
-
-// Front-desk & operations manager account
-const DEMO_ADMIN: UserProfile = {
-  id: "user_kalya_admin_01",
-  name: "Sarah Rotich (Duty Manager)",
-  email: "admin@hotelkalya.com",
-  phone: "+254 719 766649",
-  role: "staff",
-  createdAt: "2026-08-01T08:00:00Z",
-};
+const ROLE_STORAGE_KEY = "hotel_kalya_active_staff_role";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserProfile | null>(() => {
     if (typeof window === "undefined") return null;
     try {
       const stored = localStorage.getItem(AUTH_STORAGE_KEY);
-      return stored ? JSON.parse(stored) : null;
+      return stored ? JSON.parse(stored) : DEMO_ACCOUNTS.admin;
     } catch {
-      return null;
+      return DEMO_ACCOUNTS.admin;
     }
   });
+
+  const [activeStaffRole, setActiveStaffRoleState] = useState<string>(() => {
+    if (typeof window === "undefined") return "ADMIN";
+    try {
+      const storedRole = localStorage.getItem(ROLE_STORAGE_KEY);
+      if (storedRole) return storedRole;
+      return user?.staffRole || "ADMIN";
+    } catch {
+      return "ADMIN";
+    }
+  });
+
   const [isLoading, setIsLoading] = useState(false);
+
+  const setActiveStaffRole = (role: string) => {
+    setActiveStaffRoleState(role);
+    try {
+      localStorage.setItem(ROLE_STORAGE_KEY, role);
+    } catch {
+      // ignore
+    }
+  };
+
+  const switchAccount = (accountKey: string) => {
+    const acc = DEMO_ACCOUNTS[accountKey];
+    if (acc) {
+      setUser(acc);
+      if (acc.staffRole) {
+        setActiveStaffRole(acc.staffRole);
+      }
+      try {
+        localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(acc));
+      } catch {
+        // ignore
+      }
+    }
+  };
 
   const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     setIsLoading(true);
     try {
-      // Simulate network verification delay
-      await new Promise((resolve) => setTimeout(resolve, 600));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       if (!email || !password) {
         return { success: false, error: "Please provide both email and password." };
       }
 
-      // Check if password has minimum length
-      if (password.length < 6) {
-        return { success: false, error: "Password must be at least 6 characters long." };
+      if (password.length < 4) {
+        return { success: false, error: "Password must be at least 4 characters long." };
       }
 
-      // If demo admin, demo user or saved credentials
-      let authenticatedUser: UserProfile;
-      if (email.toLowerCase() === DEMO_ADMIN.email.toLowerCase()) {
-        authenticatedUser = DEMO_ADMIN;
-      } else if (email.toLowerCase() === DEMO_USER.email.toLowerCase()) {
-        authenticatedUser = DEMO_USER;
-      } else {
-        authenticatedUser = {
+      const lowerEmail = email.toLowerCase().trim();
+      let matchedUser: UserProfile | null = null;
+
+      for (const key of Object.keys(DEMO_ACCOUNTS)) {
+        if (DEMO_ACCOUNTS[key].email.toLowerCase() === lowerEmail) {
+          matchedUser = DEMO_ACCOUNTS[key];
+          break;
+        }
+      }
+
+      if (!matchedUser) {
+        matchedUser = {
           id: "usr_" + Math.random().toString(36).substring(2, 9),
           name: email.split("@")[0].replace(/[._]/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()),
-          email: email.toLowerCase(),
-          role: "guest",
+          email: lowerEmail,
+          role: lowerEmail.includes("admin") ? "admin" : lowerEmail.includes("staff") ? "staff" : "guest",
+          staffRole: lowerEmail.includes("admin") ? "ADMIN" : undefined,
           createdAt: new Date().toISOString(),
         };
       }
 
-      setUser(authenticatedUser);
-      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(authenticatedUser));
+      setUser(matchedUser);
+      if (matchedUser.staffRole) {
+        setActiveStaffRole(matchedUser.staffRole);
+      }
+      try {
+        localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(matchedUser));
+      } catch {
+        // ignore
+      }
+
       return { success: true };
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Authentication failed.";
@@ -99,14 +211,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   ): Promise<{ success: boolean; error?: string }> => {
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 600));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       if (!name || !email || !password) {
         return { success: false, error: "All required fields must be filled." };
-      }
-
-      if (password.length < 6) {
-        return { success: false, error: "Password must be at least 6 characters long." };
       }
 
       const newUser: UserProfile = {
@@ -119,33 +227,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       };
 
       setUser(newUser);
-      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(newUser));
+      try {
+        localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(newUser));
+      } catch {
+        // ignore
+      }
+
       return { success: true };
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Registration failed.";
+      const errorMessage = err instanceof Error ? err.message : "Signup failed.";
       return { success: false, error: errorMessage };
     } finally {
       setIsLoading(false);
     }
   };
 
-  const logout = async () => {
+  const logout = async (): Promise<void> => {
     setUser(null);
     try {
       localStorage.removeItem(AUTH_STORAGE_KEY);
     } catch {
-      // Ignore
+      // ignore
     }
   };
 
-  const updateProfile = async (details: Partial<UserProfile>) => {
+  const updateProfile = async (details: Partial<UserProfile>): Promise<void> => {
     if (!user) return;
     const updated = { ...user, ...details };
     setUser(updated);
     try {
       localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(updated));
     } catch {
-      // Ignore
+      // ignore
     }
   };
 
@@ -154,10 +267,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       value={{
         user,
         isLoading,
+        activeStaffRole,
+        setActiveStaffRole,
         login,
         signup,
         logout,
         updateProfile,
+        switchAccount,
       }}
     >
       {children}
