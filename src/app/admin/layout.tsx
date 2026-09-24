@@ -14,6 +14,8 @@ import {
   X,
   LogOut,
   Bell,
+  FileText,
+  ClipboardList,
 } from "lucide-react";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { useAuth } from "@/context/AuthContext";
@@ -24,6 +26,8 @@ const ADMIN_NAV = [
   { label: "Reservations Desk", href: "/admin/reservations", icon: Calendar },
   { label: "Kitchen Display (KDS)", href: "/admin/orders", icon: UtensilsCrossed },
   { label: "Rooms & Inventory", href: "/admin/rooms", icon: Bed },
+  { label: "Guest Inquiries & Form Fills", href: "/admin/inquiries", icon: ClipboardList },
+  { label: "Project Docs & PDF Exports", href: "/admin/documents", icon: FileText },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -32,9 +36,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] text-[#1E0B0F] flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-[#F8F9FA] text-[#1E0B0F] flex flex-col lg:flex-row print:block print:bg-white">
       {/* Mobile Top Bar */}
-      <div className="lg:hidden bg-brand-maroon text-white p-4 px-5 flex items-center justify-between shadow-md sticky top-0 z-40">
+      <div className="lg:hidden bg-brand-maroon text-white p-4 px-5 flex items-center justify-between shadow-md sticky top-0 z-40 print:hidden">
         <div className="flex items-center gap-3">
           <button
             type="button"
@@ -59,7 +63,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar Navigation */}
       <aside
         className={cn(
-          "w-72 bg-brand-maroon-dark text-white flex-shrink-0 flex flex-col justify-between fixed lg:sticky top-0 h-screen z-50 transition-transform duration-200 border-r border-brand-maroon/20",
+          "w-72 bg-brand-maroon-dark text-white flex-shrink-0 flex flex-col justify-between fixed lg:sticky top-0 h-screen z-50 transition-transform duration-200 border-r border-brand-maroon/20 print:hidden",
           mobileNavOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
@@ -138,7 +142,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Main Content Pane */}
       <main className="flex-1 flex flex-col min-w-0 min-h-screen">
         {/* Top Header Bar for Desktop */}
-        <header className="hidden lg:flex items-center justify-between h-20 px-8 bg-white border-b border-gray-200/80 sticky top-0 z-30 shadow-sm">
+        <header className="hidden lg:flex items-center justify-between h-20 px-8 bg-white border-b border-gray-200/80 sticky top-0 z-30 shadow-sm print:hidden">
           <div>
             <h2 className="text-lg font-bold text-brand-maroon">
               Hotel Kalya — Front Desk Operations
@@ -170,7 +174,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </header>
 
         {/* Nested Page Body */}
-        <div className="p-5 sm:p-8 flex-1">
+        <div className="p-5 sm:p-8 flex-1 print:p-0 print:m-0">
           {children}
         </div>
       </main>

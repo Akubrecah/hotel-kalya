@@ -10,13 +10,18 @@ import {
   ArrowRight,
   TrendingUp,
   RefreshCw,
+  FileText,
+  ClipboardList,
+  Printer,
 } from "lucide-react";
 import { ReservationRecord } from "@/app/api/bookings/route";
 import { FoodOrder } from "@/types";
+import { InquiryRecord } from "@/app/api/inquiries/route";
 
 export default function AdminDashboardPage() {
   const [reservations, setReservations] = useState<ReservationRecord[]>([]);
   const [orders, setOrders] = useState<FoodOrder[]>([]);
+  const [inquiries, setInquiries] = useState<InquiryRecord[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,11 +29,13 @@ export default function AdminDashboardPage() {
     Promise.all([
       fetch("/api/bookings").then((r) => r.json()),
       fetch("/api/orders").then((r) => r.json()),
+      fetch("/api/inquiries").then((r) => r.json()),
     ])
-      .then(([resData, ordData]) => {
+      .then(([resData, ordData, inqData]) => {
         if (!mounted) return;
         if (resData?.success) setReservations(resData.reservations);
         if (ordData?.success) setOrders(ordData.orders);
+        if (inqData?.success) setInquiries(inqData.inquiries);
         setLoading(false);
       })
       .catch(() => {
@@ -45,10 +52,12 @@ export default function AdminDashboardPage() {
     Promise.all([
       fetch("/api/bookings").then((r) => r.json()),
       fetch("/api/orders").then((r) => r.json()),
+      fetch("/api/inquiries").then((r) => r.json()),
     ])
-      .then(([resData, ordData]) => {
+      .then(([resData, ordData, inqData]) => {
         if (resData?.success) setReservations(resData.reservations);
         if (ordData?.success) setOrders(ordData.orders);
+        if (inqData?.success) setInquiries(inqData.inquiries);
         setLoading(false);
       })
       .catch(() => {
@@ -292,6 +301,99 @@ export default function AdminDashboardPage() {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* Row 3: Guest Inquiries & Form Fills Quick Log */}
+      <div className="bg-white rounded-2xl p-6 sm:p-7 border border-gray-200/80 shadow-sm space-y-5">
+        <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+          <div>
+            <div className="flex items-center gap-2">
+              <ClipboardList className="w-5 h-5 text-brand-maroon" />
+              <h3 className="font-serif font-bold text-lg text-brand-maroon">
+                Latest Guest Inquiries &amp; Form Submissions
+              </h3>
+            </div>
+            <p className="text-xs text-gray-500 mt-0.5">
+              Unified log of customer room requests, catering inquiries, table QR orders, and client intake forms
+            </p>
+          </div>
+
+          <Link
+            href="/admin/inquiries"
+            className="text-xs font-bold text-brand-maroon hover:text-brand-amber-dark flex items-center gap-1 transition-colors"
+          >
+            <span>All Form Fills ({inquiries.length})</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {inquiries.slice(0, 3).map((inq) => (
+            <div
+              key={inq.id}
+              className="p-4 rounded-xl border border-gray-100 bg-brand-cream/30 space-y-3 text-xs flex flex-col justify-between"
+            >
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono font-bold text-brand-maroon">{inq.id}</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider bg-white border border-gray-200 text-gray-700">
+                    {inq.type}
+                  </span>
+                </div>
+                <div className="font-bold text-gray-900 truncate">{inq.name}</div>
+                <p className="text-[11px] text-gray-600 line-clamp-2">{inq.subject}</p>
+              </div>
+
+              <div className="flex items-center justify-between pt-2 border-t border-brand-maroon/5">
+                <span className="text-[10px] text-gray-400">Status: {inq.status}</span>
+                <Link
+                  href="/admin/inquiries"
+                  className="inline-flex items-center gap-1 text-[11px] font-bold text-brand-maroon hover:underline"
+                >
+                  <Printer className="w-3 h-3 text-brand-amber" />
+                  <span>Print Slip</span>
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Row 4: Project Documentation & Delivery Framework Banner */}
+      <div className="bg-gradient-to-r from-brand-maroon-dark to-brand-maroon text-white rounded-2xl p-6 sm:p-8 shadow-lg border border-brand-amber/30 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <span className="px-2.5 py-0.5 rounded-full bg-brand-amber text-brand-maroon font-black text-[10px] uppercase tracking-wider">
+              Standardized Delivery Pack
+            </span>
+            <span className="text-xs text-brand-amber-light">32 Phases • 45 Deliverables</span>
+          </div>
+          <h3 className="font-serif font-bold text-xl sm:text-2xl text-white">
+            Project Documentation &amp; PDF Delivery System
+          </h3>
+          <p className="text-xs sm:text-sm text-white/80 max-w-2xl leading-relaxed">
+            All 45 client onboarding, proposal, contract, architecture, QA, UAT, and handover documents
+            are formatted and ready for high-resolution A4 vector PDF export with official Hotel Kalya letterhead.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            href="/admin/documents"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-amber text-brand-maroon font-bold text-xs hover:bg-brand-amber-dark transition-all shadow-md"
+          >
+            <FileText className="w-4 h-4" />
+            <span>Open Document Center</span>
+          </Link>
+          <Link
+            href="/admin/documents/DOC-001/print?pack=hotel-kalya&autoPrint=true"
+            target="_blank"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-colors border border-white/20"
+          >
+            <Printer className="w-4 h-4 text-brand-amber" />
+            <span>Sample PDF Print</span>
+          </Link>
         </div>
       </div>
     </div>

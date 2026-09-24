@@ -40,6 +40,22 @@ export function ContactForm() {
 
     const waUrl = `https://wa.me/${BRAND.phoneClean}?text=${text}`;
 
+    // Post to admin inquiries API for real-time dashboard tracking & PDF records
+    fetch("/api/inquiries", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type: "contact",
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        subject: formData.subject,
+        details: { message: formData.message },
+        source: "Public Website Contact Page",
+        priority: "High",
+      }),
+    }).catch(() => {});
+
     setTimeout(() => {
       window.open(waUrl, "_blank", "noopener,noreferrer");
     }, 600);
