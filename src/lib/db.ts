@@ -29,13 +29,25 @@ async function ensureDataDir() {
   }
 }
 
-// Atomic file write using temporary swap file
+// Atomic file write using temporary swap file with random worker entropy
 async function writeJsonFile<T>(filename: string, data: T): Promise<void> {
   await ensureDataDir();
   const targetPath = path.join(DATA_DIR, filename);
-  const tempPath = path.join(DATA_DIR, `${filename}.tmp.${Date.now()}`);
-  await fs.writeFile(tempPath, JSON.stringify(data, null, 2), "utf-8");
-  await fs.rename(tempPath, targetPath);
+  const tempPath = path.join(
+    DATA_DIR,
+    `${filename}.tmp.${Date.now()}.${Math.random().toString(36).substring(2, 9)}`
+  );
+  try {
+    await fs.writeFile(tempPath, JSON.stringify(data, null, 2), "utf-8");
+    await fs.rename(tempPath, targetPath);
+  } catch {
+    try {
+      await fs.writeFile(targetPath, JSON.stringify(data, null, 2), "utf-8");
+      await fs.unlink(tempPath).catch(() => {});
+    } catch {
+      // ignore
+    }
+  }
 }
 
 // Safe file read with default fallback
@@ -46,8 +58,7 @@ async function readJsonFile<T>(filename: string, fallback: T): Promise<T> {
     const raw = await fs.readFile(filePath, "utf-8");
     return JSON.parse(raw) as T;
   } catch {
-    // If missing, seed file with fallback
-    await writeJsonFile(filename, fallback);
+    writeJsonFile(filename, fallback).catch(() => {});
     return fallback;
   }
 }
@@ -79,6 +90,7 @@ function generateSeedRooms(): Room[] {
       bedConfiguration: "1 Queen Bed",
       amenities: ["Free Wi-Fi", "Hot Shower", "Satellite TV", "Daily Housekeeping", "Balcony Access", "Work Desk"],
       basePrice: 5000,
+      publishStatus: "published",
       reservationStatus: isMaint ? "MAINTENANCE" : isOccupied ? "CHECKED-IN" : "AVAILABLE",
       housekeepingStatus: isMaint ? "OUT_OF_ORDER" : isDirty ? "DIRTY" : "READY",
       isActive: true,
@@ -106,6 +118,7 @@ function generateSeedRooms(): Room[] {
       bedConfiguration: "1 King Bed",
       amenities: ["Free High-speed Wi-Fi", "Smart Flat TV", "Complimentary Breakfast", "Working Desk", "Room Service", "Mini Fridge", "Coffee Station"],
       basePrice: 8500,
+      publishStatus: "published",
       reservationStatus: isOccupied ? "CHECKED-IN" : isReserved ? "RESERVED" : "AVAILABLE",
       housekeepingStatus: isCleaning ? "CLEANING" : isOccupied ? "READY" : "READY",
       isActive: true,
@@ -131,6 +144,7 @@ function generateSeedRooms(): Room[] {
       bedConfiguration: "1 King Bed + 1 Queen Bed",
       amenities: ["Private Veranda", "Free High-speed Wi-Fi", "Smart TV", "Complimentary Breakfast", "24/7 Security", "Direct Garden Access"],
       basePrice: 12500,
+      publishStatus: "published",
       reservationStatus: isOccupied ? "CHECKED-IN" : "AVAILABLE",
       housekeepingStatus: "READY",
       isActive: true,
@@ -156,6 +170,7 @@ function generateSeedRooms(): Room[] {
       bedConfiguration: "2 Double Beds",
       amenities: ["Equipped Kitchenette", "Lounge & Dining", "Dedicated Parking", "Garden Access", "24/7 Security", "Weekly Housekeeping"],
       basePrice: 9000,
+      publishStatus: "published",
       reservationStatus: isReserved ? "RESERVED" : "AVAILABLE",
       housekeepingStatus: "READY",
       isActive: true,
@@ -503,8 +518,12 @@ function generateSeedEvents(): EventBooking[] {
 
 // --- ROOMS ---
 
-export async function getRooms(): Promise<Room[]> {
-  return readJsonFile<Room[]>("rooms.json", generateSeedRooms());
+export async function getRooms(onlyPublished: boolean = false): Promise<Room[]> {
+  const rooms = await readJsonFile<Room[]>("rooms.json", generateSeedRooms());
+  if (onlyPublished) {
+    return rooms.filter((r) => !r.publishStatus || r.publishStatus === "published");
+  }
+  return rooms;
 }
 
 export async function getRoomById(id: string): Promise<Room | null> {
@@ -512,14 +531,86 @@ export async function getRoomById(id: string): Promise<Room | null> {
   return rooms.find((r) => r.id === id || r.roomNumber === id) || null;
 }
 
+export async function createRoom(data: Omit<Room, "id"> & { id?: string }): Promise<Room> {
+  const rooms = await getRooms();
+  const newRoom: Room = {
+    ...data,
+    id: data.id || `room-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+    publishStatus: data.publishStatus || "published",
+    reservationStatus: data.reservationStatus || "AVAILABLE",
+    housekeepingStatus: data.housekeepingStatus || "READY",
+    isActive: data.isActive !== undefined ? data.isActive : true,
+  };
+  rooms.push(newRoom);
+  await writeJsonFile("rooms.json", rooms);
+
+  await logAuditEvent({
+    userId: "admin",
+    userName: "System Administrator",
+    role: "ADMIN",
+    action: "CREATED_ROOM",
+    target: newRoom.roomNumber,
+    details: `Added new room ${newRoom.name} (${newRoom.roomNumber}) priced at KES ${newRoom.basePrice}`,
+  });
+
+  return newRoom;
+}
+
 export async function updateRoom(id: string, updates: Partial<Room>): Promise<Room | null> {
   const rooms = await getRooms();
   const index = rooms.findIndex((r) => r.id === id || r.roomNumber === id);
   if (index === -1) return null;
 
+  const old = rooms[index];
   rooms[index] = { ...rooms[index], ...updates };
   await writeJsonFile("rooms.json", rooms);
+
+  let details = `Updated room ${rooms[index].roomNumber}`;
+  if (updates.basePrice && updates.basePrice !== old.basePrice) {
+    details += ` - Price changed from KES ${old.basePrice} to KES ${updates.basePrice}`;
+  }
+  if (updates.publishStatus && updates.publishStatus !== old.publishStatus) {
+    details += ` - Publish status changed to ${updates.publishStatus}`;
+  }
+  if (updates.reservationStatus && updates.reservationStatus !== old.reservationStatus) {
+    details += ` - Reservation status changed to ${updates.reservationStatus}`;
+  }
+  if (updates.housekeepingStatus && updates.housekeepingStatus !== old.housekeepingStatus) {
+    details += ` - Housekeeping status changed to ${updates.housekeepingStatus}`;
+  }
+
+  await logAuditEvent({
+    userId: "admin",
+    userName: "System Administrator",
+    role: "ADMIN",
+    action: "UPDATED_ROOM",
+    target: rooms[index].roomNumber,
+    details,
+  });
+
   return rooms[index];
+}
+
+export async function deleteRoom(id: string): Promise<{ success: boolean; error?: string }> {
+  const rooms = await getRooms();
+  const idx = rooms.findIndex((r) => r.id === id || r.roomNumber === id);
+  if (idx === -1) {
+    return { success: false, error: "Room not found" };
+  }
+  const removed = rooms[idx];
+  rooms.splice(idx, 1);
+  await writeJsonFile("rooms.json", rooms);
+
+  await logAuditEvent({
+    userId: "admin",
+    userName: "System Administrator",
+    role: "ADMIN",
+    action: "DELETED_ROOM",
+    target: removed.roomNumber,
+    details: `Deleted room ${removed.name} (${removed.roomNumber})`,
+  });
+
+  return { success: true };
 }
 
 // --- DOUBLE-BOOKING PREVENTION & AVAILABILITY ENGINE ---
@@ -1431,4 +1522,7 @@ export async function deleteRole(id: string): Promise<{ success: boolean; error?
 
   return { success: true };
 }
+
+// Re-export all dynamic CMS database methods
+export * from "./cms-db";
 

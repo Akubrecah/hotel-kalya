@@ -108,6 +108,7 @@ export const NAV_LINKS: NavLinkItem[] = [
   { label: "Availability", href: "/availability" },
   { label: "Services", href: "/services", hasDropdown: true, dropdownType: "services" },
   { label: "Menu", href: "/menu", hasDropdown: true, dropdownType: "menu" },
+  { label: "Offers", href: "/offers" },
   { label: "Events", href: "/events" },
   { label: "Gallery", href: "/gallery" },
   { label: "Reviews", href: "/reviews" },

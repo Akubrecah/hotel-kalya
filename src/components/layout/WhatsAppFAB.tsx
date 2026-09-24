@@ -1,12 +1,34 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { MessageCircle } from "lucide-react";
 import { BRAND } from "@/lib/constants";
 
 export function WhatsAppFAB() {
+  const [waNumber, setWaNumber] = useState(BRAND.phoneClean);
+
+  useEffect(() => {
+    async function loadSettings() {
+      try {
+        const res = await fetch("/api/settings");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.settings?.officialWhatsApp) {
+            setWaNumber(data.settings.officialWhatsApp.replace(/\D/g, ""));
+          } else if (data.settings?.phone) {
+            setWaNumber(data.settings.phone.replace(/\D/g, ""));
+          }
+        }
+      } catch {
+        // Fallback to default
+      }
+    }
+    loadSettings();
+  }, []);
+
   return (
     <a
-      href={`https://wa.me/${BRAND.phoneClean}?text=Hello%20Hotel%20Kalya,%20I%20am%20reaching%20out%20via%20your%20website%20to%20enquire%20about%20booking.`}
+      href={`https://wa.me/${waNumber}?text=Hello%20Hotel%20Kalya,%20I%20am%20reaching%20out%20via%20your%20website%20to%20enquire%20about%20booking.`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Direct WhatsApp Booking"

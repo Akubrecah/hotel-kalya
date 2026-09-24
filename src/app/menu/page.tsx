@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import {
   Utensils,
@@ -11,21 +11,16 @@ import {
   Wine,
   Star,
   ArrowRight,
+  Clock,
+  Sparkles,
+  AlertCircle,
+  RefreshCw,
 } from "lucide-react";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { MenuItemCard } from "@/components/menu/MenuItemCard";
-import { MENU_ITEMS } from "@/lib/menu-data";
 import { useCart } from "@/context/CartContext";
 import { MenuItem } from "@/types";
-
-const CATEGORY_TABS: { id: string; label: string; href?: string; icon: React.ElementType }[] = [
-  { id: "all", label: "All Items", icon: Utensils },
-  { id: "breakfast", label: "Breakfast", href: "/menu/breakfast", icon: Coffee },
-  { id: "lunch", label: "Lunch", href: "/menu/lunch", icon: Utensils },
-  { id: "dinner", label: "Dinner", href: "/menu/dinner", icon: Flame },
-  { id: "drinks", label: "Drinks & Refreshments", href: "/menu/drinks", icon: Wine },
-  { id: "specials", label: "Chef's Specials", href: "/menu/specials", icon: Star },
-];
+import { MenuItemEntity, MenuCategoryEntity } from "@/types/hospitality";
 
 const DIETARY_FILTERS = ["All", "Chef Special", "Halal", "Farm to Table", "Vegetarian", "Gluten-Free"];
 
@@ -37,16 +32,75 @@ export default function MenuPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedDietary, setSelectedDietary] = useState<string>("All");
 
+  const [menuItems, setMenuItems] = useState<MenuItemEntity[]>([]);
+  const [categories, setCategories] = useState<MenuCategoryEntity[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        setLoading(true);
+        setError(null);
+        const [itemsRes, catsRes] = await Promise.all([
+          fetch("/api/menu?published=true"),
+          fetch("/api/menu/categories"),
+        ]);
+
+        if (!itemsRes.ok || !catsRes.ok) {
+          throw new Error("Unable to load latest menu from CMS");
+        }
+
+        const itemsData = await itemsRes.json();
+        const catsData = await catsRes.json();
+
+        setMenuItems(itemsData.items || []);
+        setCategories(catsData.categories || []);
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : "Failed to load menu items");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadData();
+  }, []);
+
+  const dynamicTabs = useMemo(() => {
+    const tabs = [{ id: "all", label: "All Items", icon: Utensils }];
+    categories.forEach((cat) => {
+      let icon = Utensils;
+      const slug = cat.slug.toLowerCase();
+      if (slug.includes("breakfast") || slug.includes("coffee") || slug.includes("tea")) {
+        icon = Coffee;
+      } else if (slug.includes("dinner") || slug.includes("special") || slug.includes("grill")) {
+        icon = Flame;
+      } else if (slug.includes("drink") || slug.includes("beverage") || slug.includes("juice")) {
+        icon = Wine;
+      } else if (slug.includes("chef") || slug.includes("star")) {
+        icon = Star;
+      }
+      tabs.push({
+        id: cat.slug,
+        label: cat.label,
+        icon,
+      });
+    });
+    return tabs;
+  }, [categories]);
+
   const filteredItems = useMemo(() => {
-    return MENU_ITEMS.filter((item) => {
+    return menuItems.filter((item) => {
       // Search matching
       const matchesSearch =
         item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchQuery.toLowerCase());
+        item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (item.ingredients && item.ingredients.some((i) => i.toLowerCase().includes(searchQuery.toLowerCase())));
 
       // Category matching
       const matchesCategory =
-        selectedCategory === "all" || item.category === selectedCategory;
+        selectedCategory === "all" ||
+        item.category.toLowerCase() === selectedCategory.toLowerCase();
 
       // Dietary matching
       const matchesDietary =
@@ -55,7 +109,7 @@ export default function MenuPage() {
 
       return matchesSearch && matchesCategory && matchesDietary;
     });
-  }, [searchQuery, selectedCategory, selectedDietary]);
+  }, [menuItems, searchQuery, selectedCategory, selectedDietary]);
 
   return (
     <div className="bg-white min-h-screen pb-24">
@@ -140,9 +194,9 @@ export default function MenuPage() {
             </div>
           </div>
 
-          {/* Category Tabs */}
+          {/* Dynamic Category Tabs */}
           <div className="flex items-center gap-2 overflow-x-auto pt-1 pb-1 scrollbar-none">
-            {CATEGORY_TABS.map((tab) => {
+            {dynamicTabs.map((tab) => {
               const IconComp = tab.icon;
               const active = selectedCategory === tab.id;
               return (
@@ -176,13 +230,36 @@ export default function MenuPage() {
                 href={`/menu/${selectedCategory}`}
                 className="text-xs font-bold text-brand-maroon hover:underline flex items-center gap-1"
               >
-                <span>View Dedicated {CATEGORY_TABS.find((t) => t.id === selectedCategory)?.label} Page</span>
+                <span>View Dedicated {dynamicTabs.find((t) => t.id === selectedCategory)?.label} Page</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             )}
           </div>
 
-          {filteredItems.length === 0 ? (
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="animate-pulse bg-white rounded-2xl border border-gray-100 p-4 space-y-4">
+                  <div className="bg-gray-200 h-48 rounded-xl w-full" />
+                  <div className="h-4 bg-gray-200 rounded w-3/4" />
+                  <div className="h-3 bg-gray-100 rounded w-full" />
+                  <div className="h-8 bg-gray-200 rounded-lg w-full" />
+                </div>
+              ))}
+            </div>
+          ) : error ? (
+            <div className="text-center py-16 bg-red-50 rounded-2xl border border-red-200 p-8">
+              <AlertCircle className="w-10 h-10 text-red-500 mx-auto mb-3" />
+              <h3 className="font-serif font-bold text-lg text-red-800">{error}</h3>
+              <button
+                onClick={() => window.location.reload()}
+                className="mt-4 px-4 py-2 rounded-lg bg-red-600 text-white text-xs font-bold inline-flex items-center gap-1.5"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>Reload Menu</span>
+              </button>
+            </div>
+          ) : filteredItems.length === 0 ? (
             <div className="text-center py-16 bg-brand-cream/40 rounded-2xl border border-brand-maroon/10 p-8">
               <Utensils className="w-10 h-10 text-brand-dark/40 mx-auto mb-3" />
               <h3 className="font-serif font-bold text-lg text-brand-maroon">No dishes match your filter</h3>
@@ -203,7 +280,7 @@ export default function MenuPage() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {filteredItems.map((item) => (
-                <MenuItemCard key={item.id} item={item} />
+                <MenuItemCard key={item.id} item={item as unknown as MenuItem} />
               ))}
             </div>
           )}

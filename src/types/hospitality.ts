@@ -6,10 +6,12 @@
 export type RoomReservationStatus =
   | "AVAILABLE"
   | "RESERVED"
+  | "OCCUPIED"
   | "CHECKED-IN"
   | "CHECKED-OUT"
   | "BLOCKED"
-  | "MAINTENANCE";
+  | "MAINTENANCE"
+  | "OUT_OF_ORDER";
 
 export type HousekeepingStatus =
   | "CLEAN"
@@ -54,6 +56,12 @@ export interface Room {
   bedConfiguration: string;
   amenities: string[];
   basePrice: number; // in KES per night
+  discountPrice?: number;
+  size?: string;
+  bedType?: string;
+  featured?: boolean;
+  featuredImage?: string;
+  publishStatus?: "published" | "draft" | "archived";
   seasonalPricing?: SeasonalPricing[];
   reservationStatus: RoomReservationStatus;
   housekeepingStatus: HousekeepingStatus;
@@ -61,6 +69,7 @@ export interface Room {
   outOfOrderReason?: string;
   maintenanceNotes?: string;
 }
+
 
 export interface Booking {
   id: string; // e.g. "RES-2026-000142"
@@ -252,4 +261,268 @@ export interface EventBooking {
   status: "INQUIRY" | "QUOTED" | "CONFIRMED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
   createdAt: string;
 }
+
+// =============================================================================
+// CMS & Dynamic Content Entities
+// =============================================================================
+
+export type PublishStatus = "published" | "draft" | "archived";
+
+export interface MenuCategoryEntity {
+  id: string;
+  slug: string;
+  label: string;
+  name?: string;
+  description: string;
+  order: number;
+  isActive: boolean;
+}
+
+export interface MenuItemEntity {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  discountPrice?: number;
+  category: string;
+  categoryLabel?: string;
+  image?: string;
+  imageUrl?: string;
+  images?: string[];
+  ingredients?: string[];
+  allergens?: string[];
+  portionSize?: string;
+  dietary?: string[];
+  prepTime?: string;
+  preparationTimeMinutes?: number;
+  available?: boolean;
+  isAvailable?: boolean;
+  isVegetarian?: boolean;
+  isVegan?: boolean;
+  featured?: boolean;
+  isFeatured?: boolean;
+  isSpicy?: boolean;
+  publishStatus: PublishStatus;
+  order?: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface GardenExperience {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  capacity: { minGuests: number; maxGuests: number };
+  pricing: { perDay: number; halfDay?: number; photographySession?: number };
+  images: string[];
+  featuredImage: string;
+  facilities: string[];
+  eventSuitability: string[];
+  features: string[];
+  openingHours: string;
+  bookingRequirements: string;
+  location: string;
+  publishStatus: PublishStatus;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface ConferenceHall {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  capacity: { minGuests: number; maxGuests: number };
+  dimensions?: string;
+  pricing: { fullDay: number; halfDay: number; hourly?: number; perDelegatePackage?: number };
+  images: string[];
+  featuredImage: string;
+  equipment: string[];
+  seatingConfigurations?: Array<{
+    layout: "Theatre" | "Classroom" | "U-Shape" | "Boardroom" | "Banquet" | "Cabaret";
+    capacity: number;
+    image?: string;
+  }>;
+  seatingLayouts?: Array<{
+    layoutName: string;
+    maxCapacity: number;
+    image?: string;
+  }>;
+  cateringAvailable?: boolean;
+  parkingAvailable?: boolean;
+  publishStatus: PublishStatus;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface EventSpace {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  capacity: { minGuests: number; maxGuests: number };
+  pricing: { basePrice?: number; baseHire?: number; perGuest?: number; perGuestPackage?: number };
+  images: string[];
+  featuredImage: string;
+  amenities: string[];
+  eventTypes?: string[];
+  suitableEventTypes?: string[];
+  cateringOptions: string[];
+  decorationOptions: string[];
+  bookingStatus?: string;
+  publishStatus: PublishStatus;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface CateringPackage {
+  id: string;
+  title?: string;
+  name?: string;
+  slug: string;
+  description: string;
+  pricePerPerson: number;
+  minGuests: number;
+  maxGuests?: number;
+  includedServices: string[];
+  menuSelections: string[];
+  equipment?: string[];
+  equipmentProvided?: string[];
+  staffServices?: string[];
+  staffProvided?: string[];
+  deliveryTerms: string;
+  eventTypes?: string[];
+  images: string[];
+  featuredImage: string;
+  publishStatus: PublishStatus;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface AirbnbApartment {
+  id: string;
+  name: string;
+  slug: string;
+  propertyType: string;
+  description: string;
+  bedrooms: number;
+  bathrooms: number;
+  capacity: number | { maxGuests: number; minGuests?: number };
+  pricePerNight: number;
+  pricing?: { perNight?: number; perMonth?: number };
+  amenities: string[];
+  houseRules: string[];
+  checkInTime: string;
+  checkOutTime: string;
+  images: string[];
+  featuredImage: string;
+  location: string;
+  bookingStatus?: "AVAILABLE" | "RESERVED" | "OCCUPIED" | "MAINTENANCE";
+  publishStatus: PublishStatus;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface HospitalityOffer {
+  id: string;
+  title: string;
+  slug?: string;
+  subtitle?: string;
+  description?: string;
+  category: "accommodation" | "dining" | "conference" | "wedding" | "weekend" | string;
+  originalPrice?: number;
+  offerPrice: number;
+  discountPercentage?: number;
+  discountBadge?: string;
+  validUntil: string;
+  inclusions: string[];
+  image?: string;
+  featuredImage?: string;
+  images?: string[];
+  publishStatus: PublishStatus;
+  featured?: boolean;
+  isFeatured?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface GalleryItem {
+  id: string;
+  title: string;
+  category: string;
+  imageUrl: string;
+  url?: string;
+  thumbnailUrl?: string;
+  altText: string;
+  caption?: string;
+  featured?: boolean;
+  isFeatured?: boolean;
+  publishStatus: PublishStatus;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface Announcement {
+  id: string;
+  title: string;
+  message: string;
+  bannerType: "info" | "promo" | "urgent" | "event" | "warning";
+  linkUrl?: string;
+  linkText?: string;
+  ctaText?: string;
+  ctaLink?: string;
+  targetAudience?: string;
+  publishStatus?: PublishStatus;
+  isActive: boolean;
+  active?: boolean;
+  startDate?: string;
+  endDate?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface CustomerReview {
+  id: string;
+  authorName: string;
+  authorLocation?: string;
+  rating: number; // 1-5
+  date?: string;
+  category?: string;
+  comment: string;
+  source: "Google Reviews" | "TripAdvisor" | "Direct Guest Feedback" | "Google" | "Verified Guest" | string;
+  isApproved: boolean;
+  isFeatured: boolean;
+  serviceType?: string;
+  stayDate?: string;
+  publishStatus?: PublishStatus;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface HotelSettings {
+  name: string;
+  tagline: string;
+  officialWhatsApp: string;
+  primaryPhone: string;
+  secondaryPhone: string;
+  phone?: string;
+  phoneClean?: string;
+  email: string;
+  address: string;
+  coordinates: { lat: number; lng: number };
+  latitude?: number;
+  longitude?: number;
+  googleMapsEmbedUrl: string;
+  googleMapsDirectionsUrl: string;
+  checkInTime: string;
+  checkOutTime: string;
+  receptionHours: string;
+  restaurantHours: string;
+  operatingHours?: { reception: string; restaurant: string };
+  wifiNetwork: string;
+  updatedAt?: string;
+}
+
+
 

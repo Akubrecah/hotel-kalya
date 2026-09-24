@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { BRAND, IMAGES, ACCOMMODATION_ROOMS } from "@/lib/constants";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { getRooms } from "@/lib/db";
 
 export const metadata: Metadata = {
   title: "Accommodation — Executive Suites, Rooms & Cottages in Kapenguria",
@@ -41,7 +42,9 @@ const POLICIES = [
   { title: "Room Service", detail: "Available 24 hours upon request" },
 ];
 
-export default function AccommodationServicePage() {
+export default async function AccommodationServicePage() {
+  const cmsRooms = await getRooms(true);
+  const displayRooms = cmsRooms.length > 0 ? cmsRooms : [];
   return (
     <>
       {/* LodgingBusiness JSON-LD Schema */}
@@ -125,77 +128,83 @@ export default function AccommodationServicePage() {
       {/* Room Listings */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-          {ACCOMMODATION_ROOMS.map((room, idx) => (
-            <div
-              key={room.id}
-              className={`grid grid-cols-1 lg:grid-cols-2 gap-10 items-center ${
-                idx % 2 !== 0 ? "lg:flex-row-reverse" : ""
-              }`}
-            >
-              <div className={idx % 2 !== 0 ? "lg:order-2" : ""}>
-                <div className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-brand-amber-light h-72 sm:h-96">
-                  <Image
-                    src={room.image}
-                    alt={room.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                  />
-                  <div className="absolute top-4 left-4 bg-brand-maroon-dark text-brand-amber px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow">
-                    {room.tag}
+          {displayRooms.map((room, idx) => {
+            const imageSrc = room.featuredImage || room.images?.[0] || IMAGES.deluxeSuite;
+            return (
+              <div
+                key={room.id}
+                className={`grid grid-cols-1 lg:grid-cols-2 gap-10 items-center ${
+                  idx % 2 !== 0 ? "lg:flex-row-reverse" : ""
+                }`}
+              >
+                <div className={idx % 2 !== 0 ? "lg:order-2" : ""}>
+                  <div className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-brand-amber-light h-72 sm:h-96">
+                    <Image
+                      src={imageSrc}
+                      alt={room.name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                    />
+                    <div className="absolute top-4 left-4 bg-brand-maroon-dark text-brand-amber px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow">
+                      #{room.roomNumber} • {room.type}
+                    </div>
+                  </div>
+                </div>
+
+                <div className={`space-y-4 ${idx % 2 !== 0 ? "lg:order-1" : ""}`}>
+                  <span className="text-xs font-bold text-brand-sage uppercase tracking-widest">
+                    {room.type}
+                  </span>
+                  <h2 className="font-serif text-2xl sm:text-3xl font-extrabold text-brand-maroon-dark">
+                    {room.name}
+                  </h2>
+                  <div className="flex items-center gap-4 text-xs text-gray-600">
+                    <span className="bg-brand-amber-light/50 px-2.5 py-0.5 rounded font-medium">
+                      Max {room.capacity.maxGuests} Guests
+                    </span>
+                    <span className="bg-brand-amber-light/50 px-2.5 py-0.5 rounded font-medium">
+                      {room.bedConfiguration || room.bedType || "1 Bed"}
+                    </span>
+                    <span className="bg-brand-maroon text-brand-amber px-2.5 py-0.5 rounded font-mono font-bold">
+                      KES {room.basePrice.toLocaleString()} / night
+                    </span>
+                  </div>
+                  <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
+                    {room.description}
+                  </p>
+
+                  <div className="flex flex-wrap gap-2">
+                    {room.amenities.map((amenity, i) => (
+                      <span
+                        key={i}
+                        className="flex items-center gap-1.5 text-xs bg-brand-cream border border-brand-amber-light text-gray-700 px-3 py-1.5 rounded-lg"
+                      >
+                        <CheckCircle2 className="w-3 h-3 text-brand-amber" />
+                        {amenity}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-wrap gap-3 pt-3">
+                    <Link
+                      href={`/booking?roomId=${encodeURIComponent(room.id)}`}
+                      className="bg-brand-maroon hover:bg-brand-maroon-dark text-brand-amber px-7 py-3 rounded-full text-xs font-bold uppercase tracking-wider shadow transition-all flex items-center gap-2"
+                    >
+                      <span>Book Room</span>
+                      <ChevronRight className="w-4 h-4" />
+                    </Link>
+                    <a
+                      href={`tel:${BRAND.phone}`}
+                      className="border border-brand-maroon text-brand-maroon px-5 py-3 rounded-full text-xs font-semibold flex items-center gap-2 hover:bg-brand-amber-light transition-colors"
+                    >
+                      <Phone className="w-3.5 h-3.5" /> Call: {BRAND.phone}
+                    </a>
                   </div>
                 </div>
               </div>
-
-              <div className={`space-y-4 ${idx % 2 !== 0 ? "lg:order-1" : ""}`}>
-                <span className="text-xs font-bold text-brand-sage uppercase tracking-widest">
-                  {room.type}
-                </span>
-                <h2 className="font-serif text-2xl sm:text-3xl font-extrabold text-brand-maroon-dark">
-                  {room.name}
-                </h2>
-                <div className="flex items-center gap-4 text-xs text-gray-600">
-                  <span className="bg-brand-amber-light/50 px-2.5 py-0.5 rounded font-medium">
-                    {room.capacity}
-                  </span>
-                  <span className="bg-brand-amber-light/50 px-2.5 py-0.5 rounded font-medium">
-                    {room.bed}
-                  </span>
-                </div>
-                <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
-                  {room.desc}
-                </p>
-
-                <div className="flex flex-wrap gap-2">
-                  {room.amenities.map((amenity, i) => (
-                    <span
-                      key={i}
-                      className="flex items-center gap-1.5 text-xs bg-brand-cream border border-brand-amber-light text-gray-700 px-3 py-1.5 rounded-lg"
-                    >
-                      <CheckCircle2 className="w-3 h-3 text-brand-amber" />
-                      {amenity}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex flex-wrap gap-3 pt-3">
-                  <Link
-                    href={`/book?service=Accommodation&room=${encodeURIComponent(room.name)}`}
-                    className="bg-brand-maroon hover:bg-brand-maroon-dark text-brand-amber px-7 py-3 rounded-full text-xs font-bold uppercase tracking-wider shadow transition-all flex items-center gap-2"
-                  >
-                    <span>Book This Room</span>
-                    <ChevronRight className="w-4 h-4" />
-                  </Link>
-                  <a
-                    href={`tel:${BRAND.phone}`}
-                    className="border border-brand-maroon text-brand-maroon px-5 py-3 rounded-full text-xs font-semibold flex items-center gap-2 hover:bg-brand-amber-light transition-colors"
-                  >
-                    <Phone className="w-3.5 h-3.5" /> Call: {BRAND.phone}
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 

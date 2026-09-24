@@ -1,0 +1,140 @@
+[
+  {
+    "id": "cat-pkg-summit",
+    "title": "Executive Summit Full-Course Buffet",
+    "slug": "executive-summit-buffet",
+    "description": "Our signature catering spread for official functions, NGO symposiums, and ministerial delegations across West Pokot and Trans-Nzoia Counties.",
+    "pricePerPerson": 1800,
+    "minGuests": 50,
+    "maxGuests": 800,
+    "includedServices": [
+      "Professional uniformed buffet service crew",
+      "Insulated chaffing dishes & food warmers",
+      "Stainless steel cutlery, chinaware & glassware",
+      "Buffet table linen & decor skirts",
+      "Clean-up & waste handling post function"
+    ],
+    "menuSelections": [
+      "Starters: Creamy Butternut Squash Soup & Fresh Dinner Rolls",
+      "Main Proteins: Herb Roast Beef Medallions & Oven-Baked Kienyeji Chicken",
+      "Carbs: Fragrant Pilau Rice & Steamed Mukimo / Chapati",
+      "Greens: Sautéed Seasonal Pokot Greens & Tossed Garden Salad with House Vinaigrette",
+      "Dessert: Fresh Tropical Fruit Salad & Vanilla Bean Custard",
+      "Drinks: Spiced Kalya Masala Chai & Fresh Mint Infusion"
+    ],
+    "equipment": [
+      "Stainless Chaffing Dishes",
+      "Melamine Platters",
+      "Coffee Urns",
+      "Handwash Stations"
+    ],
+    "staffServices": [
+      "1 Head Chef",
+      "1 Banquet Captain",
+      "1 Waiter per 30 guests"
+    ],
+    "deliveryTerms": "Complimentary delivery within 25km of Kapenguria. Fuel surcharge applies beyond.",
+    "eventTypes": [
+      "County Summits",
+      "Corporate AGMs",
+      "Conferences",
+      "VIP Dinners"
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=900&q=80"
+    ],
+    "featuredImage": "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=900&q=80",
+    "publishStatus": "published",
+    "createdAt": "2026-08-01T00:00:00.000Z"
+  },
+  {
+    "id": "cat-pkg-royal-wedding",
+    "title": "Royal Banquet & Live BBQ Nyama Choma Spread",
+    "slug": "royal-banquet-bbq",
+    "description": "Grand outdoor feast featuring live-on-site open flame barbecue, whole roast goat, traditional delicacies, and decadent dessert spreads for memorable wedding banquets.",
+    "pricePerPerson": 2500,
+    "minGuests": 100,
+    "maxGuests": 2000,
+    "includedServices": [
+      "Live on-site charcoal barbecue grill masters",
+      "VIP bridal service & reserved presidential table service",
+      "Heavy-duty buffet marquees & buffet tables",
+      "Full crockery, cutlery & linen napkins"
+    ],
+    "menuSelections": [
+      "Live Carvery: Highland Goat Nyama Choma & Honey Glazed Pork Ribs",
+      "Traditional: Kienyeji Wet Fry Chicken & Tilapia Fillet with Lemon Butter",
+      "Carbs: Traditional Ugali (Brown & White), Vegetable Biryani, Soft Layered Chapati",
+      "Salads: Kachumbari with Avocado & Coriander, Coleslaw with Raisins",
+      "Dessert: Black Forest Gateau, Strawberry Mousse, Fresh Cut Watermelon & Pineapple"
+    ],
+    "equipment": [
+      "Commercial Charcoal Grills",
+      "Carvery Stations",
+      "Ice Boxes for Beverages"
+    ],
+    "staffServices": [
+      "Lead Grill Chef",
+      "Executive Sous Chef",
+      "Dedicated VIP Waiters"
+    ],
+    "deliveryTerms": "Transport van and mobile kitchen setup dispatched 3 hours prior to feast.",
+    "eventTypes": [
+      "Weddings",
+      "Traditional Ruracio / Koito",
+      "State Banquets",
+      "Anniversaries"
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80"
+    ],
+    "featuredImage": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=900&q=80",
+    "publishStatus": "published",
+    "createdAt": "2026-08-05T00:00:00.000Z"
+  },
+  {
+    "id": "cat-pkg-tea-break",
+    "title": "Highland High Tea & Morning Conference Bites",
+    "slug": "highland-high-tea",
+    "description": "Energizing mid-morning or afternoon refreshment package with freshly baked pastries, organic sweet roots, and signature spiced Kalya mountain tea.",
+    "pricePerPerson": 750,
+    "minGuests": 25,
+    "maxGuests": 500,
+    "includedServices": [
+      "Self-service beverage station with thermal pump pots",
+      "Porcelain teacups, saucers, and teaspoons",
+      "Napkins and serving tongs"
+    ],
+    "menuSelections": [
+      "Fresh Bakes: Golden Fried Beef Samosas, Spiced Mandazi, Vegetable Spring Rolls",
+      "Healthy Roots: Steamed Sweet Potatoes & Arrowroots (Nduma)",
+      "Beverages: Fresh Cow Milk Tea, Spiced Masala Chai, Barista Brewed Coffee, Fresh Passion Juice"
+    ],
+    "equipment": [
+      "Thermal Beverage Pumps",
+      "Pastry Baskets",
+      "Sugar & Sweetener Trays"
+    ],
+    "staffServices": [
+      "Beverage Attendant"
+    ],
+    "deliveryTerms": "Delivered hot in thermal insulated carriers 30 minutes prior to session.",
+    "eventTypes": [
+      "Board Meetings",
+      "Morning Workshops",
+      "Press Briefings"
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=900&q=80"
+    ],
+    "featuredImage": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80",
+    "publishStatus": "published",
+    "createdAt": "2026-08-10T00:00:00.000Z"
+  }
+]

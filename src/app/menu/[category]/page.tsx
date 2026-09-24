@@ -2,10 +2,13 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ShoppingBag } from "lucide-react";
+import { ArrowLeft, ShoppingBag, Utensils } from "lucide-react";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { MenuItemCard } from "@/components/menu/MenuItemCard";
-import { MENU_ITEMS, MENU_CATEGORIES } from "@/lib/menu-data";
+import { getMenuCategories, getMenuItems } from "@/lib/cms-db";
+import { MenuItem } from "@/types";
+
+export const dynamic = "force-dynamic";
 
 interface CategoryPageProps {
   params: Promise<{
@@ -14,14 +17,16 @@ interface CategoryPageProps {
 }
 
 export async function generateStaticParams() {
-  return MENU_CATEGORIES.map((cat) => ({
-    category: cat.id,
+  const categories = await getMenuCategories();
+  return categories.map((cat) => ({
+    category: cat.slug,
   }));
 }
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const { category } = await params;
-  const catData = MENU_CATEGORIES.find((c) => c.id === category);
+  const categories = await getMenuCategories();
+  const catData = categories.find((c) => c.slug.toLowerCase() === category.toLowerCase() || c.id === category);
 
   if (!catData) {
     return {
@@ -31,7 +36,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 
   return {
     title: `${catData.label} Menu — Farm-Fresh Dining in Kapenguria | Hotel Kalya`,
-    description: catData.description,
+    description: catData.description || `Browse our delicious ${catData.label} offerings at Hotel Kalya.`,
     openGraph: {
       title: `${catData.label} Menu | Hotel Kalya Kapenguria`,
       description: catData.description,
@@ -41,13 +46,14 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category } = await params;
-  const catData = MENU_CATEGORIES.find((c) => c.id === category);
+  const categories = await getMenuCategories();
+  const catData = categories.find((c) => c.slug.toLowerCase() === category.toLowerCase() || c.id === category);
 
   if (!catData) {
     notFound();
   }
 
-  const categoryItems = MENU_ITEMS.filter((item) => item.category === category);
+  const categoryItems = await getMenuItems(category, true);
 
   return (
     <div className="bg-white min-h-screen pb-20">
@@ -75,7 +81,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                 {catData.label} Selection
               </h1>
               <p className="mt-3 text-base sm:text-lg text-brand-dark/80 leading-relaxed">
-                {catData.description}
+                {catData.description || `Carefully prepared ${catData.label.toLowerCase()} selections from local ingredients in Kapenguria.`}
               </p>
             </div>
 
@@ -100,12 +106,12 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             >
               All Categories
             </Link>
-            {MENU_CATEGORIES.map((c) => (
+            {categories.map((c) => (
               <Link
                 key={c.id}
-                href={`/menu/${c.id}`}
+                href={`/menu/${c.slug}`}
                 className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
-                  c.id === category
+                  c.slug.toLowerCase() === category.toLowerCase()
                     ? "bg-brand-maroon text-white shadow-sm"
                     : "text-brand-dark/70 hover:bg-brand-cream hover:text-brand-maroon"
                 }`}
@@ -120,11 +126,27 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       {/* Items Grid */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {categoryItems.map((item) => (
-              <MenuItemCard key={item.id} item={item} />
-            ))}
-          </div>
+          {categoryItems.length === 0 ? (
+            <div className="text-center py-16 bg-brand-cream/40 rounded-2xl border border-brand-maroon/10 p-8">
+              <Utensils className="w-10 h-10 text-brand-dark/40 mx-auto mb-3" />
+              <h3 className="font-serif font-bold text-lg text-brand-maroon">No items available currently</h3>
+              <p className="text-xs text-brand-dark/60 mt-1 max-w-sm mx-auto">
+                Our kitchen is constantly rotating seasonal specialties. Please check back shortly or explore our other menu categories.
+              </p>
+              <Link
+                href="/menu"
+                className="mt-4 inline-block px-4 py-2 rounded-lg bg-brand-maroon text-white text-xs font-bold hover:bg-brand-maroon-dark transition-colors"
+              >
+                Browse All Menu Items
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {categoryItems.map((item) => (
+                <MenuItemCard key={item.id} item={item as unknown as MenuItem} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>

@@ -1,0 +1,475 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import {
+  Hotel,
+  Plus,
+  Search,
+  CheckCircle2,
+  Trash2,
+  Edit3,
+  X,
+  RefreshCw,
+  Globe,
+  Bed,
+  Bath,
+  Users,
+  ShieldAlert,
+  Clock,
+} from "lucide-react";
+import { AirbnbApartment } from "@/types/hospitality";
+import { useMounted } from "@/lib/useMounted";
+
+export default function AdminAirbnbPage() {
+  const mounted = useMounted();
+  const [apartments, setApartments] = useState<AirbnbApartment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingApt, setEditingApt] = useState<Partial<AirbnbApartment> | null>(null);
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3500);
+  };
+
+  const loadApartments = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/airbnb");
+      const data = await res.json();
+      if (data.success) {
+        setApartments(data.apartments || []);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadApartments();
+  }, []);
+
+  const handleOpenAdd = () => {
+    setEditingApt({
+      name: "",
+      slug: "",
+      propertyType: "2-Bedroom Serviced Apartment",
+      description: "",
+      bedrooms: 2,
+      bathrooms: 2,
+      capacity: { maxGuests: 4 },
+      pricePerNight: 9500,
+      images: ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=1200"],
+      featuredImage: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=1200",
+      amenities: ["Fully Equipped Kitchen", "High-Speed Wi-Fi", "Washing Machine", "Mountain Balcony", "Smart TV"],
+      houseRules: ["No smoking inside the unit", "Quiet hours after 10:00 PM", "No unauthorized commercial filming"],
+      checkInTime: "2:00 PM",
+      checkOutTime: "11:00 AM",
+      location: "Hotel Kalya Hillside Residences",
+      publishStatus: "published",
+    });
+    setIsModalOpen(true);
+  };
+
+  const handleOpenEdit = (apt: AirbnbApartment) => {
+    setEditingApt({ ...apt });
+    setIsModalOpen(true);
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingApt || !editingApt.name || !editingApt.pricePerNight) {
+      alert("Name and nightly price are required");
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const isNew = !editingApt.id;
+      const method = isNew ? "POST" : "PATCH";
+      const slug = editingApt.slug || editingApt.name.toLowerCase().replace(/[^a-z0-9]/g, "-");
+
+      const res = await fetch("/api/airbnb", {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...editingApt, slug }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setIsModalOpen(false);
+        showToast(isNew ? "Apartment listed & published!" : "Apartment updated!");
+        loadApartments();
+      } else {
+        alert("Failed to save: " + data.error);
+      }
+    } catch (err) {
+      alert("Error: " + String(err));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async (apt: AirbnbApartment) => {
+    if (!confirm(`Delete apartment "${apt.name}"?`)) return;
+    try {
+      const res = await fetch(`/api/airbnb?id=${encodeURIComponent(apt.id)}`, { method: "DELETE" });
+      const data = await res.json();
+      if (data.success) {
+        showToast(`Apartment deleted.`);
+        loadApartments();
+      }
+    } catch (err) {
+      alert("Error: " + String(err));
+    }
+  };
+
+  const handleTogglePublish = async (apt: AirbnbApartment) => {
+    const next = apt.publishStatus === "published" ? "draft" : "published";
+    try {
+      const res = await fetch("/api/airbnb", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: apt.id, publishStatus: next }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(`${apt.name} status: ${next.toUpperCase()}`);
+        loadApartments();
+      }
+    } catch (err) {
+      alert("Error: " + String(err));
+    }
+  };
+
+  const filtered = apartments.filter((a) =>
+    a.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    a.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (!mounted) {
+    return (
+      <div className="p-8 flex items-center justify-center min-h-[400px]">
+        <div className="w-8 h-8 border-4 border-brand-maroon/20 border-t-brand-maroon rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-4 sm:p-8 space-y-6 max-w-7xl mx-auto">
+      {toastMessage && (
+        <div className="fixed top-6 right-6 z-50 bg-brand-maroon text-brand-amber px-5 py-3 rounded-2xl shadow-2xl border border-brand-amber/30 flex items-center gap-3 animate-in fade-in slide-in-from-top-4">
+          <CheckCircle2 className="w-5 h-5 text-brand-amber" />
+          <span className="text-sm font-bold text-white">{toastMessage}</span>
+        </div>
+      )}
+
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 pb-5">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="px-2.5 py-1 rounded-full bg-brand-maroon/10 text-brand-maroon text-[11px] font-extrabold uppercase tracking-wider">
+              CMS Module 06
+            </span>
+            <span className="flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+              <Globe className="w-3 h-3" /> Live Airbnb Synced
+            </span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-serif font-black text-brand-maroon mt-1">
+            Airbnb &amp; Serviced Apartments CMS
+          </h1>
+          <p className="text-xs sm:text-sm text-gray-500">
+            Manage furnished apartments, long-stay residences, kitchen amenities, and check-in protocols.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleOpenAdd}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-maroon hover:bg-brand-maroon-dark text-brand-amber font-bold text-xs sm:text-sm shadow-md transition-all self-start sm:self-auto"
+        >
+          <Plus className="w-4 h-4" />
+          <span>Add Serviced Apartment</span>
+        </button>
+      </div>
+
+      {/* Search */}
+      <div className="relative">
+        <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+        <input
+          type="text"
+          placeholder="Search apartments by title, type, amenities..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full pl-9 pr-4 py-2 rounded-xl border border-gray-200 text-xs sm:text-sm focus:outline-none focus:border-brand-maroon bg-white"
+        />
+      </div>
+
+      {/* Grid */}
+      {loading ? (
+        <div className="p-12 text-center text-gray-400">
+          <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-2 text-brand-maroon" />
+          <p className="text-xs">Loading apartments registry...</p>
+        </div>
+      ) : filtered.length === 0 ? (
+        <div className="bg-white rounded-3xl p-12 text-center border border-gray-200 space-y-3">
+          <Hotel className="w-12 h-12 text-gray-300 mx-auto" />
+          <p className="text-sm font-bold text-gray-700">No serviced apartments found</p>
+          <button onClick={handleOpenAdd} className="text-xs text-brand-maroon font-bold underline">
+            List an apartment now
+          </button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filtered.map((apt) => {
+            const isLive = apt.publishStatus === "published";
+            return (
+              <div
+                key={apt.id}
+                className="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-all"
+              >
+                <div className="relative h-48 w-full bg-gray-100">
+                  <Image
+                    src={apt.featuredImage || apt.images[0]}
+                    alt={apt.name}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
+                  <div className="absolute top-3 right-3">
+                    <button
+                      type="button"
+                      onClick={() => handleTogglePublish(apt)}
+                      className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold backdrop-blur-sm shadow ${
+                        isLive ? "bg-emerald-600/90 text-white" : "bg-black/60 text-gray-300"
+                      }`}
+                    >
+                      {isLive ? "Published" : "Draft"}
+                    </button>
+                  </div>
+                  <div className="absolute bottom-3 left-3 right-3 text-white">
+                    <span className="text-[10px] uppercase font-bold text-brand-amber block">
+                      {apt.propertyType}
+                    </span>
+                    <h3 className="font-bold text-base leading-snug">{apt.name}</h3>
+                  </div>
+                </div>
+
+                <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                  <div className="space-y-3">
+                    <p className="text-xs text-gray-500 leading-relaxed line-clamp-3">
+                      {apt.description}
+                    </p>
+
+                    <div className="grid grid-cols-3 gap-2 text-center text-xs bg-gray-50 p-2.5 rounded-xl border border-gray-100 font-mono">
+                      <div>
+                        <span className="text-[10px] text-gray-400 font-sans block">Beds</span>
+                        <span className="font-bold text-gray-800">{apt.bedrooms} BR</span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-gray-400 font-sans block">Baths</span>
+                        <span className="font-bold text-gray-800">{apt.bathrooms} BA</span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-gray-400 font-sans block">Max Pax</span>
+                        <span className="font-bold text-gray-800">
+                          {typeof apt.capacity === "number" ? apt.capacity : apt.capacity?.maxGuests || 4}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between text-xs pt-1">
+                      <span className="text-gray-400">Nightly Rate:</span>
+                      <span className="font-black text-brand-maroon font-mono text-sm">
+                        KES {apt.pricePerNight.toLocaleString()}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
+                    <span className="text-[10px] text-gray-400 font-mono">In: {apt.checkInTime} • Out: {apt.checkOutTime}</span>
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenEdit(apt)}
+                        className="p-2 rounded-xl border border-gray-200 hover:bg-brand-maroon hover:text-white text-gray-600 transition-colors"
+                        title="Edit Apartment"
+                      >
+                        <Edit3 className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(apt)}
+                        className="p-2 rounded-xl border border-gray-200 hover:bg-red-500 hover:text-white text-gray-400 transition-colors"
+                        title="Delete Apartment"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* ADD / EDIT MODAL */}
+      {isModalOpen && editingApt && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-in fade-in">
+          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-gray-200 my-8 space-y-5">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+              <h3 className="font-serif text-xl font-bold text-gray-900">
+                {editingApt.id ? "Edit Apartment" : "List New Apartment"}
+              </h3>
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(false)}
+                className="p-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-500"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSave} className="space-y-4 text-xs sm:text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="font-bold text-gray-700 block mb-1">Apartment Name *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Kapenguria Hillside 2-Bedroom Haven"
+                    value={editingApt.name || ""}
+                    onChange={(e) => setEditingApt({ ...editingApt, name: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="font-bold text-gray-700 block mb-1">Property Type</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. 2-Bedroom Serviced Apartment"
+                    value={editingApt.propertyType || ""}
+                    onChange={(e) => setEditingApt({ ...editingApt, propertyType: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="font-bold text-gray-700 block mb-1">Description *</label>
+                <textarea
+                  rows={3}
+                  required
+                  placeholder="Overview of rooms, kitchen equipment, view, privacy..."
+                  value={editingApt.description || ""}
+                  onChange={(e) => setEditingApt({ ...editingApt, description: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                <div>
+                  <label className="font-bold text-gray-700 block mb-1">Bedrooms</label>
+                  <input
+                    type="number"
+                    min={1}
+                    value={editingApt.bedrooms || 1}
+                    onChange={(e) => setEditingApt({ ...editingApt, bedrooms: Number(e.target.value) })}
+                    className="w-full px-3 py-2 rounded-xl border border-gray-300 font-mono"
+                  />
+                </div>
+                <div>
+                  <label className="font-bold text-gray-700 block mb-1">Bathrooms</label>
+                  <input
+                    type="number"
+                    min={1}
+                    value={editingApt.bathrooms || 1}
+                    onChange={(e) => setEditingApt({ ...editingApt, bathrooms: Number(e.target.value) })}
+                    className="w-full px-3 py-2 rounded-xl border border-gray-300 font-mono"
+                  />
+                </div>
+                <div>
+                  <label className="font-bold text-gray-700 block mb-1">Max Guests</label>
+                  <input
+                    type="number"
+                    min={1}
+                    value={typeof editingApt.capacity === "number" ? editingApt.capacity : editingApt.capacity?.maxGuests || 4}
+                    onChange={(e) =>
+                      setEditingApt({ ...editingApt, capacity: Number(e.target.value) })
+                    }
+                    className="w-full px-3 py-2 rounded-xl border border-gray-300 font-mono"
+                  />
+                </div>
+                <div>
+                  <label className="font-bold text-gray-700 block mb-1">Nightly Price (KES) *</label>
+                  <input
+                    type="number"
+                    min={0}
+                    required
+                    value={editingApt.pricePerNight || 0}
+                    onChange={(e) => setEditingApt({ ...editingApt, pricePerNight: Number(e.target.value) })}
+                    className="w-full px-3 py-2 rounded-xl border border-gray-300 font-mono font-bold text-brand-maroon"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="font-bold text-gray-700 block mb-1">Featured Photo URL</label>
+                <input
+                  type="url"
+                  placeholder="https://images.unsplash.com/..."
+                  value={editingApt.featuredImage || ""}
+                  onChange={(e) =>
+                    setEditingApt({
+                      ...editingApt,
+                      featuredImage: e.target.value,
+                      images: [e.target.value],
+                    })
+                  }
+                  className="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs font-mono"
+                />
+              </div>
+
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-2xl border border-gray-200">
+                <span className="font-bold text-gray-700">Publish to Public Website</span>
+                <select
+                  value={editingApt.publishStatus || "published"}
+                  onChange={(e) => setEditingApt({ ...editingApt, publishStatus: e.target.value as any })}
+                  className="px-3 py-1.5 rounded-xl border border-gray-300 bg-white font-bold text-brand-maroon"
+                >
+                  <option value="published">Published (Live)</option>
+                  <option value="draft">Draft (Hidden)</option>
+                </select>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-4 py-2 rounded-xl border border-gray-200 text-gray-600 font-bold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="px-5 py-2 rounded-xl bg-brand-maroon text-brand-amber font-bold shadow-md"
+                >
+                  {saving ? "Saving..." : "Save Apartment"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

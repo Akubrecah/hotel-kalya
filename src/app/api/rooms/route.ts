@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getRooms, searchAvailableRooms, updateRoom } from "@/lib/db";
+import { getRooms, searchAvailableRooms, createRoom, updateRoom, deleteRoom } from "@/lib/db";
 
 export async function GET(request: NextRequest) {
   try {
@@ -9,6 +9,7 @@ export async function GET(request: NextRequest) {
     const guests = searchParams.get("guests") ? parseInt(searchParams.get("guests")!, 10) : undefined;
     const typeSlug = searchParams.get("typeSlug") || undefined;
     const status = searchParams.get("status") || undefined;
+    const onlyPublished = searchParams.get("published") === "true";
 
     // If date range is specified, run availability search
     if (checkIn && checkOut) {
@@ -19,24 +20,28 @@ export async function GET(request: NextRequest) {
         typeSlug,
       });
 
+      const filteredAvailable = onlyPublished
+        ? availableRooms.filter((r) => !r.publishStatus || r.publishStatus === "published")
+        : availableRooms;
+
       return NextResponse.json({
         success: true,
         checkIn,
         checkOut,
-        totalAvailable: availableRooms.length,
+        totalAvailable: filteredAvailable.length,
         totalUnavailable: unavailableRooms.length,
-        availableRooms,
+        availableRooms: filteredAvailable,
         unavailableRooms,
       });
     }
 
-    let rooms = await getRooms();
+    let rooms = await getRooms(onlyPublished);
 
     if (typeSlug && typeSlug !== "all") {
       rooms = rooms.filter((r) => r.typeSlug === typeSlug);
     }
     if (status && status !== "all") {
-      rooms = rooms.filter((r) => r.reservationStatus.toLowerCase() === status.toLowerCase());
+      rooms = rooms.filter((r) => r.reservationStatus?.toLowerCase() === status.toLowerCase());
     }
 
     return NextResponse.json({
@@ -62,14 +67,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const roomId = `room-${body.roomNumber.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
-    const newRoom = await updateRoom(roomId, {
-      id: roomId,
-      ...body,
-      reservationStatus: body.reservationStatus || "AVAILABLE",
-      housekeepingStatus: body.housekeepingStatus || "READY",
-      isActive: true,
-    });
+    const newRoom = await createRoom(body);
 
     return NextResponse.json({
       success: true,
@@ -82,3 +80,60 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const id = body.id || body.roomNumber;
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: "Missing room id or roomNumber." },
+        { status: 400 }
+      );
+    }
+
+    const updated = await updateRoom(id, body);
+    if (!updated) {
+      return NextResponse.json(
+        { success: false, error: "Room not found." },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      room: updated,
+    });
+  } catch (error) {
+    return NextResponse.json(
+      { success: false, error: "Failed to update room: " + String(error) },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: "Missing room ID." },
+        { status: 400 }
+      );
+    }
+
+    const result = await deleteRoom(id);
+    if (!result.success) {
+      return NextResponse.json(result, { status: 404 });
+    }
+
+    return NextResponse.json(result);
+  } catch (error) {
+    return NextResponse.json(
+      { success: false, error: "Failed to delete room: " + String(error) },
+      { status: 500 }
+    );
+  }
+}
+

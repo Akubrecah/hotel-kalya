@@ -3,6 +3,1531 @@
     "userId": "admin",
     "userName": "System Administrator",
     "role": "ADMIN",
+    "action": "UPDATED_HOTEL_SETTINGS",
+    "target": "Hotel Settings",
+    "details": "Updated hotel operational settings & contact details",
+    "id": "aud-1790264452654-235",
+    "timestamp": "2026-09-24T15:40:52.654Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_HOTEL_SETTINGS",
+    "target": "Hotel Settings",
+    "details": "Updated hotel operational settings & contact details",
+    "id": "aud-1790264452645-965",
+    "timestamp": "2026-09-24T15:40:52.645Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_REVIEW",
+    "target": "Grace Cherono (Guest)",
+    "details": "Deleted review from Grace Cherono (Guest)",
+    "id": "aud-1790264452626-582",
+    "timestamp": "2026-09-24T15:40:52.626Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_REVIEW",
+    "target": "Grace Cherono (Guest)",
+    "details": "Updated review by Grace Cherono (Guest) (Approved: true)",
+    "id": "aud-1790264452617-363",
+    "timestamp": "2026-09-24T15:40:52.617Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_REVIEW",
+    "target": "Grace Cherono (Guest)",
+    "details": "Recorded guest review from Grace Cherono (Guest) (5 stars)",
+    "id": "aud-1790264452606-80",
+    "timestamp": "2026-09-24T15:40:52.606Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_ANNOUNCEMENT",
+    "target": "Verification Live Band Sundowner",
+    "details": "Deleted announcement \"Verification Live Band Sundowner\"",
+    "id": "aud-1790264452599-950",
+    "timestamp": "2026-09-24T15:40:52.599Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_ANNOUNCEMENT",
+    "target": "Verification Live Band Sundowner",
+    "details": "Updated announcement \"Verification Live Band Sundowner\" (Active: true)",
+    "id": "aud-1790264452589-748",
+    "timestamp": "2026-09-24T15:40:52.589Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_ANNOUNCEMENT",
+    "target": "Verification Live Band Sundowner",
+    "details": "Created website promotional announcement: \"Verification Live Band Sundowner\"",
+    "id": "aud-1790264452583-838",
+    "timestamp": "2026-09-24T15:40:52.583Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_GALLERY_ITEM",
+    "target": "Verification Serene Garden Pathway",
+    "details": "Deleted gallery item \"Verification Serene Garden Pathway\"",
+    "id": "aud-1790264452574-761",
+    "timestamp": "2026-09-24T15:40:52.574Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_GALLERY_ITEM",
+    "target": "Verification Serene Garden Pathway",
+    "details": "Updated gallery item \"Verification Serene Garden Pathway\"",
+    "id": "aud-1790264452567-864",
+    "timestamp": "2026-09-24T15:40:52.567Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_GALLERY_ITEM",
+    "target": "Verification Serene Garden Pathway",
+    "details": "Added gallery item \"Verification Serene Garden Pathway\" (gardens)",
+    "id": "aud-1790264452558-621",
+    "timestamp": "2026-09-24T15:40:52.558Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_OFFER",
+    "target": "Verification Easter Getaway Special",
+    "details": "Deleted offer \"Verification Easter Getaway Special\"",
+    "id": "aud-1790264452553-357",
+    "timestamp": "2026-09-24T15:40:52.553Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_OFFER",
+    "target": "Verification Easter Getaway Special",
+    "details": "Updated offer \"Verification Easter Getaway Special\"",
+    "id": "aud-1790264452544-833",
+    "timestamp": "2026-09-24T15:40:52.544Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_OFFER",
+    "target": "Verification Easter Getaway Special",
+    "details": "Created offer \"Verification Easter Getaway Special\" at KES 8500",
+    "id": "aud-1790264452539-31",
+    "timestamp": "2026-09-24T15:40:52.539Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_AIRBNB_UNIT",
+    "target": "Verification Ridge View Penthouse",
+    "details": "Deleted Airbnb apartment \"Verification Ridge View Penthouse\"",
+    "id": "aud-1790264452533-946",
+    "timestamp": "2026-09-24T15:40:52.533Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_AIRBNB_UNIT",
+    "target": "Verification Ridge View Penthouse",
+    "details": "Updated Airbnb unit \"Verification Ridge View Penthouse\"",
+    "id": "aud-1790264452527-655",
+    "timestamp": "2026-09-24T15:40:52.527Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_AIRBNB_UNIT",
+    "target": "Verification Ridge View Penthouse",
+    "details": "Created Airbnb apartment \"Verification Ridge View Penthouse\" at KES 12000/night",
+    "id": "aud-1790264452521-636",
+    "timestamp": "2026-09-24T15:40:52.521Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_CATERING_PACKAGE",
+    "target": "Verification County Gala Banquet",
+    "details": "Deleted catering package \"Verification County Gala Banquet\"",
+    "id": "aud-1790264452515-980",
+    "timestamp": "2026-09-24T15:40:52.515Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_CATERING_PACKAGE",
+    "target": "Verification County Gala Banquet",
+    "details": "Updated catering package \"Verification County Gala Banquet\"",
+    "id": "aud-1790264452509-610",
+    "timestamp": "2026-09-24T15:40:52.509Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_CATERING_PACKAGE",
+    "target": "Verification County Gala Banquet",
+    "details": "Created outside catering package \"Verification County Gala Banquet\" at KES 1850/pax",
+    "id": "aud-1790264452505-911",
+    "timestamp": "2026-09-24T15:40:52.505Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_CONFERENCE_HALL",
+    "target": "Verification Executive Plenary",
+    "details": "Deleted conference hall: \"Verification Executive Plenary\"",
+    "id": "aud-1790264452499-971",
+    "timestamp": "2026-09-24T15:40:52.499Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_CONFERENCE_HALL",
+    "target": "Verification Executive Plenary",
+    "details": "Updated conference hall: \"Verification Executive Plenary\"",
+    "id": "aud-1790264452494-335",
+    "timestamp": "2026-09-24T15:40:52.494Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_CONFERENCE_HALL",
+    "target": "Verification Executive Plenary",
+    "details": "Created conference hall: \"Verification Executive Plenary\"",
+    "id": "aud-1790264452488-590",
+    "timestamp": "2026-09-24T15:40:52.488Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_GARDEN",
+    "target": "Verification Sunset Pavilion Garden",
+    "details": "Deleted garden experience \"Verification Sunset Pavilion Garden\"",
+    "id": "aud-1790264452482-131",
+    "timestamp": "2026-09-24T15:40:52.482Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_GARDEN",
+    "target": "Verification Sunset Pavilion Garden",
+    "details": "Updated garden: \"Verification Sunset Pavilion Garden\"",
+    "id": "aud-1790264452476-944",
+    "timestamp": "2026-09-24T15:40:52.476Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_GARDEN",
+    "target": "Verification Sunset Pavilion Garden",
+    "details": "Created garden experience: \"Verification Sunset Pavilion Garden\"",
+    "id": "aud-1790264452470-315",
+    "timestamp": "2026-09-24T15:40:52.470Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_MENU_ITEM",
+    "target": "Verification Signature Herb Trout",
+    "details": "Deleted menu item \"Verification Signature Herb Trout\"",
+    "id": "aud-1790264452465-371",
+    "timestamp": "2026-09-24T15:40:52.465Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_MENU_ITEM",
+    "target": "Verification Signature Herb Trout",
+    "details": "Updated menu item \"Verification Signature Herb Trout\" - Price: KES 1650, Status: published",
+    "id": "aud-1790264452458-692",
+    "timestamp": "2026-09-24T15:40:52.458Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_MENU_ITEM",
+    "target": "Verification Signature Herb Trout",
+    "details": "Created menu item \"Verification Signature Herb Trout\" under dinner (KES 1650)",
+    "id": "aud-1790264452438-421",
+    "timestamp": "2026-09-24T15:40:52.438Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_ROOM",
+    "target": "TEST-999",
+    "details": "Deleted room Verification Presidential Suite (TEST-999)",
+    "id": "aud-1790264452428-571",
+    "timestamp": "2026-09-24T15:40:52.428Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_ROOM",
+    "target": "TEST-999",
+    "details": "Updated room TEST-999 - Price changed from KES 18500 to KES 19500 - Publish status changed to published",
+    "id": "aud-1790264452416-330",
+    "timestamp": "2026-09-24T15:40:52.416Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_ROOM",
+    "target": "TEST-999",
+    "details": "Added new room Verification Presidential Suite (TEST-999) priced at KES 18500",
+    "id": "aud-1790264452402-587",
+    "timestamp": "2026-09-24T15:40:52.402Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_HOTEL_SETTINGS",
+    "target": "Hotel Settings",
+    "details": "Updated hotel operational settings & contact details",
+    "id": "aud-1790264265933-763",
+    "timestamp": "2026-09-24T15:37:45.933Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_HOTEL_SETTINGS",
+    "target": "Hotel Settings",
+    "details": "Updated hotel operational settings & contact details",
+    "id": "aud-1790264265927-776",
+    "timestamp": "2026-09-24T15:37:45.927Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_REVIEW",
+    "target": "Grace Cherono (Guest)",
+    "details": "Deleted review from Grace Cherono (Guest)",
+    "id": "aud-1790264265890-30",
+    "timestamp": "2026-09-24T15:37:45.890Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_REVIEW",
+    "target": "Grace Cherono (Guest)",
+    "details": "Updated review by Grace Cherono (Guest) (Approved: true)",
+    "id": "aud-1790264265883-514",
+    "timestamp": "2026-09-24T15:37:45.883Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_REVIEW",
+    "target": "Grace Cherono (Guest)",
+    "details": "Recorded guest review from Grace Cherono (Guest) (5 stars)",
+    "id": "aud-1790264265873-446",
+    "timestamp": "2026-09-24T15:37:45.873Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_ANNOUNCEMENT",
+    "target": "Verification Live Band Sundowner",
+    "details": "Deleted announcement \"Verification Live Band Sundowner\"",
+    "id": "aud-1790264265852-66",
+    "timestamp": "2026-09-24T15:37:45.852Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_ANNOUNCEMENT",
+    "target": "Verification Live Band Sundowner",
+    "details": "Updated announcement \"Verification Live Band Sundowner\" (Active: true)",
+    "id": "aud-1790264265845-131",
+    "timestamp": "2026-09-24T15:37:45.845Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_ANNOUNCEMENT",
+    "target": "Verification Live Band Sundowner",
+    "details": "Created website promotional announcement: \"Verification Live Band Sundowner\"",
+    "id": "aud-1790264265839-368",
+    "timestamp": "2026-09-24T15:37:45.839Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_GALLERY_ITEM",
+    "target": "Verification Serene Garden Pathway",
+    "details": "Deleted gallery item \"Verification Serene Garden Pathway\"",
+    "id": "aud-1790264265804-673",
+    "timestamp": "2026-09-24T15:37:45.804Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_GALLERY_ITEM",
+    "target": "Verification Serene Garden Pathway",
+    "details": "Updated gallery item \"Verification Serene Garden Pathway\"",
+    "id": "aud-1790264265796-534",
+    "timestamp": "2026-09-24T15:37:45.796Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_GALLERY_ITEM",
+    "target": "Verification Serene Garden Pathway",
+    "details": "Added gallery item \"Verification Serene Garden Pathway\" (gardens)",
+    "id": "aud-1790264265791-629",
+    "timestamp": "2026-09-24T15:37:45.791Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_OFFER",
+    "target": "Verification Easter Getaway Special",
+    "details": "Deleted offer \"Verification Easter Getaway Special\"",
+    "id": "aud-1790264265780-587",
+    "timestamp": "2026-09-24T15:37:45.780Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_OFFER",
+    "target": "Verification Easter Getaway Special",
+    "details": "Updated offer \"Verification Easter Getaway Special\"",
+    "id": "aud-1790264265772-251",
+    "timestamp": "2026-09-24T15:37:45.772Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_OFFER",
+    "target": "Verification Easter Getaway Special",
+    "details": "Created offer \"Verification Easter Getaway Special\" at KES 8500",
+    "id": "aud-1790264265767-812",
+    "timestamp": "2026-09-24T15:37:45.767Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_AIRBNB_UNIT",
+    "target": "Verification Ridge View Penthouse",
+    "details": "Deleted Airbnb apartment \"Verification Ridge View Penthouse\"",
+    "id": "aud-1790264265761-478",
+    "timestamp": "2026-09-24T15:37:45.761Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_AIRBNB_UNIT",
+    "target": "Verification Ridge View Penthouse",
+    "details": "Updated Airbnb unit \"Verification Ridge View Penthouse\"",
+    "id": "aud-1790264265756-30",
+    "timestamp": "2026-09-24T15:37:45.756Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_AIRBNB_UNIT",
+    "target": "Verification Ridge View Penthouse",
+    "details": "Created Airbnb apartment \"Verification Ridge View Penthouse\" at KES 12000/night",
+    "id": "aud-1790264265752-817",
+    "timestamp": "2026-09-24T15:37:45.752Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_CATERING_PACKAGE",
+    "target": "Verification County Gala Banquet",
+    "details": "Deleted catering package \"Verification County Gala Banquet\"",
+    "id": "aud-1790264265744-592",
+    "timestamp": "2026-09-24T15:37:45.744Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_CATERING_PACKAGE",
+    "target": "Verification County Gala Banquet",
+    "details": "Updated catering package \"Verification County Gala Banquet\"",
+    "id": "aud-1790264265738-867",
+    "timestamp": "2026-09-24T15:37:45.738Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_CATERING_PACKAGE",
+    "target": "Verification County Gala Banquet",
+    "details": "Created outside catering package \"Verification County Gala Banquet\" at KES 1850/pax",
+    "id": "aud-1790264265732-591",
+    "timestamp": "2026-09-24T15:37:45.732Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_CONFERENCE_HALL",
+    "target": "Verification Executive Plenary",
+    "details": "Deleted conference hall: \"Verification Executive Plenary\"",
+    "id": "aud-1790264265726-942",
+    "timestamp": "2026-09-24T15:37:45.726Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_CONFERENCE_HALL",
+    "target": "Verification Executive Plenary",
+    "details": "Updated conference hall: \"Verification Executive Plenary\"",
+    "id": "aud-1790264265721-704",
+    "timestamp": "2026-09-24T15:37:45.721Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_CONFERENCE_HALL",
+    "target": "Verification Executive Plenary",
+    "details": "Created conference hall: \"Verification Executive Plenary\"",
+    "id": "aud-1790264265714-537",
+    "timestamp": "2026-09-24T15:37:45.714Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_GARDEN",
+    "target": "Verification Sunset Pavilion Garden",
+    "details": "Deleted garden experience \"Verification Sunset Pavilion Garden\"",
+    "id": "aud-1790264265707-401",
+    "timestamp": "2026-09-24T15:37:45.707Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_GARDEN",
+    "target": "Verification Sunset Pavilion Garden",
+    "details": "Updated garden: \"Verification Sunset Pavilion Garden\"",
+    "id": "aud-1790264265700-111",
+    "timestamp": "2026-09-24T15:37:45.700Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_GARDEN",
+    "target": "Verification Sunset Pavilion Garden",
+    "details": "Created garden experience: \"Verification Sunset Pavilion Garden\"",
+    "id": "aud-1790264265694-411",
+    "timestamp": "2026-09-24T15:37:45.694Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_MENU_ITEM",
+    "target": "Verification Signature Herb Trout",
+    "details": "Deleted menu item \"Verification Signature Herb Trout\"",
+    "id": "aud-1790264265684-927",
+    "timestamp": "2026-09-24T15:37:45.684Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_MENU_ITEM",
+    "target": "Verification Signature Herb Trout",
+    "details": "Updated menu item \"Verification Signature Herb Trout\" - Price: KES 1650, Status: published",
+    "id": "aud-1790264265675-136",
+    "timestamp": "2026-09-24T15:37:45.675Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_MENU_ITEM",
+    "target": "Verification Signature Herb Trout",
+    "details": "Created menu item \"Verification Signature Herb Trout\" under dinner (KES 1650)",
+    "id": "aud-1790264265666-842",
+    "timestamp": "2026-09-24T15:37:45.666Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_ROOM",
+    "details": "Deleted room Verification Presidential Suite (undefined)",
+    "id": "aud-1790264265652-209",
+    "timestamp": "2026-09-24T15:37:45.652Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_ROOM",
+    "details": "Updated room undefined - Publish status changed to published",
+    "id": "aud-1790264265643-291",
+    "timestamp": "2026-09-24T15:37:45.643Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_ROOM",
+    "details": "Added new room Verification Presidential Suite (undefined) priced at KES undefined",
+    "id": "aud-1790264265631-713",
+    "timestamp": "2026-09-24T15:37:45.631Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_HOTEL_SETTINGS",
+    "target": "Hotel Settings",
+    "details": "Updated hotel operational settings & contact details",
+    "id": "aud-1790264238622-435",
+    "timestamp": "2026-09-24T15:37:18.622Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_HOTEL_SETTINGS",
+    "target": "Hotel Settings",
+    "details": "Updated hotel operational settings & contact details",
+    "id": "aud-1790264238616-857",
+    "timestamp": "2026-09-24T15:37:18.616Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_REVIEW",
+    "target": "Grace Cherono (Guest)",
+    "details": "Deleted review from Grace Cherono (Guest)",
+    "id": "aud-1790264238608-65",
+    "timestamp": "2026-09-24T15:37:18.608Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_REVIEW",
+    "target": "Grace Cherono (Guest)",
+    "details": "Updated review by Grace Cherono (Guest) (Approved: true)",
+    "id": "aud-1790264238603-288",
+    "timestamp": "2026-09-24T15:37:18.603Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_REVIEW",
+    "target": "Grace Cherono (Guest)",
+    "details": "Recorded guest review from Grace Cherono (Guest) (5 stars)",
+    "id": "aud-1790264238598-199",
+    "timestamp": "2026-09-24T15:37:18.598Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_ANNOUNCEMENT",
+    "target": "Verification Live Band Sundowner",
+    "details": "Deleted announcement \"Verification Live Band Sundowner\"",
+    "id": "aud-1790264238590-170",
+    "timestamp": "2026-09-24T15:37:18.590Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_ANNOUNCEMENT",
+    "target": "Verification Live Band Sundowner",
+    "details": "Updated announcement \"Verification Live Band Sundowner\" (Active: true)",
+    "id": "aud-1790264238587-312",
+    "timestamp": "2026-09-24T15:37:18.587Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_ANNOUNCEMENT",
+    "target": "Verification Live Band Sundowner",
+    "details": "Created website promotional announcement: \"Verification Live Band Sundowner\"",
+    "id": "aud-1790264238583-149",
+    "timestamp": "2026-09-24T15:37:18.583Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_GALLERY_ITEM",
+    "target": "Verification Serene Garden Pathway",
+    "details": "Deleted gallery item \"Verification Serene Garden Pathway\"",
+    "id": "aud-1790264238577-507",
+    "timestamp": "2026-09-24T15:37:18.577Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_GALLERY_ITEM",
+    "target": "Verification Serene Garden Pathway",
+    "details": "Updated gallery item \"Verification Serene Garden Pathway\"",
+    "id": "aud-1790264238573-840",
+    "timestamp": "2026-09-24T15:37:18.573Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_GALLERY_ITEM",
+    "target": "Verification Serene Garden Pathway",
+    "details": "Added gallery item \"Verification Serene Garden Pathway\" (gardens)",
+    "id": "aud-1790264238560-581",
+    "timestamp": "2026-09-24T15:37:18.560Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_OFFER",
+    "target": "Verification Easter Getaway Special",
+    "details": "Deleted offer \"Verification Easter Getaway Special\"",
+    "id": "aud-1790264238555-952",
+    "timestamp": "2026-09-24T15:37:18.555Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_OFFER",
+    "target": "Verification Easter Getaway Special",
+    "details": "Updated offer \"Verification Easter Getaway Special\"",
+    "id": "aud-1790264238550-869",
+    "timestamp": "2026-09-24T15:37:18.550Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_OFFER",
+    "target": "Verification Easter Getaway Special",
+    "details": "Created offer \"Verification Easter Getaway Special\" at KES 8500",
+    "id": "aud-1790264238542-112",
+    "timestamp": "2026-09-24T15:37:18.542Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_AIRBNB_UNIT",
+    "target": "Verification Ridge View Penthouse",
+    "details": "Deleted Airbnb apartment \"Verification Ridge View Penthouse\"",
+    "id": "aud-1790264238534-973",
+    "timestamp": "2026-09-24T15:37:18.534Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_AIRBNB_UNIT",
+    "target": "Verification Ridge View Penthouse",
+    "details": "Updated Airbnb unit \"Verification Ridge View Penthouse\"",
+    "id": "aud-1790264238530-989",
+    "timestamp": "2026-09-24T15:37:18.530Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_AIRBNB_UNIT",
+    "target": "Verification Ridge View Penthouse",
+    "details": "Created Airbnb apartment \"Verification Ridge View Penthouse\" at KES 12000/night",
+    "id": "aud-1790264238523-393",
+    "timestamp": "2026-09-24T15:37:18.523Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_CATERING_PACKAGE",
+    "target": "Verification County Gala Banquet",
+    "details": "Deleted catering package \"Verification County Gala Banquet\"",
+    "id": "aud-1790264238516-667",
+    "timestamp": "2026-09-24T15:37:18.516Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_CATERING_PACKAGE",
+    "target": "Verification County Gala Banquet",
+    "details": "Updated catering package \"Verification County Gala Banquet\"",
+    "id": "aud-1790264238508-158",
+    "timestamp": "2026-09-24T15:37:18.508Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_CATERING_PACKAGE",
+    "target": "Verification County Gala Banquet",
+    "details": "Created outside catering package \"Verification County Gala Banquet\" at KES 1850/pax",
+    "id": "aud-1790264238503-486",
+    "timestamp": "2026-09-24T15:37:18.503Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_CONFERENCE_HALL",
+    "target": "Verification Executive Plenary",
+    "details": "Deleted conference hall: \"Verification Executive Plenary\"",
+    "id": "aud-1790264238495-781",
+    "timestamp": "2026-09-24T15:37:18.495Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_CONFERENCE_HALL",
+    "target": "Verification Executive Plenary",
+    "details": "Updated conference hall: \"Verification Executive Plenary\"",
+    "id": "aud-1790264238488-568",
+    "timestamp": "2026-09-24T15:37:18.488Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_CONFERENCE_HALL",
+    "target": "Verification Executive Plenary",
+    "details": "Created conference hall: \"Verification Executive Plenary\"",
+    "id": "aud-1790264238478-282",
+    "timestamp": "2026-09-24T15:37:18.478Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_GARDEN",
+    "target": "Verification Sunset Pavilion Garden",
+    "details": "Deleted garden experience \"Verification Sunset Pavilion Garden\"",
+    "id": "aud-1790264238465-753",
+    "timestamp": "2026-09-24T15:37:18.465Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_GARDEN",
+    "target": "Verification Sunset Pavilion Garden",
+    "details": "Updated garden: \"Verification Sunset Pavilion Garden\"",
+    "id": "aud-1790264238452-34",
+    "timestamp": "2026-09-24T15:37:18.452Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_GARDEN",
+    "target": "Verification Sunset Pavilion Garden",
+    "details": "Created garden experience: \"Verification Sunset Pavilion Garden\"",
+    "id": "aud-1790264238444-939",
+    "timestamp": "2026-09-24T15:37:18.444Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_MENU_ITEM",
+    "target": "Verification Signature Herb Trout",
+    "details": "Deleted menu item \"Verification Signature Herb Trout\"",
+    "id": "aud-1790264238436-943",
+    "timestamp": "2026-09-24T15:37:18.436Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_MENU_ITEM",
+    "target": "Verification Signature Herb Trout",
+    "details": "Updated menu item \"Verification Signature Herb Trout\" - Price: KES 1650, Status: published",
+    "id": "aud-1790264238428-542",
+    "timestamp": "2026-09-24T15:37:18.429Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_MENU_ITEM",
+    "target": "Verification Signature Herb Trout",
+    "details": "Created menu item \"Verification Signature Herb Trout\" under dinner (KES 1650)",
+    "id": "aud-1790264238422-373",
+    "timestamp": "2026-09-24T15:37:18.422Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_ROOM",
+    "details": "Deleted room Verification Presidential Suite (undefined)",
+    "id": "aud-1790264238410-642",
+    "timestamp": "2026-09-24T15:37:18.410Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_ROOM",
+    "details": "Updated room undefined - Publish status changed to published",
+    "id": "aud-1790264238401-40",
+    "timestamp": "2026-09-24T15:37:18.401Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_ROOM",
+    "details": "Added new room Verification Presidential Suite (undefined) priced at KES undefined",
+    "id": "aud-1790264238386-633",
+    "timestamp": "2026-09-24T15:37:18.386Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_HOTEL_SETTINGS",
+    "target": "Hotel Settings",
+    "details": "Updated hotel operational settings & contact details",
+    "id": "aud-1790264011819-977",
+    "timestamp": "2026-09-24T15:33:31.819Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_HOTEL_SETTINGS",
+    "target": "Hotel Settings",
+    "details": "Updated hotel operational settings & contact details",
+    "id": "aud-1790264011813-274",
+    "timestamp": "2026-09-24T15:33:31.814Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_REVIEW",
+    "target": "Grace Cherono (Guest)",
+    "details": "Deleted review from Grace Cherono (Guest)",
+    "id": "aud-1790264011807-629",
+    "timestamp": "2026-09-24T15:33:31.807Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_REVIEW",
+    "target": "Grace Cherono (Guest)",
+    "details": "Updated review by Grace Cherono (Guest) (Approved: true)",
+    "id": "aud-1790264011803-718",
+    "timestamp": "2026-09-24T15:33:31.803Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_REVIEW",
+    "target": "Grace Cherono (Guest)",
+    "details": "Recorded guest review from Grace Cherono (Guest) (5 stars)",
+    "id": "aud-1790264011797-996",
+    "timestamp": "2026-09-24T15:33:31.797Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_ANNOUNCEMENT",
+    "target": "Verification Live Band Sundowner",
+    "details": "Deleted announcement \"Verification Live Band Sundowner\"",
+    "id": "aud-1790264011785-399",
+    "timestamp": "2026-09-24T15:33:31.785Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_ANNOUNCEMENT",
+    "target": "Verification Live Band Sundowner",
+    "details": "Updated announcement \"Verification Live Band Sundowner\" (Active: true)",
+    "id": "aud-1790264011781-497",
+    "timestamp": "2026-09-24T15:33:31.781Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_ANNOUNCEMENT",
+    "target": "Verification Live Band Sundowner",
+    "details": "Created website promotional announcement: \"Verification Live Band Sundowner\"",
+    "id": "aud-1790264011775-558",
+    "timestamp": "2026-09-24T15:33:31.775Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_GALLERY_ITEM",
+    "target": "Verification Serene Garden Pathway",
+    "details": "Deleted gallery item \"Verification Serene Garden Pathway\"",
+    "id": "aud-1790264011770-110",
+    "timestamp": "2026-09-24T15:33:31.770Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_GALLERY_ITEM",
+    "target": "Verification Serene Garden Pathway",
+    "details": "Updated gallery item \"Verification Serene Garden Pathway\"",
+    "id": "aud-1790264011765-613",
+    "timestamp": "2026-09-24T15:33:31.765Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_GALLERY_ITEM",
+    "target": "Verification Serene Garden Pathway",
+    "details": "Added gallery item \"Verification Serene Garden Pathway\" (gardens)",
+    "id": "aud-1790264011761-852",
+    "timestamp": "2026-09-24T15:33:31.761Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_OFFER",
+    "target": "Verification Easter Getaway Special",
+    "details": "Deleted offer \"Verification Easter Getaway Special\"",
+    "id": "aud-1790264011756-385",
+    "timestamp": "2026-09-24T15:33:31.756Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_OFFER",
+    "target": "Verification Easter Getaway Special",
+    "details": "Updated offer \"Verification Easter Getaway Special\"",
+    "id": "aud-1790264011750-8",
+    "timestamp": "2026-09-24T15:33:31.750Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_OFFER",
+    "target": "Verification Easter Getaway Special",
+    "details": "Created offer \"Verification Easter Getaway Special\" at KES 8500",
+    "id": "aud-1790264011746-731",
+    "timestamp": "2026-09-24T15:33:31.746Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_AIRBNB_UNIT",
+    "target": "Verification Ridge View Penthouse",
+    "details": "Deleted Airbnb apartment \"Verification Ridge View Penthouse\"",
+    "id": "aud-1790264011741-275",
+    "timestamp": "2026-09-24T15:33:31.741Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_AIRBNB_UNIT",
+    "target": "Verification Ridge View Penthouse",
+    "details": "Updated Airbnb unit \"Verification Ridge View Penthouse\"",
+    "id": "aud-1790264011737-41",
+    "timestamp": "2026-09-24T15:33:31.737Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_AIRBNB_UNIT",
+    "target": "Verification Ridge View Penthouse",
+    "details": "Created Airbnb apartment \"Verification Ridge View Penthouse\" at KES 12000/night",
+    "id": "aud-1790264011734-991",
+    "timestamp": "2026-09-24T15:33:31.734Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_CATERING_PACKAGE",
+    "target": "Verification County Gala Banquet",
+    "details": "Deleted catering package \"Verification County Gala Banquet\"",
+    "id": "aud-1790264011729-44",
+    "timestamp": "2026-09-24T15:33:31.729Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_CATERING_PACKAGE",
+    "target": "Verification County Gala Banquet",
+    "details": "Updated catering package \"Verification County Gala Banquet\"",
+    "id": "aud-1790264011719-702",
+    "timestamp": "2026-09-24T15:33:31.719Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_CATERING_PACKAGE",
+    "target": "Verification County Gala Banquet",
+    "details": "Created outside catering package \"Verification County Gala Banquet\" at KES 1850/pax",
+    "id": "aud-1790264011713-822",
+    "timestamp": "2026-09-24T15:33:31.713Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_CONFERENCE_HALL",
+    "target": "Verification Executive Plenary",
+    "details": "Deleted conference hall: \"Verification Executive Plenary\"",
+    "id": "aud-1790264011706-455",
+    "timestamp": "2026-09-24T15:33:31.706Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_CONFERENCE_HALL",
+    "target": "Verification Executive Plenary",
+    "details": "Updated conference hall: \"Verification Executive Plenary\"",
+    "id": "aud-1790264011699-185",
+    "timestamp": "2026-09-24T15:33:31.699Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_CONFERENCE_HALL",
+    "target": "Verification Executive Plenary",
+    "details": "Created conference hall: \"Verification Executive Plenary\"",
+    "id": "aud-1790264011691-76",
+    "timestamp": "2026-09-24T15:33:31.691Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_GARDEN",
+    "target": "Verification Sunset Pavilion Garden",
+    "details": "Deleted garden experience \"Verification Sunset Pavilion Garden\"",
+    "id": "aud-1790264011686-505",
+    "timestamp": "2026-09-24T15:33:31.686Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_GARDEN",
+    "target": "Verification Sunset Pavilion Garden",
+    "details": "Updated garden: \"Verification Sunset Pavilion Garden\"",
+    "id": "aud-1790264011679-859",
+    "timestamp": "2026-09-24T15:33:31.679Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_GARDEN",
+    "target": "Verification Sunset Pavilion Garden",
+    "details": "Created garden experience: \"Verification Sunset Pavilion Garden\"",
+    "id": "aud-1790264011672-616",
+    "timestamp": "2026-09-24T15:33:31.672Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_MENU_ITEM",
+    "target": "Verification Signature Herb Trout",
+    "details": "Deleted menu item \"Verification Signature Herb Trout\"",
+    "id": "aud-1790264011665-855",
+    "timestamp": "2026-09-24T15:33:31.665Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_MENU_ITEM",
+    "target": "Verification Signature Herb Trout",
+    "details": "Updated menu item \"Verification Signature Herb Trout\" - Price: KES 1650, Status: published",
+    "id": "aud-1790264011658-208",
+    "timestamp": "2026-09-24T15:33:31.658Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_MENU_ITEM",
+    "target": "Verification Signature Herb Trout",
+    "details": "Created menu item \"Verification Signature Herb Trout\" under dinner (KES 1650)",
+    "id": "aud-1790264011649-980",
+    "timestamp": "2026-09-24T15:33:31.649Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_ROOM",
+    "details": "Deleted room Verification Presidential Suite (undefined)",
+    "id": "aud-1790264011638-971",
+    "timestamp": "2026-09-24T15:33:31.638Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_ROOM",
+    "details": "Updated room undefined - Publish status changed to published",
+    "id": "aud-1790264011631-816",
+    "timestamp": "2026-09-24T15:33:31.631Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_ROOM",
+    "details": "Added new room Verification Presidential Suite (undefined) priced at KES undefined",
+    "id": "aud-1790264011617-969",
+    "timestamp": "2026-09-24T15:33:31.617Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_GALLERY_ITEM",
+    "target": "Verification Serene Garden Pathway",
+    "details": "Added gallery item \"Verification Serene Garden Pathway\" (gardens)",
+    "id": "aud-1790263880836-542",
+    "timestamp": "2026-09-24T15:31:20.836Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_OFFER",
+    "target": "Verification Easter Getaway Special",
+    "details": "Deleted offer \"Verification Easter Getaway Special\"",
+    "id": "aud-1790263880827-433",
+    "timestamp": "2026-09-24T15:31:20.827Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_OFFER",
+    "target": "Verification Easter Getaway Special",
+    "details": "Updated offer \"Verification Easter Getaway Special\"",
+    "id": "aud-1790263880822-94",
+    "timestamp": "2026-09-24T15:31:20.822Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_OFFER",
+    "target": "Verification Easter Getaway Special",
+    "details": "Created offer \"Verification Easter Getaway Special\" at KES 8500",
+    "id": "aud-1790263880817-98",
+    "timestamp": "2026-09-24T15:31:20.817Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_AIRBNB_UNIT",
+    "target": "Verification Ridge View Penthouse",
+    "details": "Deleted Airbnb apartment \"Verification Ridge View Penthouse\"",
+    "id": "aud-1790263880809-395",
+    "timestamp": "2026-09-24T15:31:20.809Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_AIRBNB_UNIT",
+    "target": "Verification Ridge View Penthouse",
+    "details": "Updated Airbnb unit \"Verification Ridge View Penthouse\"",
+    "id": "aud-1790263880803-657",
+    "timestamp": "2026-09-24T15:31:20.803Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_AIRBNB_UNIT",
+    "target": "Verification Ridge View Penthouse",
+    "details": "Created Airbnb apartment \"Verification Ridge View Penthouse\" at KES 12000/night",
+    "id": "aud-1790263880794-895",
+    "timestamp": "2026-09-24T15:31:20.794Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_CATERING_PACKAGE",
+    "target": "Verification County Gala Banquet",
+    "details": "Deleted catering package \"Verification County Gala Banquet\"",
+    "id": "aud-1790263880787-651",
+    "timestamp": "2026-09-24T15:31:20.787Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_CATERING_PACKAGE",
+    "target": "Verification County Gala Banquet",
+    "details": "Updated catering package \"Verification County Gala Banquet\"",
+    "id": "aud-1790263880779-569",
+    "timestamp": "2026-09-24T15:31:20.779Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_CATERING_PACKAGE",
+    "target": "Verification County Gala Banquet",
+    "details": "Created outside catering package \"Verification County Gala Banquet\" at KES 1850/pax",
+    "id": "aud-1790263880774-461",
+    "timestamp": "2026-09-24T15:31:20.774Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_CONFERENCE_HALL",
+    "target": "Verification Executive Plenary",
+    "details": "Deleted conference hall: \"Verification Executive Plenary\"",
+    "id": "aud-1790263880765-827",
+    "timestamp": "2026-09-24T15:31:20.765Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_CONFERENCE_HALL",
+    "target": "Verification Executive Plenary",
+    "details": "Updated conference hall: \"Verification Executive Plenary\"",
+    "id": "aud-1790263880758-652",
+    "timestamp": "2026-09-24T15:31:20.758Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_CONFERENCE_HALL",
+    "target": "Verification Executive Plenary",
+    "details": "Created conference hall: \"Verification Executive Plenary\"",
+    "id": "aud-1790263880752-347",
+    "timestamp": "2026-09-24T15:31:20.752Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_GARDEN",
+    "target": "Verification Sunset Pavilion Garden",
+    "details": "Deleted garden experience \"Verification Sunset Pavilion Garden\"",
+    "id": "aud-1790263880746-237",
+    "timestamp": "2026-09-24T15:31:20.746Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_GARDEN",
+    "target": "Verification Sunset Pavilion Garden",
+    "details": "Updated garden: \"Verification Sunset Pavilion Garden\"",
+    "id": "aud-1790263880738-49",
+    "timestamp": "2026-09-24T15:31:20.738Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_GARDEN",
+    "target": "Verification Sunset Pavilion Garden",
+    "details": "Created garden experience: \"Verification Sunset Pavilion Garden\"",
+    "id": "aud-1790263880731-58",
+    "timestamp": "2026-09-24T15:31:20.731Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_MENU_ITEM",
+    "target": "Verification Signature Herb Trout",
+    "details": "Deleted menu item \"Verification Signature Herb Trout\"",
+    "id": "aud-1790263880724-877",
+    "timestamp": "2026-09-24T15:31:20.724Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_MENU_ITEM",
+    "target": "Verification Signature Herb Trout",
+    "details": "Updated menu item \"Verification Signature Herb Trout\" - Price: KES 1650, Status: published",
+    "id": "aud-1790263880718-899",
+    "timestamp": "2026-09-24T15:31:20.718Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_MENU_ITEM",
+    "target": "Verification Signature Herb Trout",
+    "details": "Created menu item \"Verification Signature Herb Trout\" under dinner (KES 1650)",
+    "id": "aud-1790263880709-774",
+    "timestamp": "2026-09-24T15:31:20.709Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_ROOM",
+    "details": "Deleted room Verification Presidential Suite (undefined)",
+    "id": "aud-1790263880702-458",
+    "timestamp": "2026-09-24T15:31:20.702Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_ROOM",
+    "details": "Updated room undefined - Publish status changed to published",
+    "id": "aud-1790263880694-582",
+    "timestamp": "2026-09-24T15:31:20.694Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_ROOM",
+    "details": "Added new room Verification Presidential Suite (undefined) priced at KES undefined",
+    "id": "aud-1790263880678-145",
+    "timestamp": "2026-09-24T15:31:20.678Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_MENU_ITEM",
+    "target": "Verification Signature Herb Trout",
+    "details": "Created menu item \"Verification Signature Herb Trout\" under undefined (KES 1650)",
+    "id": "aud-1790263820449-726",
+    "timestamp": "2026-09-24T15:30:20.449Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "DELETED_ROOM",
+    "details": "Deleted room Verification Presidential Suite (undefined)",
+    "id": "aud-1790263820436-534",
+    "timestamp": "2026-09-24T15:30:20.437Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "UPDATED_ROOM",
+    "details": "Updated room undefined - Publish status changed to published",
+    "id": "aud-1790263820428-490",
+    "timestamp": "2026-09-24T15:30:20.428Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
+    "action": "CREATED_ROOM",
+    "details": "Added new room Verification Presidential Suite (undefined) priced at KES undefined",
+    "id": "aud-1790263820415-986",
+    "timestamp": "2026-09-24T15:30:20.415Z"
+  },
+  {
+    "userId": "admin",
+    "userName": "System Administrator",
+    "role": "ADMIN",
     "action": "DELETED_ROLE",
     "target": "SPA_THERAPIST",
     "details": "Deleted custom role Spa & Wellness Therapist",

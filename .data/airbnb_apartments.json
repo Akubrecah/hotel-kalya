@@ -1,0 +1,109 @@
+[
+  {
+    "id": "airbnb-unit-a1",
+    "name": "Highland Vista Serviced 2-Bedroom Apartment (Unit A1)",
+    "slug": "highland-vista-a1",
+    "propertyType": "Serviced 2-Bedroom Apartment",
+    "description": "Modern self-contained apartment featuring floor-to-ceiling windows with panoramic views of Kapenguria. Includes fully equipped granite kitchen, cozy living room, and washer/dryer.",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "capacity": 4,
+    "pricePerNight": 9500,
+    "amenities": [
+      "Equipped Kitchen with Gas Cooker, Microwave & Fridge",
+      "High-Speed Fiber Wi-Fi",
+      "55\" Smart 4K TV with Netflix & DStv",
+      "En-suite Master with Rainfall Shower",
+      "Washer & Ironing Facilities",
+      "Dedicated Covered Parking Slot",
+      "24/7 Gated Security & CCTV"
+    ],
+    "houseRules": [
+      "No smoking inside the apartment",
+      "Quiet hours from 10:00 PM to 6:00 AM",
+      "Pets strictly on prior approval",
+      "Maximum 4 overnight guests"
+    ],
+    "checkInTime": "2:00 PM",
+    "checkOutTime": "11:00 AM",
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80"
+    ],
+    "featuredImage": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=80",
+    "location": "Hotel Kalya Residences, Block A, 1st Floor",
+    "bookingStatus": "AVAILABLE",
+    "publishStatus": "published",
+    "createdAt": "2026-08-01T00:00:00.000Z"
+  },
+  {
+    "id": "airbnb-unit-b2",
+    "name": "Cherang'any Executive 1-Bedroom Loft (Unit B2)",
+    "slug": "cherangany-loft-b2",
+    "propertyType": "1-Bedroom Executive Loft",
+    "description": "Stylish loft ideal for business consultants, medical professionals, and couples visiting West Pokot. Features plush orthopedic queen bed, high-speed workstation, and sunny balcony.",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "capacity": 2,
+    "pricePerNight": 6500,
+    "amenities": [
+      "Kitchenette with Induction Hob & Fridge",
+      "High-Speed Fiber Wi-Fi",
+      "Dedicated Work Desk & Ergonomic Chair",
+      "Private Mountain View Balcony",
+      "Daily Housekeeping on Request"
+    ],
+    "houseRules": [
+      "No parties or loud events",
+      "No smoking",
+      "Check-out on time for cleaning"
+    ],
+    "checkInTime": "2:00 PM",
+    "checkOutTime": "11:00 AM",
+    "images": [
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80"
+    ],
+    "featuredImage": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+    "location": "Hotel Kalya Residences, Block B, 2nd Floor",
+    "bookingStatus": "AVAILABLE",
+    "publishStatus": "published",
+    "createdAt": "2026-08-05T00:00:00.000Z"
+  },
+  {
+    "id": "airbnb-unit-c3",
+    "name": "Kalya Family Garden Cottage Annex (Unit C3)",
+    "slug": "family-garden-cottage-c3",
+    "propertyType": "Family Garden Cottage",
+    "description": "Detached 3-bedroom family residence situated in a private garden compound. Features large open-plan living and dining areas, kid-friendly bedrooms, and outdoor terrace seating.",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "capacity": 6,
+    "pricePerNight": 12000,
+    "amenities": [
+      "Full Family Kitchen with Oven & Dishware",
+      "Private Fenced Garden Lawn",
+      "Master En-suite with Bathtub & Shower",
+      "Baby Cot Available on Request",
+      "Complimentary Hotel Breakfast for 4"
+    ],
+    "houseRules": [
+      "Family-friendly",
+      "No loud outdoor music past 9:00 PM"
+    ],
+    "checkInTime": "2:00 PM",
+    "checkOutTime": "10:30 AM",
+    "images": [
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80",
+      "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=80"
+    ],
+    "featuredImage": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80",
+    "location": "Garden Annex, North Gate",
+    "bookingStatus": "AVAILABLE",
+    "publishStatus": "published",
+    "createdAt": "2026-08-10T00:00:00.000Z"
+  }
+]

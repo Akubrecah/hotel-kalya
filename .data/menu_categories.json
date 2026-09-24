@@ -1,0 +1,42 @@
+[
+  {
+    "id": "breakfast",
+    "slug": "breakfast",
+    "label": "Breakfast",
+    "description": "Wholesome morning favorites, free-range eggs, farm-fresh roots & hot beverages.",
+    "order": 1,
+    "isActive": true
+  },
+  {
+    "id": "lunch",
+    "slug": "lunch",
+    "label": "Lunch",
+    "description": "Hearty stews, freshly prepared Kenyan favorites, grilled meats & accompaniments.",
+    "order": 2,
+    "isActive": true
+  },
+  {
+    "id": "dinner",
+    "slug": "dinner",
+    "label": "Dinner",
+    "description": "Chef's evening gourmet specialties, barbecue nyama choma & fresh lake fish.",
+    "order": 3,
+    "isActive": true
+  },
+  {
+    "id": "drinks",
+    "slug": "drinks",
+    "label": "Drinks & Refreshments",
+    "description": "Freshly squeezed tropical juices, spiced Kalya tea, barista coffees & soft drinks.",
+    "order": 4,
+    "isActive": true
+  },
+  {
+    "id": "specials",
+    "slug": "specials",
+    "label": "Chef's Specials",
+    "description": "Signature culinary highlights, shared banqueting platters & seasonal local dishes.",
+    "order": 5,
+    "isActive": true
+  }
+]

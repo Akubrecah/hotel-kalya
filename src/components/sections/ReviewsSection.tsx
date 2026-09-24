@@ -3,42 +3,25 @@ import Link from "next/link";
 import { Star, MessageSquarePlus, ExternalLink, ArrowRight } from "lucide-react";
 import { ReviewCard } from "@/components/reviews/ReviewCard";
 import { ReviewItem } from "@/types";
+import { getReviews } from "@/lib/cms-db";
 
-// Authentic guest testimonials representing actual customer touchpoints at Hotel Kalya
-const FEATURED_REVIEWS: ReviewItem[] = [
-  {
-    id: "rev_01",
-    author: "Kipchumba R.",
-    rating: 5,
-    date: "August 2026",
-    text: "Outstanding hospitality in Kapenguria. The executive suites are quiet and impeccably clean, and the kienyeji chicken dinner was prepared fresh to perfection.",
-    source: "Google",
-    service: "Executive Accommodation & Dining",
-    verified: true,
-  },
-  {
-    id: "rev_02",
-    author: "Wanjiku M.",
-    rating: 5,
-    date: "July 2026",
-    text: "Hosted our regional NGO workshop in the conference hall for three days. Reliable audiovisual setup, continuous power backup, and top-tier outside tea catering.",
-    source: "Google",
-    service: "Corporate Conference Hall",
-    verified: true,
-  },
-  {
-    id: "rev_03",
-    author: "David O.",
-    rating: 5,
-    date: "September 2026",
-    text: "Kalya Gardens was the dream setting for our wedding photography. The manicured lawns and mountain backdrop made our memories truly unforgettable.",
-    source: "Google",
-    service: "Kalya Gardens Experience",
-    verified: true,
-  },
-];
+export async function ReviewsSection() {
+  const reviewsFromDb = await getReviews(true);
 
-export function ReviewsSection() {
+  // Map CustomerReview to ReviewItem
+  const mappedReviews: ReviewItem[] = reviewsFromDb.map((r) => ({
+    id: r.id,
+    author: r.authorName || "Guest",
+    rating: r.rating || 5,
+    date: r.stayDate || (r.createdAt ? new Date(r.createdAt).toLocaleDateString("en-US", { month: "short", year: "numeric" }) : "Recent Stay"),
+    text: r.comment || "",
+    source: r.source === "Google Reviews" || r.source === "Google" ? "Google" : "Verified Guest",
+    service: r.serviceType || "Hospitality Services",
+    verified: r.isApproved ?? true,
+  }));
+
+  const displayReviews = mappedReviews.slice(0, 3);
+
   const writeReviewUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     "Hotel Kalya, Kapenguria, West Pokot County, Kenya"
   )}`;
@@ -66,7 +49,7 @@ export function ReviewsSection() {
               href="/reviews"
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-brand-maroon/20 text-xs font-bold text-brand-maroon hover:bg-brand-cream transition-colors"
             >
-              <span>Read All Reviews</span>
+              <span>Read All Reviews ({mappedReviews.length})</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
             <a
@@ -84,7 +67,7 @@ export function ReviewsSection() {
 
         {/* Reviews Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-          {FEATURED_REVIEWS.map((review) => (
+          {displayReviews.map((review) => (
             <ReviewCard key={review.id} review={review} />
           ))}
         </div>

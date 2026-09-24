@@ -1,18 +1,38 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { BrandLogo } from "./BrandLogo";
 import { BRAND, NAV_LINKS } from "@/lib/constants";
+import { HotelSettings } from "@/types/hospitality";
 
 const FOOTER_SERVICES = [
   { label: "Executive Accommodation", href: "/services/accommodation" },
-  { label: "Restaurant & Food Service", href: "/services/food-service" },
+  { label: "Restaurant & Food Service", href: "/menu" },
   { label: "Conference & Seminar Halls", href: "/services/conferences" },
   { label: "Outside Event Catering", href: "/services/outside-catering" },
   { label: "AirBnB Short-Stays", href: "/services/airbnb" },
   { label: "Kalya Garden Experience", href: "/services/garden-experience" },
+  { label: "Packages & Special Offers", href: "/offers" },
 ];
 
 export function Footer() {
+  const [settings, setSettings] = useState<HotelSettings | null>(null);
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.settings) setSettings(data.settings);
+      })
+      .catch(() => {});
+  }, []);
+
+  const phone = settings?.phone || BRAND.phone;
+  const email = settings?.email || BRAND.email;
+  const location = settings?.address || BRAND.location;
+
   return (
     <footer className="bg-brand-maroon-dark text-white pt-16 pb-8 border-t-4 border-brand-amber">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -69,24 +89,24 @@ export function Footer() {
           {/* Direct Contacts */}
           <div className="space-y-3">
             <h4 className="font-serif text-sm font-bold text-brand-amber uppercase tracking-wider">
-              Contact & Desk
+              Contact &amp; Desk
             </h4>
             <div className="space-y-2.5 text-xs text-white/80">
               <p>
                 <strong className="text-white block">Cell / Telephone:</strong>
-                <a href={`tel:${BRAND.phone}`} className="hover:text-brand-amber">
-                  {BRAND.phone}
+                <a href={`tel:${phone.replace(/\s+/g, "")}`} className="hover:text-brand-amber">
+                  {phone}
                 </a>
               </p>
               <p>
                 <strong className="text-white block">Email:</strong>
-                <a href={`mailto:${BRAND.email}`} className="hover:text-brand-amber">
-                  {BRAND.email}
+                <a href={`mailto:${email}`} className="hover:text-brand-amber">
+                  {email}
                 </a>
               </p>
               <p>
                 <strong className="text-white block">Town / Location:</strong>
-                {BRAND.location}
+                {location}
               </p>
               <div className="pt-2">
                 <span className="inline-block bg-brand-amber text-brand-maroon-dark text-[10px] font-bold px-2 py-0.5 rounded">
@@ -98,28 +118,14 @@ export function Footer() {
         </div>
 
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-white/60 gap-4">
-          <p>
-            © {new Date().getFullYear()} Hotel Kalya (Kapenguria). All rights reserved.
-          </p>
-          <div className="flex items-center gap-4 text-white/70 text-[11px]">
-            <Link href="/location" className="hover:text-brand-amber transition-colors">
-              Find Us
+          <p>© {new Date().getFullYear()} Hotel Kalya Kapenguria. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <Link href="/staff/login" className="hover:text-brand-amber transition-colors">
+              Staff Portal
             </Link>
-            <span className="text-white/30">•</span>
-            <Link href="/reviews" className="hover:text-brand-amber transition-colors">
-              Guest Reviews
-            </Link>
-            <span className="text-white/30">•</span>
-            <Link href="/privacy" className="hover:text-brand-amber transition-colors">
-              Privacy Policy
-            </Link>
-            <span className="text-white/30">•</span>
-            <Link href="/terms" className="hover:text-brand-amber transition-colors">
-              Terms of Service
-            </Link>
-            <span className="text-white/30">•</span>
-            <Link href="/cookies" className="hover:text-brand-amber transition-colors">
-              Cookie Notice
+            <span>•</span>
+            <Link href="/admin/rooms" className="hover:text-brand-amber transition-colors">
+              CMS Management
             </Link>
           </div>
         </div>

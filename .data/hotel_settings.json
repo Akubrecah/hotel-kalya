@@ -1,0 +1,24 @@
+{
+  "name": "HOTEL KALYA",
+  "tagline": "HOSPITALITY REDEFINED",
+  "officialWhatsApp": "254719766649",
+  "primaryPhone": "+254 719 766649",
+  "secondaryPhone": "+254 722 000000",
+  "email": "hotelkalya@gmail.com",
+  "address": "A1 Highway, Kapenguria, West Pokot County, Kenya",
+  "coordinates": {
+    "lat": 1.2415,
+    "lng": 35.1185
+  },
+  "googleMapsEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15951.688846399066!2d35.1082!3d1.2415!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x178229b46e8f498b%3A0xb3651fa1957262dc!2sKapenguria!5e0!3m2!1sen!2ske!4v1700000000000!5m2!1sen!2ske",
+  "googleMapsDirectionsUrl": "https://maps.google.com/?daddr=1.2415,35.1185",
+  "checkInTime": "2:00 PM (14:00)",
+  "checkOutTime": "10:00 AM (10:00)",
+  "receptionHours": "24 Hours / 7 Days a Week",
+  "restaurantHours": "6:30 AM – 10:00 PM",
+  "wifiNetwork": "HotelKalya-HighSpeed (Complimentary)",
+  "updatedAt": "2026-09-24T15:40:52.651Z",
+  "phone": "+254 719 766649",
+  "whatsappNumber": "254719766649",
+  "googleMapsUrl": "https://maps.google.com/?daddr=1.2415,35.1185"
+}

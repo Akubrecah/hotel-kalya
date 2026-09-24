@@ -1,11 +1,17 @@
 import React from "react";
 import Link from "next/link";
 import { MapPin, Phone, Clock, ArrowRight } from "lucide-react";
-import { BRAND } from "@/lib/constants";
 import { GoogleMap } from "@/components/maps/GoogleMap";
 import { DirectionsButton } from "@/components/maps/DirectionsButton";
+import { getHotelSettings } from "@/lib/cms-db";
+import { BRAND } from "@/lib/constants";
 
-export function LocationSection() {
+export async function LocationSection() {
+  const settings = await getHotelSettings();
+  const address = settings.address || BRAND.location;
+  const officialPhone = settings.phone || BRAND.phone;
+  const cleanPhone = (settings.phoneClean || settings.phone || BRAND.phoneClean).replace(/\D/g, "");
+
   return (
     <section className="py-16 sm:py-20 bg-brand-cream/60 border-t border-brand-maroon/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -28,7 +34,7 @@ export function LocationSection() {
             <div className="space-y-3 text-xs text-brand-dark/80 bg-white p-4 rounded-xl border border-brand-maroon/10 shadow-sm">
               <div className="flex items-center gap-2.5">
                 <MapPin className="w-4 h-4 text-brand-amber flex-shrink-0" />
-                <span>{BRAND.location}</span>
+                <span>{address}</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Clock className="w-4 h-4 text-brand-amber flex-shrink-0" />
@@ -36,8 +42,8 @@ export function LocationSection() {
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-brand-amber flex-shrink-0" />
-                <a href={`tel:${BRAND.phoneClean}`} className="hover:text-brand-maroon font-bold">
-                  {BRAND.phone}
+                <a href={`tel:${cleanPhone}`} className="hover:text-brand-maroon font-bold">
+                  {officialPhone}
                 </a>
               </div>
             </div>

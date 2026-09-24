@@ -8,9 +8,17 @@ import {
   PartyPopper,
   Sparkles,
   ChevronRight,
+  Users,
+  Clock,
+  MapPin,
+  CheckCircle2,
+  MessageCircle,
 } from "lucide-react";
 import { IMAGES } from "@/lib/constants";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { getGardens, getHotelSettings } from "@/lib/cms-db";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Kalya Gardens — Lush Outdoor Events, Photography & Garden Dining",
@@ -51,13 +59,14 @@ const GARDEN_USES = [
   },
 ];
 
-const GARDEN_GALLERY = [
-  { title: "Manicured Grounds & Mountain Skyline", image: IMAGES.gardenLandscape },
-  { title: "Outdoor Garden Terrace Seating", image: IMAGES.gardenTerrace },
-  { title: "Celebration & Banquet Setup", image: IMAGES.weddingSetup },
-];
+export default async function GardenExperiencePage() {
+  const [gardens, settings] = await Promise.all([
+    getGardens(true),
+    getHotelSettings(),
+  ]);
 
-export default function GardenExperiencePage() {
+  const cleanPhone = (settings.officialWhatsApp || settings.phone || "254719766649").replace(/\D/g, "");
+
   return (
     <>
       {/* Hero Banner */}
@@ -76,7 +85,7 @@ export default function GardenExperiencePage() {
             <Trees className="w-4 h-4" /> Lush Outdoor Sanctuary
           </span>
           <h1 className="font-serif text-3xl sm:text-5xl font-extrabold text-white">
-            Garden Experience
+            Garden Experience &amp; Venues
           </h1>
           <p className="text-white/80 text-sm mt-2 max-w-xl">
             Lush, manicured green grounds in Kapenguria perfect for garden dining,
@@ -157,8 +166,167 @@ export default function GardenExperiencePage() {
         </div>
       </section>
 
+      {/* DYNAMIC GARDENS SHOWCASE FROM CMS */}
+      <section className="py-20 bg-brand-cream/40 border-t border-brand-amber-light">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <span className="text-xs font-bold text-brand-maroon uppercase tracking-widest">
+              Available Garden Venues
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-extrabold text-brand-maroon-dark mt-1">
+              Select Your Ideal Garden Space
+            </h2>
+            <div className="w-16 h-1 bg-brand-amber mx-auto my-3 rounded-full" />
+            <p className="text-sm text-gray-600">
+              Every garden space is maintained to the highest horticultural standards and dynamically scheduled for private celebrations, dining, or photo sessions.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {gardens.map((garden) => {
+              const waMsg = encodeURIComponent(
+                `Hello Hotel Kalya, I would like to enquire about reserving the "${garden.name}" for an upcoming event or visit.`
+              );
+              const waUrl = `https://wa.me/${cleanPhone}?text=${waMsg}`;
+
+              return (
+                <div
+                  key={garden.id}
+                  className="bg-white rounded-3xl overflow-hidden border border-brand-amber-light/90 shadow-md hover:shadow-xl transition-all flex flex-col justify-between group"
+                >
+                  <div>
+                    {/* Garden Image */}
+                    <div className="relative h-60 w-full overflow-hidden bg-brand-cream">
+                      <Image
+                        src={garden.featuredImage || garden.images?.[0] || IMAGES.gardenLandscape}
+                        alt={garden.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-80" />
+
+                      <div className="absolute top-4 left-4 flex flex-wrap gap-1.5">
+                        <span className="bg-brand-maroon-dark/90 text-brand-amber text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow backdrop-blur-sm flex items-center gap-1">
+                          <Users className="w-3 h-3" />
+                          <span>
+                            {garden.capacity?.maxGuests
+                              ? `Up to ${garden.capacity.maxGuests} Guests`
+                              : "Multi-Guest Capacity"}
+                          </span>
+                        </span>
+                      </div>
+
+                      <div className="absolute bottom-4 left-4 right-4 text-white">
+                        <h3 className="font-serif text-xl font-bold text-white drop-shadow">
+                          {garden.name}
+                        </h3>
+                        <p className="text-xs text-white/80 flex items-center gap-1 mt-0.5">
+                          <MapPin className="w-3 h-3 text-brand-amber" />
+                          <span>{garden.location || "Hotel Kalya Grounds, Kapenguria"}</span>
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Garden Details */}
+                    <div className="p-6 space-y-4">
+                      <p className="text-xs text-gray-600 leading-relaxed line-clamp-3">
+                        {garden.description}
+                      </p>
+
+                      {/* Suitability Pills */}
+                      {garden.eventSuitability && garden.eventSuitability.length > 0 && (
+                        <div>
+                          <span className="text-[10px] uppercase font-bold text-gray-400 block mb-1.5">
+                            Ideal For:
+                          </span>
+                          <div className="flex flex-wrap gap-1.5">
+                            {garden.eventSuitability.slice(0, 4).map((suit, idx) => (
+                              <span
+                                key={idx}
+                                className="bg-brand-cream text-brand-maroon-dark text-[10px] font-semibold px-2 py-0.5 rounded-md border border-brand-amber/20"
+                              >
+                                {suit}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Facilities Checklist */}
+                      {garden.facilities && garden.facilities.length > 0 && (
+                        <div className="pt-2 border-t border-gray-100">
+                          <span className="text-[10px] uppercase font-bold text-gray-400 block mb-1.5">
+                            Features &amp; Facilities:
+                          </span>
+                          <div className="grid grid-cols-2 gap-1.5 text-[11px] text-gray-600">
+                            {garden.facilities.slice(0, 4).map((facility, idx) => (
+                              <div key={idx} className="flex items-center gap-1.5">
+                                <CheckCircle2 className="w-3 h-3 text-brand-amber-dark flex-shrink-0" />
+                                <span className="truncate">{facility}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Pricing & Actions */}
+                  <div className="p-6 pt-0 border-t border-gray-100 mt-2">
+                    <div className="flex items-center justify-between py-3">
+                      <div>
+                        <span className="text-[10px] font-bold uppercase text-gray-400 block">
+                          Day Rate
+                        </span>
+                        <span className="font-serif text-lg font-bold text-brand-maroon">
+                          KES {garden.pricing?.perDay ? garden.pricing.perDay.toLocaleString() : "Custom"}
+                        </span>
+                      </div>
+                      {garden.pricing?.photographySession ? (
+                        <div className="text-right">
+                          <span className="text-[10px] font-bold uppercase text-gray-400 block">
+                            Photo Shoot Rate
+                          </span>
+                          <span className="text-xs font-bold text-gray-700">
+                            KES {garden.pricing.photographySession.toLocaleString()}
+                          </span>
+                        </div>
+                      ) : (
+                        <div className="text-right text-[11px] text-gray-500 flex items-center gap-1">
+                          <Clock className="w-3 h-3 text-brand-amber" />
+                          <span>{garden.openingHours || "6:00 AM – 7:00 PM"}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-2 pt-2">
+                      <Link
+                        href={`/book?service=${encodeURIComponent(garden.name)}`}
+                        className="flex-1 text-center bg-brand-maroon hover:bg-brand-maroon-dark text-white py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm"
+                      >
+                        Book Garden
+                      </Link>
+                      <a
+                        href={waUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition-all shadow-sm flex items-center justify-center"
+                        title="Enquire on WhatsApp"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* Garden Uses Cards */}
-      <section className="py-16 sm:py-20 bg-brand-cream/60 border-t border-brand-amber-light">
+      <section className="py-16 sm:py-20 bg-white border-t border-brand-amber-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <span className="text-xs font-bold text-brand-maroon uppercase tracking-widest">
@@ -179,7 +347,7 @@ export default function GardenExperiencePage() {
               return (
                 <div
                   key={use.title}
-                  className="bg-white p-7 rounded-2xl border border-brand-amber-light/80 shadow-md hover:shadow-xl transition-all space-y-3 flex flex-col justify-between"
+                  className="bg-brand-cream/40 p-7 rounded-2xl border border-brand-amber-light/80 shadow-sm hover:shadow-md transition-all space-y-3 flex flex-col justify-between"
                 >
                   <div>
                     <div className="w-10 h-10 rounded-xl bg-brand-maroon text-brand-amber flex items-center justify-center shadow mb-3">
@@ -198,53 +366,6 @@ export default function GardenExperiencePage() {
                 </div>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* Garden Visual Grid */}
-      <section className="py-20 bg-white border-t border-brand-amber-light">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-xl mx-auto mb-12">
-            <h3 className="font-serif text-3xl font-extrabold text-brand-maroon-dark">
-              Visual Showcase of Kalya Grounds
-            </h3>
-            <p className="text-sm text-gray-600 mt-2">
-              Every angle offers a captivating natural perspective of Kapenguria.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {GARDEN_GALLERY.map((g, i) => (
-              <div
-                key={i}
-                className="relative h-64 sm:h-72 rounded-2xl overflow-hidden shadow-md border-2 border-brand-amber-light group"
-              >
-                <Image
-                  src={g.image}
-                  alt={g.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-maroon-dark/90 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4 text-white">
-                  <span className="font-serif font-bold text-sm block">
-                    {g.title}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-14 text-center">
-            <Link
-              href="/book?service=Garden%20Experience"
-              className="bg-brand-maroon hover:bg-brand-maroon-dark text-brand-amber px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg transition-all inline-flex items-center gap-2"
-            >
-              <span>Reserve Kalya Gardens</span>
-              <ChevronRight className="w-4 h-4" />
-            </Link>
           </div>
         </div>
       </section>

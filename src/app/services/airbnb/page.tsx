@@ -10,9 +10,18 @@ import {
   ChevronRight,
   Phone,
   Home,
+  Users,
+  Bed,
+  Bath,
+  Clock,
+  CheckCircle2,
+  MessageCircle,
 } from "lucide-react";
-import { BRAND, IMAGES } from "@/lib/constants";
+import { IMAGES } from "@/lib/constants";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { getAirbnbApartments, getHotelSettings } from "@/lib/cms-db";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "AirBnB Short-Stays & Serviced Apartments in Kapenguria, West Pokot",
@@ -54,7 +63,15 @@ const TARGET_GUESTS = [
   },
 ];
 
-export default function AirbnbServicePage() {
+export default async function AirbnbServicePage() {
+  const [apartments, settings] = await Promise.all([
+    getAirbnbApartments(true),
+    getHotelSettings(),
+  ]);
+
+  const cleanPhone = (settings.officialWhatsApp || settings.phone || "254719766649").replace(/\D/g, "");
+  const officialPhone = settings.phone || "+254 719 766649";
+
   return (
     <>
       {/* Hero Banner */}
@@ -70,10 +87,10 @@ export default function AirbnbServicePage() {
         <div className="absolute inset-0 bg-gradient-to-t from-brand-maroon-dark via-brand-maroon-dark/50 to-transparent" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-end pb-12">
           <span className="text-brand-amber text-xs font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
-            <Sparkles className="w-4 h-4" /> Extended Stays & Independence
+            <Sparkles className="w-4 h-4" /> Extended Stays &amp; Independence
           </span>
           <h1 className="font-serif text-3xl sm:text-5xl font-extrabold text-white">
-            AirBnB & Serviced Stays
+            AirBnB &amp; Serviced Suites
           </h1>
           <p className="text-white/80 text-sm mt-2 max-w-xl">
             Fully furnished, self-contained living suites with kitchenettes, private
@@ -103,7 +120,7 @@ export default function AirbnbServicePage() {
                 Home Away from Home
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl font-extrabold text-brand-maroon-dark leading-tight">
-                Privacy, Freedom & Full Hotel Services
+                Privacy, Freedom &amp; Full Hotel Services
               </h2>
               <div className="w-16 h-1 bg-brand-amber rounded-full" />
               <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
@@ -122,10 +139,10 @@ export default function AirbnbServicePage() {
                   <ChevronRight className="w-4 h-4" />
                 </Link>
                 <a
-                  href={`tel:${BRAND.phone}`}
+                  href={`tel:${cleanPhone}`}
                   className="border border-brand-maroon text-brand-maroon px-5 py-3 rounded-full text-xs font-semibold flex items-center gap-2 hover:bg-brand-amber-light transition-colors"
                 >
-                  <Phone className="w-3.5 h-3.5" /> Enquire for Weekly Rates
+                  <Phone className="w-3.5 h-3.5" /> Call for Monthly Rates: {officialPhone}
                 </a>
               </div>
             </div>
@@ -154,15 +171,168 @@ export default function AirbnbServicePage() {
         </div>
       </section>
 
+      {/* DYNAMIC AIRBNB APARTMENTS SHOWCASE FROM CMS */}
+      <section className="py-20 bg-brand-cream/40 border-t border-brand-amber-light">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <span className="text-xs font-bold text-brand-maroon uppercase tracking-widest">
+              Available Units &amp; Suites
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-extrabold text-brand-maroon-dark mt-1">
+              Serviced Apartments Registry
+            </h2>
+            <div className="w-16 h-1 bg-brand-amber mx-auto my-3 rounded-full" />
+            <p className="text-sm text-gray-600">
+              Each unit features dedicated living space, complete kitchen amenities, continuous power backup, and 24/7 security.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {apartments.map((apt) => {
+              const aptName = apt.name || "Serviced Apartment";
+              const waMsg = encodeURIComponent(
+                `Hello Hotel Kalya, I would like to enquire about renting the "${aptName}" serviced apartment.`
+              );
+              const waUrl = `https://wa.me/${cleanPhone}?text=${waMsg}`;
+
+              return (
+                <div
+                  key={apt.id}
+                  className="bg-white rounded-3xl overflow-hidden border border-brand-amber-light/90 shadow-md hover:shadow-xl transition-all flex flex-col justify-between group"
+                >
+                  <div>
+                    {/* Header Image */}
+                    <div className="relative h-60 w-full overflow-hidden bg-brand-cream">
+                      <Image
+                        src={apt.featuredImage || apt.images?.[0] || IMAGES.standardRoom}
+                        alt={aptName}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-80" />
+
+                      <div className="absolute top-4 left-4 flex flex-wrap gap-1.5">
+                        <span className="bg-brand-maroon text-brand-amber text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow">
+                          {apt.propertyType || "Apartment Suite"}
+                        </span>
+                      </div>
+
+                      <div className="absolute bottom-4 left-4 right-4 text-white">
+                        <h3 className="font-serif text-xl font-bold text-white drop-shadow">
+                          {aptName}
+                        </h3>
+                        <p className="text-xs text-white/80 mt-0.5">
+                          {apt.location || "Hotel Kalya Compound, Kapenguria"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Specifications */}
+                    <div className="p-6 space-y-4">
+                      <div className="flex items-center justify-between text-xs text-gray-600 bg-brand-cream/50 p-2.5 rounded-xl border border-brand-amber/20">
+                        <span className="flex items-center gap-1">
+                          <Bed className="w-3.5 h-3.5 text-brand-maroon" />
+                          <span>{apt.bedrooms} Bed{apt.bedrooms > 1 ? "s" : ""}</span>
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Bath className="w-3.5 h-3.5 text-brand-maroon" />
+                          <span>{apt.bathrooms} Bath{apt.bathrooms > 1 ? "s" : ""}</span>
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Users className="w-3.5 h-3.5 text-brand-maroon" />
+                          <span>Max {typeof apt.capacity === "number" ? apt.capacity : apt.capacity?.maxGuests || 4} Guests</span>
+                        </span>
+                      </div>
+
+                      <p className="text-xs text-gray-600 leading-relaxed line-clamp-3">
+                        {apt.description}
+                      </p>
+
+                      {/* Amenities */}
+                      {apt.amenities && apt.amenities.length > 0 && (
+                        <div className="space-y-1.5">
+                          <span className="text-[10px] uppercase font-bold text-gray-400 block">
+                            Key Apartment Amenities:
+                          </span>
+                          <div className="flex flex-wrap gap-1.5">
+                            {apt.amenities.slice(0, 5).map((am, i) => (
+                              <span
+                                key={i}
+                                className="bg-brand-cream text-brand-maroon-dark text-[10px] font-semibold px-2 py-0.5 rounded-md border border-brand-amber/20"
+                              >
+                                {am}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Check-in Policies */}
+                      <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-500">
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-3 h-3 text-brand-amber" />
+                          <span>Check-in: {apt.checkInTime || "2:00 PM"}</span>
+                        </span>
+                        <span>Check-out: {apt.checkOutTime || "10:00 AM"}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Actions & Pricing */}
+                  <div className="p-6 pt-0 border-t border-gray-100 mt-2">
+                    <div className="flex items-center justify-between py-3">
+                      <div>
+                        <span className="text-[10px] font-bold uppercase text-gray-400 block">Nightly Rate</span>
+                        <span className="font-serif text-lg font-bold text-brand-maroon">
+                          KES {(apt.pricePerNight || apt.pricing?.perNight || 4500).toLocaleString()}
+                        </span>
+                        <span className="text-[10px] text-gray-500"> / night</span>
+                      </div>
+                      {apt.pricing?.perMonth && (
+                        <div className="text-right">
+                          <span className="text-[10px] font-bold uppercase text-gray-400 block">Monthly Rate</span>
+                          <span className="text-xs font-bold text-gray-700">
+                            KES {apt.pricing.perMonth.toLocaleString()}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-2 pt-2">
+                      <Link
+                        href={`/book?service=${encodeURIComponent(aptName)}`}
+                        className="flex-1 text-center bg-brand-maroon hover:bg-brand-maroon-dark text-white py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm"
+                      >
+                        Reserve Suite
+                      </Link>
+                      <a
+                        href={waUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition-all shadow-sm flex items-center justify-center"
+                        title="Enquire on WhatsApp"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* Amenities Grid */}
-      <section className="py-16 sm:py-20 bg-brand-cream/60 border-t border-brand-amber-light">
+      <section className="py-16 sm:py-20 bg-white border-t border-brand-amber-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <span className="text-xs font-bold text-brand-maroon uppercase tracking-widest">
               What&apos;s Included
             </span>
             <h3 className="font-serif text-3xl font-extrabold text-brand-maroon-dark mt-1">
-              Apartment Features & Amenities
+              Apartment Features &amp; Amenities
             </h3>
             <div className="w-16 h-1 bg-brand-amber mx-auto my-3 rounded-full" />
             <p className="text-sm text-gray-600">
@@ -176,7 +346,7 @@ export default function AirbnbServicePage() {
               return (
                 <div
                   key={am.title}
-                  className="bg-white p-7 rounded-2xl border border-brand-amber-light/80 shadow-md space-y-3"
+                  className="bg-brand-cream/40 p-7 rounded-2xl border border-brand-amber-light/80 shadow-sm space-y-3"
                 >
                   <div className="w-10 h-10 rounded-xl bg-brand-maroon text-brand-amber flex items-center justify-center shadow">
                     <Icon className="w-5 h-5" />
@@ -190,46 +360,6 @@ export default function AirbnbServicePage() {
                 </div>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* Who Stays With Us */}
-      <section className="py-20 bg-white border-t border-brand-amber-light">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            <span className="text-xs font-bold text-brand-maroon uppercase tracking-widest">
-              Tailored For You
-            </span>
-            <h3 className="font-serif text-3xl font-extrabold text-brand-maroon-dark mt-1">
-              Who Chooses Our AirBnB Stays?
-            </h3>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {TARGET_GUESTS.map((guest) => (
-              <div
-                key={guest.title}
-                className="bg-brand-cream/60 p-6 rounded-2xl border border-brand-amber-light/80 space-y-2"
-              >
-                <h4 className="font-serif font-bold text-base text-brand-maroon-dark">
-                  {guest.title}
-                </h4>
-                <p className="text-xs text-gray-600 leading-relaxed">
-                  {guest.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-14 text-center">
-            <Link
-              href="/book?service=AirBnB"
-              className="bg-brand-amber hover:bg-brand-amber-dark text-brand-maroon-dark px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg transition-all inline-flex items-center gap-2"
-            >
-              <span>Check AirBnB Availability</span>
-              <ChevronRight className="w-4 h-4" />
-            </Link>
           </div>
         </div>
       </section>

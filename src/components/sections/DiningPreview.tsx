@@ -1,9 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Utensils, CheckCircle2, Phone } from "lucide-react";
-import { BRAND, IMAGES } from "@/lib/constants";
+import { getHotelSettings } from "@/lib/cms-db";
+import { IMAGES } from "@/lib/constants";
 
-export function DiningPreview() {
+export async function DiningPreview() {
+  const settings = await getHotelSettings();
+  const cleanPhone = (settings.officialWhatsApp || settings.phone || "254719766649").replace(/\D/g, "");
+  const officialPhone = settings.phone || "+254 719 766649";
+
   return (
     <section className="py-20 bg-brand-amber-light/30 border-t border-b border-brand-amber-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -12,11 +17,11 @@ export function DiningPreview() {
           <div className="lg:col-span-6 space-y-6">
             <div className="inline-flex items-center gap-2 text-brand-maroon font-bold text-xs tracking-widest uppercase">
               <Utensils className="w-4 h-4 text-brand-amber" />
-              Food Service & Restaurant
+              Food Service &amp; Restaurant
             </div>
 
             <h2 className="font-serif text-3xl sm:text-4xl font-extrabold text-brand-maroon-dark leading-tight">
-              Authentic Flavors, Fresh Ingredients & Hearty Dining
+              Authentic Flavors, Fresh Ingredients &amp; Hearty Dining
             </h2>
 
             <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
@@ -60,10 +65,10 @@ export function DiningPreview() {
             {/* CTAs */}
             <div className="pt-2 flex flex-wrap items-center gap-3">
               <Link
-                href="/services/food-service"
+                href="/menu"
                 className="bg-brand-maroon hover:bg-brand-maroon-dark text-brand-amber px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider shadow flex items-center gap-1.5 transition-colors"
               >
-                <span>View Full Menu</span>
+                <span>View Digital Menu</span>
                 <span>→</span>
               </Link>
               <Link
@@ -73,10 +78,10 @@ export function DiningPreview() {
                 Reserve a Table
               </Link>
               <a
-                href={`tel:${BRAND.phone}`}
+                href={`tel:${cleanPhone}`}
                 className="text-xs font-semibold text-gray-700 hover:text-brand-maroon flex items-center gap-1.5 py-2"
               >
-                <Phone className="w-3.5 h-3.5 text-brand-amber" /> Order: {BRAND.phone}
+                <Phone className="w-3.5 h-3.5 text-brand-amber" /> Order Desk: {officialPhone}
               </a>
             </div>
           </div>

@@ -15,6 +15,9 @@ import { ContactForm } from "@/components/sections/ContactForm";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { GoogleMap } from "@/components/maps/GoogleMap";
 import { DirectionsButton } from "@/components/maps/DirectionsButton";
+import { getHotelSettings } from "@/lib/cms-db";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Contact & Location — Directions & Inquiries",
@@ -28,7 +31,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const settings = await getHotelSettings();
+  const phone = settings.phone || BRAND.phone;
+  const email = settings.email || BRAND.email;
+  const address = settings.address || BRAND.location;
+  const cleanPhone = (settings.officialWhatsApp || settings.phone || BRAND.phoneClean).replace(/\D/g, "");
+  const receptionHours = settings.operatingHours?.reception || BRAND.operatingHours.reception;
+  const restaurantHours = settings.operatingHours?.restaurant || BRAND.operatingHours.restaurant;
+
   return (
     <>
       {/* LocalBusiness JSON-LD */}
@@ -38,13 +49,13 @@ export default function ContactPage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "LodgingBusiness",
-            name: BRAND.name,
+            name: settings.name || BRAND.name,
             alternateName: "Hotel Kalya Kapenguria",
             description:
               "Premier hospitality destination in Kapenguria, West Pokot County offering executive rooms, dining, conferences, catering, and garden functions.",
             url: "https://hotelkalya.com",
-            telephone: BRAND.phone,
-            email: BRAND.email,
+            telephone: phone,
+            email: email,
             address: {
               "@type": "PostalAddress",
               streetAddress: "Main Tarmac Route (A1 Highway)",
@@ -54,8 +65,8 @@ export default function ContactPage() {
             },
             geo: {
               "@type": "GeoCoordinates",
-              latitude: 1.2389,
-              longitude: 35.1119,
+              latitude: settings.latitude || 1.2389,
+              longitude: settings.longitude || 35.1119,
             },
             openingHoursSpecification: [
               {
@@ -101,7 +112,7 @@ export default function ContactPage() {
             <MapPin className="w-4 h-4" /> Kapenguria, West Pokot County
           </span>
           <h1 className="font-serif text-3xl sm:text-5xl font-extrabold text-white">
-            Contact & Directions
+            Contact &amp; Directions
           </h1>
           <p className="text-white/80 text-sm mt-2 max-w-xl">
             We are always happy to hear from you. Reach our front desk team 24/7
@@ -129,12 +140,12 @@ export default function ContactPage() {
                   Get In Touch
                 </span>
                 <h2 className="font-serif text-2xl font-bold text-white mb-6">
-                  Front Desk & Reservations
+                  Front Desk &amp; Reservations
                 </h2>
 
                 <div className="space-y-5">
                   <a
-                    href={`tel:${BRAND.phone}`}
+                    href={`tel:${phone.replace(/\s+/g, "")}`}
                     className="flex items-start gap-4 p-3 rounded-2xl bg-white/5 hover:bg-white/10 transition-colors"
                   >
                     <div className="w-10 h-10 rounded-xl bg-brand-amber text-brand-maroon-dark flex items-center justify-center flex-shrink-0 shadow">
@@ -145,16 +156,16 @@ export default function ContactPage() {
                         Telephone / Mobile
                       </span>
                       <span className="font-bold text-base sm:text-lg">
-                        {BRAND.phone}
+                        {phone}
                       </span>
                       <p className="text-[11px] text-white/60">
-                        Available 24 hours for calls & inquiries
+                        Available 24 hours for calls &amp; inquiries
                       </p>
                     </div>
                   </a>
 
                   <a
-                    href={`https://wa.me/${BRAND.phoneClean}?text=Hello%20Hotel%20Kalya%20Front%20Desk,%20I%20have%20an%20inquiry`}
+                    href={`https://wa.me/${cleanPhone}?text=Hello%20Hotel%20Kalya%20Front%20Desk,%20I%20have%20an%20inquiry`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-start gap-4 p-3 rounded-2xl bg-emerald-950/60 border border-emerald-500/30 hover:bg-emerald-950 transition-colors"
@@ -170,13 +181,13 @@ export default function ContactPage() {
                         Instant Messaging
                       </span>
                       <p className="text-[11px] text-emerald-300/80">
-                        Quick rates, photos & booking confirmation
+                        Quick rates, photos &amp; booking confirmation
                       </p>
                     </div>
                   </a>
 
                   <a
-                    href={`mailto:${BRAND.email}`}
+                    href={`mailto:${email}`}
                     className="flex items-start gap-4 p-3 rounded-2xl bg-white/5 hover:bg-white/10 transition-colors"
                   >
                     <div className="w-10 h-10 rounded-xl bg-brand-amber text-brand-maroon-dark flex items-center justify-center flex-shrink-0 shadow">
@@ -187,10 +198,10 @@ export default function ContactPage() {
                         Official Email
                       </span>
                       <span className="font-bold text-sm sm:text-base break-all">
-                        {BRAND.email}
+                        {email}
                       </span>
                       <p className="text-[11px] text-white/60">
-                        Corporate inquiries, RFPs & invoices
+                        Corporate inquiries, RFPs &amp; invoices
                       </p>
                     </div>
                   </a>
@@ -204,7 +215,7 @@ export default function ContactPage() {
                         Physical Address
                       </span>
                       <span className="font-medium text-sm text-white">
-                        {BRAND.location}
+                        {address}
                       </span>
                       <p className="text-[11px] text-white/60">
                         Main Tarmac Highway, Kapenguria Town
@@ -221,10 +232,10 @@ export default function ContactPage() {
                         Hours of Operation
                       </span>
                       <span className="font-medium text-sm text-white block">
-                        Reception: <strong>{BRAND.operatingHours.reception}</strong>
+                        Reception: <strong>{receptionHours}</strong>
                       </span>
                       <span className="font-medium text-sm text-white/90">
-                        Restaurant: <strong>{BRAND.operatingHours.restaurant}</strong>
+                        Restaurant: <strong>{restaurantHours}</strong>
                       </span>
                     </div>
                   </div>
@@ -238,7 +249,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="font-serif font-bold text-sm text-brand-maroon-dark">
-                    Secure & Gated Compound
+                    Secure &amp; Gated Compound
                   </h4>
                   <p className="text-xs text-gray-600 mt-0.5">
                     24/7 security guard personnel, CCTV monitoring, and ample enclosed parking for all guests.
@@ -263,7 +274,7 @@ export default function ContactPage() {
               <Compass className="w-4 h-4 text-brand-amber" /> Finding Us
             </span>
             <h2 className="font-serif text-2xl sm:text-4xl font-extrabold text-brand-maroon-dark mt-1">
-              Location & Directions
+              Location &amp; Directions
             </h2>
             <div className="w-16 h-1 bg-brand-amber mx-auto my-3 rounded-full" />
             <p className="text-sm text-gray-600">
@@ -281,7 +292,7 @@ export default function ContactPage() {
                   <span className="font-bold text-brand-maroon-dark">
                     GPS Coordinates:
                   </span>{" "}
-                  1.2415° N, 35.1185° E (Kapenguria Highway)
+                  {settings.latitude || 1.2415}° N, {settings.longitude || 35.1185}° E (Kapenguria Highway)
                 </div>
                 <DirectionsButton size="sm" variant="primary" />
               </div>

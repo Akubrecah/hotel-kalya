@@ -1,0 +1,63 @@
+[
+  {
+    "id": "offer-weekend-romantic",
+    "title": "Kapenguria Highland Romantic Escape",
+    "subtitle": "2 Nights Deluxe Suite Stay + 3-Course Candlelight Dinner + Bottle of Sparkling Juice",
+    "category": "accommodation",
+    "originalPrice": 24000,
+    "offerPrice": 18500,
+    "discountPercentage": 23,
+    "validUntil": "2026-11-30",
+    "inclusions": [
+      "2 Nights accommodation in Deluxe Executive Suite",
+      "Daily full farmhouse breakfast in bed",
+      "Private 3-course candlelight dinner at Garden Terrace",
+      "Late checkout at 2:00 PM (subject to availability)"
+    ],
+    "image": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+    "publishStatus": "published",
+    "featured": true,
+    "createdAt": "2026-08-01T00:00:00.000Z"
+  },
+  {
+    "id": "offer-corporate-delegate",
+    "title": "Full-Day Corporate Delegate Conference Package",
+    "subtitle": "Full hall hire, 2 tea breaks with hot snacks, 3-course lunch buffet, and high-speed Wi-Fi.",
+    "category": "conference",
+    "originalPrice": 3200,
+    "offerPrice": 2650,
+    "discountPercentage": 17,
+    "validUntil": "2026-12-15",
+    "inclusions": [
+      "Hall hire with HD projector & sound system",
+      "Morning tea with traditional bites and pastries",
+      "Full 3-course buffet lunch with soft drink",
+      "Afternoon spiced tea with fresh bakes",
+      "Conference writing pads, pens & mints"
+    ],
+    "image": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80",
+    "publishStatus": "published",
+    "featured": true,
+    "createdAt": "2026-08-05T00:00:00.000Z"
+  },
+  {
+    "id": "offer-family-sunday-choma",
+    "title": "Sunday Family Garden Nyama Choma Platter",
+    "subtitle": "1kg Highland Goat Nyama Choma + Whole Kienyeji Chicken + Sides & 2L Fresh Juice",
+    "category": "dining",
+    "originalPrice": 5800,
+    "offerPrice": 4500,
+    "discountPercentage": 22,
+    "validUntil": "2026-10-31",
+    "inclusions": [
+      "1kg Tender Highland Goat Nyama Choma (wet or dry fry)",
+      "1 Whole Free-Range Kienyeji Chicken",
+      "Ugali, Roast Potatoes, Kachumbari & Greens",
+      "2-Litre Pitcher of Fresh Squeezed Passion Juice"
+    ],
+    "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=900&q=80",
+    "publishStatus": "published",
+    "featured": true,
+    "createdAt": "2026-08-10T00:00:00.000Z"
+  }
+]

@@ -1,0 +1,130 @@
+[
+  {
+    "id": "garden-wedding-lawn",
+    "name": "Kalya Grand Wedding Lawn & Terraces",
+    "slug": "wedding-lawn",
+    "description": "Expansive manicured kikuyu grass lawns set against panoramic backdrop views of Kapenguria hills. Ideal for high-profile weddings, VIP receptions, and grand banquets.",
+    "capacity": {
+      "minGuests": 150,
+      "maxGuests": 1500
+    },
+    "pricing": {
+      "perDay": 50000,
+      "halfDay": 30000,
+      "photographySession": 15000
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80"
+    ],
+    "featuredImage": "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80",
+    "facilities": [
+      "Dedicated Bridal Dressing Suite",
+      "Power Hookups for PA & Lighting",
+      "Clean Restroom Blocks",
+      "Direct Vehicle Access for Decorators"
+    ],
+    "eventSuitability": [
+      "Weddings",
+      "Banquets",
+      "County Summits",
+      "Product Launches",
+      "Photo & Video Shoots"
+    ],
+    "features": [
+      "Lush Manicured Lawns",
+      "Perimeter Security & Lighting",
+      "Highland Mountain Air",
+      "Ample Parking for 200+ Cars"
+    ],
+    "openingHours": "6:00 AM – 7:00 PM Daily",
+    "bookingRequirements": "50% deposit upon reservation, 5-day advance booking for event setup.",
+    "location": "West Wing Lawn, Hotel Kalya Compound",
+    "publishStatus": "published",
+    "createdAt": "2026-08-01T00:00:00.000Z"
+  },
+  {
+    "id": "garden-hillside-terrace",
+    "name": "Upper Hillside View Terrace & Gazebos",
+    "slug": "hillside-terrace",
+    "description": "Elevated outdoor stone terrace with private thatched gazebos, gentle mountain breezes, and sunset viewpoints for intimate gatherings and private dining.",
+    "capacity": {
+      "minGuests": 20,
+      "maxGuests": 150
+    },
+    "pricing": {
+      "perDay": 25000,
+      "halfDay": 15000,
+      "photographySession": 10000
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80"
+    ],
+    "featuredImage": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80",
+    "facilities": [
+      "Private Thatched Gazebos",
+      "Barbecue Grill Station Access",
+      "Dedicated Waitstaff Counter"
+    ],
+    "eventSuitability": [
+      "Cocktail Parties",
+      "Birthday Celebrations",
+      "Sundowners",
+      "Private Corporate Dinners"
+    ],
+    "features": [
+      "Sunset Viewpoint",
+      "Ambient Evening Lighting",
+      "Windbreak Landscaping"
+    ],
+    "openingHours": "8:00 AM – 10:00 PM",
+    "bookingRequirements": "Full payment required 48 hours prior to function.",
+    "location": "Upper Level Terrace, Main Hotel",
+    "publishStatus": "published",
+    "createdAt": "2026-08-05T00:00:00.000Z"
+  },
+  {
+    "id": "garden-family-park",
+    "name": "Family Picnic Park & Children's Playgrounds",
+    "slug": "family-park",
+    "description": "Secure, enclosed garden park designed for families, school groups, and community fun days, with shaded picnic trees and green playground spaces.",
+    "capacity": {
+      "minGuests": 10,
+      "maxGuests": 200
+    },
+    "pricing": {
+      "perDay": 18000,
+      "halfDay": 10000
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "featuredImage": "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=900&q=80",
+    "facilities": [
+      "Children Swings & Slides",
+      "Shaded Benches",
+      "Kiosk for Soft Drinks & Snacks"
+    ],
+    "eventSuitability": [
+      "Family Fun Days",
+      "Church Gatherings",
+      "School Picnics",
+      "Birthday Parties"
+    ],
+    "features": [
+      "Fenced & Child Safe",
+      "Soft Turf Grass",
+      "Baby Changing Station Nearby"
+    ],
+    "openingHours": "8:00 AM – 6:30 PM",
+    "bookingRequirements": "Reservation at front desk 24 hours in advance.",
+    "location": "East Garden Zone",
+    "publishStatus": "published",
+    "createdAt": "2026-08-10T00:00:00.000Z"
+  }
+]

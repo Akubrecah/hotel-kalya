@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Send, CheckCircle2, Phone, Mail, MapPin, Clock, MessageCircle, FileText } from "lucide-react";
 import { BrandLogo } from "@/components/layout/BrandLogo";
@@ -23,6 +23,27 @@ export default function BookPage() {
   const [submitted, setSubmitted] = useState(false);
   const [createdBookingId, setCreatedBookingId] = useState("BK-88421");
   const [isMpesaOpen, setIsMpesaOpen] = useState(false);
+
+  const [officialWhatsApp, setOfficialWhatsApp] = useState(BRAND.phoneClean);
+  const [officialPhone, setOfficialPhone] = useState(BRAND.phone);
+  const [officialEmail, setOfficialEmail] = useState(BRAND.email);
+  const [officialAddress, setOfficialAddress] = useState(BRAND.location);
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.settings?.officialWhatsApp) {
+          setOfficialWhatsApp(data.settings.officialWhatsApp.replace(/\D/g, ""));
+        } else if (data.settings?.phone) {
+          setOfficialWhatsApp(data.settings.phone.replace(/\D/g, ""));
+        }
+        if (data.settings?.phone) setOfficialPhone(data.settings.phone);
+        if (data.settings?.email) setOfficialEmail(data.settings.email);
+        if (data.settings?.address) setOfficialAddress(data.settings.address);
+      })
+      .catch(() => {});
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,7 +82,7 @@ export default function BookPage() {
         `📝 *Notes/Message:* ${form.message || "Please provide rates and availability."}`
     );
 
-    const waUrl = `https://wa.me/${BRAND.phoneClean}?text=${textMsg}`;
+    const waUrl = `https://wa.me/${officialWhatsApp}?text=${textMsg}`;
 
     setTimeout(() => {
       window.open(waUrl, "_blank", "noopener,noreferrer");
@@ -283,13 +304,13 @@ export default function BookPage() {
                           Official Cell
                         </span>
                         <span className="font-bold text-base">
-                          {BRAND.phone}
+                          {officialPhone}
                         </span>
                       </div>
                     </a>
 
                     <a
-                      href={`mailto:${BRAND.email}`}
+                      href={`mailto:${officialEmail}`}
                       className="flex items-start gap-3.5 text-white/90 hover:text-brand-amber transition-colors"
                     >
                       <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0 text-brand-amber">
@@ -300,7 +321,7 @@ export default function BookPage() {
                           Official Email
                         </span>
                         <span className="font-semibold text-sm break-all">
-                          {BRAND.email}
+                          {officialEmail}
                         </span>
                       </div>
                     </a>
@@ -314,7 +335,7 @@ export default function BookPage() {
                           Physical Location
                         </span>
                         <span className="font-medium text-sm">
-                          {BRAND.location}
+                          {officialAddress}
                         </span>
                       </div>
                     </div>
@@ -337,7 +358,7 @@ export default function BookPage() {
 
                   <div className="pt-4 border-t border-white/15">
                     <a
-                      href={`https://wa.me/${BRAND.phoneClean}?text=Hello%20Hotel%20Kalya%20Kapenguria`}
+                      href={`https://wa.me/${officialWhatsApp}?text=Hello%20Hotel%20Kalya%20Kapenguria`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow"

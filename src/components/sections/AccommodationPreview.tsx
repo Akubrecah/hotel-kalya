@@ -1,9 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Phone } from "lucide-react";
-import { BRAND, ACCOMMODATION_ROOMS } from "@/lib/constants";
+import { Phone, Users, Bed, Sparkles } from "lucide-react";
+import { getRooms, getHotelSettings } from "@/lib/cms-db";
+import { IMAGES } from "@/lib/constants";
+import { Room } from "@/types/hospitality";
 
-export function AccommodationPreview() {
+export async function AccommodationPreview() {
+  const [rooms, settings] = await Promise.all([
+    getRooms(true),
+    getHotelSettings(),
+  ]);
+
+  const cleanPhone = (settings.officialWhatsApp || settings.phone || "254719766649").replace(/\D/g, "");
+  const officialPhone = settings.phone || "+254 719 766649";
+  const displayRooms: Room[] = rooms.slice(0, 3);
+
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -11,10 +22,10 @@ export function AccommodationPreview() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>
             <span className="text-xs font-bold text-brand-maroon uppercase tracking-widest">
-              Rest & Rejuvenate
+              Rest &amp; Rejuvenate
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl font-extrabold text-brand-maroon-dark mt-1">
-              Accommodation & Short-Stays
+              Accommodation &amp; Short-Stays
             </h2>
             <p className="text-gray-600 text-sm mt-1 max-w-xl">
               Peaceful, sanitized rooms with comfortable bedding, hot showers,
@@ -23,59 +34,68 @@ export function AccommodationPreview() {
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <Link
-              href="/services/accommodation"
+              href="/rooms"
               className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-maroon bg-white border border-brand-maroon px-4 py-2.5 rounded-lg hover:bg-brand-maroon hover:text-brand-amber transition-colors"
             >
               <span>Explore All Rooms</span>
               <span>→</span>
             </Link>
             <a
-              href={`tel:${BRAND.phone}`}
+              href={`tel:${cleanPhone}`}
               className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-maroon bg-brand-amber-light/50 border border-brand-amber-light px-4 py-2.5 rounded-lg hover:bg-brand-amber-light transition-colors"
             >
               <Phone className="w-3.5 h-3.5 text-brand-amber" />
-              Call Desk: {BRAND.phone}
+              Call Desk: {officialPhone}
             </a>
           </div>
         </div>
 
-        {/* Room Cards */}
+        {/* Dynamic Room Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {ACCOMMODATION_ROOMS.map((room) => (
+          {displayRooms.map((room: Room) => (
             <div
               key={room.id}
-              className="bg-brand-cream rounded-2xl overflow-hidden border border-brand-amber-light/90 shadow-sm hover:shadow-lg transition-all flex flex-col"
+              className="bg-brand-cream rounded-2xl overflow-hidden border border-brand-amber-light/90 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between group"
             >
-              <div className="relative h-56">
-                <Image
-                  src={room.image}
-                  alt={room.name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-                <div className="absolute top-3 left-3 bg-brand-maroon-dark text-brand-amber px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow">
-                  {room.tag}
+              <div>
+                <div className="relative h-56 w-full overflow-hidden bg-brand-cream">
+                  <Image
+                    src={room.featuredImage || room.images?.[0] || IMAGES.executiveRoom}
+                    alt={room.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                  <div className="absolute top-3 left-3 bg-brand-maroon-dark text-brand-amber px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow">
+                    {room.type}
+                  </div>
+                  {room.discountPrice && (
+                    <div className="absolute top-3 right-3 bg-brand-amber text-brand-maroon-dark px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider shadow flex items-center gap-1">
+                      <Sparkles className="w-3 h-3" />
+                      <span>Special Offer</span>
+                    </div>
+                  )}
                 </div>
-              </div>
 
-              <div className="p-6 flex-1 flex flex-col justify-between">
-                <div>
+                <div className="p-6">
                   <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
-                    <span>{room.type}</span>
-                    <span>{room.capacity}</span>
+                    <span className="font-semibold text-brand-maroon">{`Room ${room.roomNumber}`}</span>
+                    <span className="flex items-center gap-1">
+                      <Users className="w-3 h-3 text-brand-amber" />
+                      {typeof room.capacity === "number" ? room.capacity : room.capacity?.maxGuests || room.capacity?.adults || 2} Guests
+                    </span>
                   </div>
 
                   <h3 className="font-serif text-lg font-bold text-brand-maroon-dark mb-2">
                     {room.name}
                   </h3>
 
-                  <p className="text-xs text-gray-600 mb-4 leading-relaxed">
-                    {room.desc}
+                  <p className="text-xs text-gray-600 mb-4 leading-relaxed line-clamp-2">
+                    {room.description}
                   </p>
 
-                  <div className="flex flex-wrap gap-1.5 mb-6">
-                    {room.amenities.map((amenity, i) => (
+                  <div className="flex flex-wrap gap-1.5 mb-2">
+                    {room.amenities.slice(0, 3).map((amenity: string, i: number) => (
                       <span
                         key={i}
                         className="text-[11px] bg-white border border-brand-amber-light text-gray-700 px-2.5 py-1 rounded-md"
@@ -83,23 +103,30 @@ export function AccommodationPreview() {
                         {amenity}
                       </span>
                     ))}
+                    {room.amenities.length > 3 && (
+                      <span className="text-[11px] bg-brand-amber/20 text-brand-maroon px-2 py-1 rounded-md font-semibold">
+                        +{room.amenities.length - 3} more
+                      </span>
+                    )}
                   </div>
                 </div>
+              </div>
 
+              <div className="p-6 pt-0">
                 <div className="pt-4 border-t border-brand-amber-light/80 flex items-center justify-between">
                   <div>
                     <span className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold block">
-                      Inquire For Rates
+                      Price per night
                     </span>
-                    <span className="text-xs font-bold text-brand-maroon-dark">
-                      Special Daily / Weekly Rates
+                    <span className="text-base font-black text-brand-maroon">
+                      KES {(room.discountPrice || room.basePrice).toLocaleString()}
                     </span>
                   </div>
                   <Link
-                    href="/book"
+                    href={`/rooms`}
                     className="bg-brand-maroon hover:bg-brand-maroon-dark text-white px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors"
                   >
-                    Book Room
+                    View Room
                   </Link>
                 </div>
               </div>
@@ -111,7 +138,7 @@ export function AccommodationPreview() {
         <div className="mt-12 bg-gradient-to-r from-brand-maroon-dark to-brand-maroon text-white rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 border-2 border-brand-amber">
           <div className="space-y-2">
             <span className="bg-brand-amber text-brand-maroon-dark text-[10px] font-extrabold uppercase px-2.5 py-1 rounded">
-              Flexible Long & Short Stays
+              Flexible Long &amp; Short Stays
             </span>
             <h3 className="font-serif text-2xl font-bold text-white">
               Looking for an AirBnB Experience in Kapenguria?

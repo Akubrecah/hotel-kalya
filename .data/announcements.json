@@ -1,0 +1,14 @@
+[
+  {
+    "id": "ann-01",
+    "title": "Welcome to Hotel Kalya — Hospitality Redefined",
+    "message": "Experience pristine Highland hospitality in Kapenguria, West Pokot County. Direct website bookings enjoy complimentary full farmhouse breakfast.",
+    "bannerType": "promo",
+    "linkUrl": "/book",
+    "linkText": "Book Your Stay Online",
+    "isActive": true,
+    "startDate": "2026-09-01",
+    "endDate": "2026-12-31",
+    "createdAt": "2026-09-01T00:00:00.000Z"
+  }
+]

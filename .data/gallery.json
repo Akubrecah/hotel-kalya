@@ -1,0 +1,123 @@
+[
+  {
+    "id": "gal-01",
+    "title": "Deluxe Executive Suite Master Bedroom",
+    "category": "accommodation",
+    "imageUrl": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+    "altText": "Spacious master bedroom in Deluxe Suite with king-size bed and modern finishes",
+    "caption": "Our premiere suite overlooking the hills of Kapenguria",
+    "featured": true,
+    "publishStatus": "published",
+    "createdAt": "2026-08-01T00:00:00.000Z"
+  },
+  {
+    "id": "gal-02",
+    "title": "Hotel Kalya Front Facade & Welcoming Portico",
+    "category": "accommodation",
+    "imageUrl": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80",
+    "altText": "Exterior architecture of Hotel Kalya Kapenguria",
+    "caption": "A beacon of tranquil hospitality in West Pokot County",
+    "featured": true,
+    "publishStatus": "published",
+    "createdAt": "2026-08-01T00:00:00.000Z"
+  },
+  {
+    "id": "gal-03",
+    "title": "Farm-to-Table Kenyan Culinary Spread",
+    "category": "dining",
+    "imageUrl": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=900&q=80",
+    "altText": "Savory grilled meats, kienyeji chicken and fresh garden vegetables",
+    "caption": "Freshly harvested and prepared by Chef Patrick Mwangi",
+    "featured": true,
+    "publishStatus": "published",
+    "createdAt": "2026-08-02T00:00:00.000Z"
+  },
+  {
+    "id": "gal-04",
+    "title": "Main Restaurant Dining Room",
+    "category": "dining",
+    "imageUrl": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
+    "altText": "Warmly lit dining hall with spacious table arrangements",
+    "caption": "Comfortable dining for breakfast, lunch, and dinner",
+    "featured": false,
+    "publishStatus": "published",
+    "createdAt": "2026-08-02T00:00:00.000Z"
+  },
+  {
+    "id": "gal-05",
+    "title": "Mount Elgon Grand Ballroom Conference Setup",
+    "category": "conferences",
+    "imageUrl": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80",
+    "altText": "Professional conference setup with projector screens and podium",
+    "caption": "Hosting county summits and international NGO workshops",
+    "featured": true,
+    "publishStatus": "published",
+    "createdAt": "2026-08-03T00:00:00.000Z"
+  },
+  {
+    "id": "gal-06",
+    "title": "VIP Executive Boardroom",
+    "category": "conferences",
+    "imageUrl": "https://images.unsplash.com/photo-1431540015161-0bf868a2d407?auto=format&fit=crop&w=900&q=80",
+    "altText": "Executive boardroom with leather seating and video conferencing",
+    "caption": "High-level board meetings in total discretion",
+    "featured": false,
+    "publishStatus": "published",
+    "createdAt": "2026-08-03T00:00:00.000Z"
+  },
+  {
+    "id": "gal-07",
+    "title": "Lush Kalya Manicured Wedding Gardens",
+    "category": "gardens",
+    "imageUrl": "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80",
+    "altText": "Green lawns and floral hedges under blue skies in Kapenguria",
+    "caption": "Picturesque wedding vows and outdoor receptions",
+    "featured": true,
+    "publishStatus": "published",
+    "createdAt": "2026-08-04T00:00:00.000Z"
+  },
+  {
+    "id": "gal-08",
+    "title": "Sunset Hillside Terrace Seating",
+    "category": "gardens",
+    "imageUrl": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80",
+    "altText": "Outdoor patio with sun umbrellas overlooking the valley",
+    "caption": "Breathtaking afternoon sundowners and cool mountain breezes",
+    "featured": false,
+    "publishStatus": "published",
+    "createdAt": "2026-08-04T00:00:00.000Z"
+  },
+  {
+    "id": "gal-09",
+    "title": "Outdoor Banqueting & Catering Service",
+    "category": "events",
+    "imageUrl": "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=900&q=80",
+    "altText": "Chaffing dishes and buffet line setup in garden marquee",
+    "caption": "Full catering service delivered anywhere in the North Rift region",
+    "featured": true,
+    "publishStatus": "published",
+    "createdAt": "2026-08-05T00:00:00.000Z"
+  },
+  {
+    "id": "gal-10",
+    "title": "Royal Wedding Grand Pavilion Setup",
+    "category": "events",
+    "imageUrl": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80",
+    "altText": "Draped wedding tent with floral centerpieces and decorated chairs",
+    "caption": "Turning dream wedding celebrations into cherished realities",
+    "featured": true,
+    "publishStatus": "published",
+    "createdAt": "2026-08-05T00:00:00.000Z"
+  },
+  {
+    "id": "test-gal-1790263880831",
+    "title": "Verification Serene Garden Pathway",
+    "category": "gardens",
+    "imageUrl": "/images/hero-2.webp",
+    "caption": "Stone pathway traversing the indigenous gardens.",
+    "publishStatus": "draft",
+    "featured": false,
+    "displayOrder": 99,
+    "createdAt": "2026-09-24T15:31:20.833Z"
+  }
+]

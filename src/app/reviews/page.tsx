@@ -1,83 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Star,
   CheckCircle2,
   Send,
+  Loader2,
 } from "lucide-react";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { ReviewCard } from "@/components/reviews/ReviewCard";
 import { ReviewSummary } from "@/components/reviews/ReviewSummary";
 import { ReviewCTA } from "@/components/reviews/ReviewCTA";
 import { ReviewItem } from "@/types";
-
-const ALL_REVIEWS: ReviewItem[] = [
-  {
-    id: "rev_01",
-    author: "Kipchumba R.",
-    rating: 5,
-    date: "August 2026",
-    text: "Outstanding hospitality in Kapenguria. The executive suites are quiet and impeccably clean, and the kienyeji chicken dinner was prepared fresh to perfection.",
-    source: "Google",
-    service: "Executive Accommodation",
-    verified: true,
-  },
-  {
-    id: "rev_02",
-    author: "Wanjiku M.",
-    rating: 5,
-    date: "July 2026",
-    text: "Hosted our regional NGO workshop in the conference hall for three days. Reliable audiovisual setup, continuous power backup, and top-tier outside tea catering.",
-    source: "Google",
-    service: "Corporate Conference Hall",
-    verified: true,
-  },
-  {
-    id: "rev_03",
-    author: "David O.",
-    rating: 5,
-    date: "September 2026",
-    text: "Kalya Gardens was the dream setting for our wedding photography. The manicured lawns and mountain backdrop made our memories truly unforgettable.",
-    source: "Google",
-    service: "Kalya Gardens Experience",
-    verified: true,
-  },
-  {
-    id: "rev_04",
-    author: "Amina K.",
-    rating: 5,
-    date: "June 2026",
-    text: "The AirBnB serviced apartment had everything our team needed for a week-long field assignment in West Pokot. Full kitchen, fast Wi-Fi, and total safety.",
-    source: "Google",
-    service: "AirBnB Short-Stays",
-    verified: true,
-  },
-  {
-    id: "rev_05",
-    author: "Peter L.",
-    rating: 5,
-    date: "May 2026",
-    text: "Hotel Kalya outside catering team handled food service for over 350 county guests seamlessly. Food was piping hot and service was courteous.",
-    source: "Google",
-    service: "Outside Event Catering",
-    verified: true,
-  },
-  {
-    id: "rev_06",
-    author: "Grace N.",
-    rating: 5,
-    date: "August 2026",
-    text: "Warm staff from the moment you arrive. The fresh breakfast on the garden terrace overlooking the hills was the highlight of our family weekend.",
-    source: "Verified Guest",
-    service: "Food Service & Dining",
-    verified: true,
-  },
-];
+import { CustomerReview } from "@/types/hospitality";
 
 export default function ReviewsPage() {
+  const [reviews, setReviews] = useState<ReviewItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -86,15 +28,74 @@ export default function ReviewsPage() {
     feedback: "",
   });
 
-  const filteredReviews =
-    selectedFilter === "all"
-      ? ALL_REVIEWS
-      : ALL_REVIEWS.filter((r) => r.service?.toLowerCase().includes(selectedFilter.toLowerCase()));
+  useEffect(() => {
+    async function loadReviews() {
+      try {
+        setLoading(true);
+        const res = await fetch("/api/reviews?approved=true");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.reviews && Array.isArray(data.reviews)) {
+            const mapped: ReviewItem[] = data.reviews.map((r: CustomerReview) => ({
+              id: r.id,
+              author: r.authorName || "Guest",
+              rating: r.rating || 5,
+              date: r.stayDate || (r.createdAt ? new Date(r.createdAt).toLocaleDateString("en-US", { month: "short", year: "numeric" }) : "Recent Stay"),
+              text: r.comment || "",
+              source: r.source === "Google Reviews" || r.source === "Google" ? "Google" : "Verified Guest",
+              service: r.serviceType || "Hospitality Services",
+              verified: r.isApproved ?? true,
+            }));
+            setReviews(mapped);
+          }
+        }
+      } catch {
+        // Fallback gracefully
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  const handleSubmit = (e: React.FormEvent) => {
+    loadReviews();
+  }, []);
+
+  const filteredReviews = useMemo(() => {
+    if (selectedFilter === "all") return reviews;
+    return reviews.filter((r) => r.service?.toLowerCase().includes(selectedFilter.toLowerCase()));
+  }, [reviews, selectedFilter]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.feedback) return;
-    setFormSubmitted(true);
+
+    try {
+      setSubmitting(true);
+      await fetch("/api/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          authorName: formData.name,
+          email: formData.email,
+          rating: formData.rating,
+          serviceType: formData.service,
+          comment: formData.feedback,
+          source: "Verified Guest",
+          isApproved: false, // Queue in admin moderation desk
+        }),
+      });
+      setFormSubmitted(true);
+      setFormData({
+        name: "",
+        email: "",
+        rating: 5,
+        service: "Executive Accommodation",
+        feedback: "",
+      });
+    } catch {
+      setFormSubmitted(true);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -156,16 +157,32 @@ export default function ReviewsPage() {
           </div>
 
           {/* Reviews Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredReviews.map((review) => (
-              <ReviewCard key={review.id} review={review} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="animate-pulse bg-brand-cream/60 h-48 rounded-2xl border border-brand-amber-light" />
+              ))}
+            </div>
+          ) : filteredReviews.length === 0 ? (
+            <div className="text-center py-16 bg-brand-cream/40 rounded-2xl border border-brand-maroon/10 p-8">
+              <Star className="w-10 h-10 text-brand-dark/40 mx-auto mb-3" />
+              <h3 className="font-serif font-bold text-lg text-brand-maroon">No reviews found in this category</h3>
+              <p className="text-xs text-brand-dark/60 mt-1">
+                Choose another category above to browse testimonials from our verified guests.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredReviews.map((review) => (
+                <ReviewCard key={review.id} review={review} />
+              ))}
+            </div>
+          )}
 
           {/* Review Call To Action Banner */}
           <ReviewCTA />
 
-          {/* Internal Feedback Submission (Future-Ready Schema) */}
+          {/* Direct Guest Desk Review Form */}
           <div className="bg-brand-cream/40 rounded-2xl border border-brand-maroon/15 p-8 lg:p-10 max-w-3xl mx-auto">
             <div className="text-center max-w-xl mx-auto mb-8">
               <span className="text-xs font-bold uppercase tracking-wider text-brand-amber font-sans">
@@ -290,10 +307,15 @@ export default function ReviewsPage() {
                 <div className="pt-2 text-right">
                   <button
                     type="submit"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-maroon text-white font-bold text-xs uppercase tracking-wider hover:bg-brand-maroon-dark transition-all shadow-md active:scale-95"
+                    disabled={submitting}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-maroon text-white font-bold text-xs uppercase tracking-wider hover:bg-brand-maroon-dark transition-all shadow-md active:scale-95 disabled:opacity-50"
                   >
-                    <Send className="w-3.5 h-3.5 text-brand-amber" />
-                    <span>Submit Guest Feedback</span>
+                    {submitting ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <Send className="w-3.5 h-3.5 text-brand-amber" />
+                    )}
+                    <span>{submitting ? "Submitting..." : "Submit Guest Feedback"}</span>
                   </button>
                 </div>
               </form>

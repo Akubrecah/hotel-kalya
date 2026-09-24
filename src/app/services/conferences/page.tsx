@@ -7,9 +7,16 @@ import {
   Users,
   CheckCircle2,
   ChevronRight,
+  Maximize,
+  Clock,
+  Layers,
+  MessageCircle,
 } from "lucide-react";
-import { BRAND, IMAGES } from "@/lib/constants";
+import { IMAGES } from "@/lib/constants";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { getConferenceHalls, getHotelSettings } from "@/lib/cms-db";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Conference Facilities — Seminar Halls & Executive Boardrooms in Kapenguria",
@@ -22,35 +29,6 @@ export const metadata: Metadata = {
     images: [IMAGES.conferenceRoom],
   },
 };
-
-const HALL_TYPES = [
-  {
-    name: "Main Conference Hall",
-    capacity: "50–150 Delegates",
-    desc: "Our flagship seminar space suited for county conventions, NGO workshops, multi-day trainings, and corporate annual meetings.",
-    features: [
-      "High-Definition Overhead Projector & Screen",
-      "PA Sound System with Wireless Handheld Mics",
-      "Presenter Podium & Flip Charts with Markers",
-      "Large Windows with Scenic Natural Daylight",
-      "Flexible Classroom, Theater & Banquet Layouts",
-    ],
-    image: IMAGES.conferenceRoom,
-  },
-  {
-    name: "Executive Boardroom",
-    capacity: "10–20 Delegates",
-    desc: "An intimate, sound-insulated boardroom setting for executive committee meetings, strategic reviews, partner negotiations, and VIP debriefs.",
-    features: [
-      "Large Screen Smart TV Display & HDMI Connectivity",
-      "Executive Ergonomic Leather Chairs",
-      "Interactive Whiteboard & Stationery Kits",
-      "Private Tea & Refreshment Butler Service",
-      "High-Speed Dedicated Wi-Fi Connection",
-    ],
-    image: IMAGES.boardroom,
-  },
-];
 
 const PACKAGES = [
   {
@@ -90,7 +68,15 @@ const PACKAGES = [
   },
 ];
 
-export default function ConferencesPage() {
+export default async function ConferencesPage() {
+  const [halls, settings] = await Promise.all([
+    getConferenceHalls(true),
+    getHotelSettings(),
+  ]);
+
+  const cleanPhone = (settings.officialWhatsApp || settings.phone || "254719766649").replace(/\D/g, "");
+  const officialPhone = settings.phone || "+254 719 766649";
+
   return (
     <>
       {/* Hero */}
@@ -130,12 +116,12 @@ export default function ConferencesPage() {
         </div>
       </section>
 
-      {/* Hall Types */}
+      {/* Dynamic Hall Types From CMS */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
           <div className="text-center max-w-2xl mx-auto">
             <span className="text-xs font-bold text-brand-maroon uppercase tracking-widest">
-              Venues & Spaces
+              Venues &amp; Spaces
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl font-extrabold text-brand-maroon-dark mt-1">
               Purpose-Built for Productive Meetings
@@ -146,70 +132,141 @@ export default function ConferencesPage() {
             </p>
           </div>
 
-          {HALL_TYPES.map((hall, idx) => (
-            <div
-              key={hall.name}
-              className={`grid grid-cols-1 lg:grid-cols-2 gap-10 items-center ${
-                idx % 2 !== 0 ? "lg:flex-row-reverse" : ""
-              }`}
-            >
-              <div className={idx % 2 !== 0 ? "lg:order-2" : ""}>
-                <div className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-brand-amber-light h-72 sm:h-96">
-                  <Image
-                    src={hall.image}
-                    alt={hall.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                  />
-                  <div className="absolute top-4 left-4 bg-brand-maroon text-brand-amber px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow">
-                    {hall.capacity}
+          {halls.map((hall, idx) => {
+            const waMsg = encodeURIComponent(
+              `Hello Hotel Kalya, I would like to enquire about booking the "${hall.name}" for an upcoming conference/seminar.`
+            );
+            const waUrl = `https://wa.me/${cleanPhone}?text=${waMsg}`;
+
+            return (
+              <div
+                key={hall.id}
+                className={`grid grid-cols-1 lg:grid-cols-12 gap-10 items-center p-8 rounded-3xl bg-brand-cream/30 border border-brand-amber-light/80 shadow-sm`}
+              >
+                <div className={`lg:col-span-5 ${idx % 2 !== 0 ? "lg:order-2" : ""}`}>
+                  <div className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-brand-amber-light h-72 sm:h-96">
+                    <Image
+                      src={hall.featuredImage || hall.images?.[0] || IMAGES.conferenceRoom}
+                      alt={hall.name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 40vw"
+                    />
+                    <div className="absolute top-4 left-4 bg-brand-maroon text-brand-amber px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow">
+                      {hall.capacity?.maxGuests ? `Up to ${hall.capacity.maxGuests} Delegates` : "Delegates"}
+                    </div>
+                  </div>
+                </div>
+
+                <div className={`lg:col-span-7 space-y-5 ${idx % 2 !== 0 ? "lg:order-1" : ""}`}>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="inline-flex items-center gap-1.5 text-brand-maroon font-bold text-xs uppercase tracking-wider bg-brand-amber-light/80 px-3 py-1 rounded-full">
+                      <Users className="w-3.5 h-3.5" />
+                      <span>{hall.capacity?.minGuests || 10} – {hall.capacity?.maxGuests || 150} Delegates</span>
+                    </span>
+                    {hall.dimensions && (
+                      <span className="inline-flex items-center gap-1 text-gray-500 text-xs font-semibold">
+                        <Maximize className="w-3.5 h-3.5 text-brand-amber" />
+                        <span>{hall.dimensions}</span>
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 className="font-serif text-2xl sm:text-3xl font-extrabold text-brand-maroon-dark">
+                    {hall.name}
+                  </h3>
+
+                  <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
+                    {hall.description}
+                  </p>
+
+                  {/* Seating Configurations */}
+                  {hall.seatingConfigurations && hall.seatingConfigurations.length > 0 && (
+                    <div className="bg-white p-4 rounded-2xl border border-brand-amber/20 shadow-sm space-y-2">
+                      <span className="text-[11px] uppercase font-bold text-brand-maroon block flex items-center gap-1.5">
+                        <Layers className="w-3.5 h-3.5 text-brand-amber" />
+                        Available Seating Configurations:
+                      </span>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        {hall.seatingConfigurations.map((cfg, cIdx) => (
+                          <div key={cIdx} className="bg-brand-cream/60 px-3 py-1.5 rounded-lg text-xs flex justify-between items-center">
+                            <span className="font-semibold text-brand-dark">{cfg.layout}</span>
+                            <span className="text-brand-maroon font-bold text-[11px]">{cfg.capacity} pax</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Equipment Checklist */}
+                  {hall.equipment && hall.equipment.length > 0 && (
+                    <div className="space-y-1.5">
+                      <span className="text-[10px] uppercase font-bold text-gray-400 block">
+                        Included Audiovisual &amp; Hall Equipment:
+                      </span>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-700">
+                        {hall.equipment.map((f, i) => (
+                          <div key={i} className="flex items-center gap-2">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-brand-amber flex-shrink-0" />
+                            <span>{f}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Pricing Tiers & Action Buttons */}
+                  <div className="pt-3 border-t border-gray-200 flex flex-wrap items-center justify-between gap-4">
+                    <div className="flex items-baseline gap-4">
+                      {hall.pricing?.fullDay ? (
+                        <div>
+                          <span className="text-[10px] uppercase text-gray-400 font-bold block">Full Day</span>
+                          <span className="font-serif text-lg font-bold text-brand-maroon">
+                            KES {hall.pricing.fullDay.toLocaleString()}
+                          </span>
+                        </div>
+                      ) : null}
+                      {hall.pricing?.halfDay ? (
+                        <div>
+                          <span className="text-[10px] uppercase text-gray-400 font-bold block">Half Day</span>
+                          <span className="font-serif text-base font-bold text-gray-700">
+                            KES {hall.pricing.halfDay.toLocaleString()}
+                          </span>
+                        </div>
+                      ) : null}
+                      {hall.pricing?.hourly ? (
+                        <div>
+                          <span className="text-[10px] uppercase text-gray-400 font-bold block">Hourly</span>
+                          <span className="font-serif text-sm font-semibold text-gray-600">
+                            KES {hall.pricing.hourly.toLocaleString()}/hr
+                          </span>
+                        </div>
+                      ) : null}
+                    </div>
+
+                    <div className="flex flex-wrap gap-2.5">
+                      <Link
+                        href={`/book?service=Conference&hall=${encodeURIComponent(hall.name)}`}
+                        className="bg-brand-maroon hover:bg-brand-maroon-dark text-brand-amber px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider shadow transition-all flex items-center gap-1.5"
+                      >
+                        <span>Request Quote</span>
+                        <ChevronRight className="w-4 h-4" />
+                      </Link>
+                      <a
+                        href={waUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider shadow transition-all flex items-center gap-1.5"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                        <span>WhatsApp Enquiry</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <div className={`space-y-4 ${idx % 2 !== 0 ? "lg:order-1" : ""}`}>
-                <div className="flex items-center gap-2 text-brand-sage font-bold text-xs uppercase tracking-widest">
-                  <Users className="w-4 h-4 text-brand-amber" />
-                  <span>{hall.capacity}</span>
-                </div>
-                <h3 className="font-serif text-2xl sm:text-3xl font-extrabold text-brand-maroon-dark">
-                  {hall.name}
-                </h3>
-                <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
-                  {hall.desc}
-                </p>
-
-                <div className="space-y-2 pt-2">
-                  {hall.features.map((f, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center gap-2.5 text-xs sm:text-sm text-gray-700"
-                    >
-                      <CheckCircle2 className="w-4 h-4 text-brand-amber flex-shrink-0" />
-                      <span>{f}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="pt-4 flex flex-wrap gap-3">
-                  <Link
-                    href={`/book?service=Conference&hall=${encodeURIComponent(hall.name)}`}
-                    className="bg-brand-maroon hover:bg-brand-maroon-dark text-brand-amber px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider shadow transition-all flex items-center gap-2"
-                  >
-                    <span>Request Conference Quote</span>
-                    <ChevronRight className="w-4 h-4" />
-                  </Link>
-                  <a
-                    href={`tel:${BRAND.phone}`}
-                    className="border border-brand-maroon text-brand-maroon px-5 py-3 rounded-full text-xs font-semibold flex items-center gap-2 hover:bg-brand-amber-light transition-colors"
-                  >
-                    <Phone className="w-3.5 h-3.5" /> Call: {BRAND.phone}
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 

@@ -1,0 +1,161 @@
+[
+  {
+    "id": "hall-mount-elgon",
+    "name": "Mount Elgon Grand Ballroom & Conference Centre",
+    "slug": "mount-elgon-ballroom",
+    "description": "State-of-the-art pillarless conference hall featuring high ceilings, acoustic treatment, dual HD projection, and integrated climate control for international delegates.",
+    "capacity": {
+      "minGuests": 80,
+      "maxGuests": 350
+    },
+    "dimensions": "24m x 15m (360 m²)",
+    "pricing": {
+      "fullDay": 45000,
+      "halfDay": 28000,
+      "hourly": 6000,
+      "perDelegatePackage": 2800
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1431540015161-0bf868a2d407?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "featuredImage": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80",
+    "equipment": [
+      "Dual 4K Laser Projectors & Motorized Screens",
+      "Wireless UHF Shure Lapel & Handheld Microphones",
+      "JBL Line Array PA & Acoustic Audio System",
+      "Dedicated Fiber Optic Wi-Fi (100 Mbps)",
+      "Podium with Integrated HDMI/USB-C Ports",
+      "Individual Climate Control / AC"
+    ],
+    "seatingConfigurations": [
+      {
+        "layout": "Theatre",
+        "capacity": 350,
+        "image": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80"
+      },
+      {
+        "layout": "Classroom",
+        "capacity": 200,
+        "image": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80"
+      },
+      {
+        "layout": "Banquet",
+        "capacity": 180,
+        "image": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80"
+      },
+      {
+        "layout": "U-Shape",
+        "capacity": 80,
+        "image": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80"
+      }
+    ],
+    "cateringAvailable": true,
+    "parkingAvailable": true,
+    "publishStatus": "published",
+    "createdAt": "2026-08-01T00:00:00.000Z"
+  },
+  {
+    "id": "hall-cherangany",
+    "name": "Cherang'any Executive Conference Suite",
+    "slug": "cherangany-suite",
+    "description": "Mid-sized contemporary seminar room suited for workshops, government ministry retreats, training programs, and regional NGO meetings.",
+    "capacity": {
+      "minGuests": 25,
+      "maxGuests": 80
+    },
+    "dimensions": "14m x 9m (126 m²)",
+    "pricing": {
+      "fullDay": 25000,
+      "halfDay": 16000,
+      "hourly": 3500,
+      "perDelegatePackage": 2400
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1431540015161-0bf868a2d407?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80"
+    ],
+    "featuredImage": "https://images.unsplash.com/photo-1431540015161-0bf868a2d407?auto=format&fit=crop&w=900&q=80",
+    "equipment": [
+      "HD Smart Interactive Touchscreen Display",
+      "Conference Speakerphone System",
+      "Flipcharts & Whiteboard Stands",
+      "High-Speed Wi-Fi",
+      "Air Conditioning & Natural Light"
+    ],
+    "seatingConfigurations": [
+      {
+        "layout": "Classroom",
+        "capacity": 60,
+        "image": "https://images.unsplash.com/photo-1431540015161-0bf868a2d407?auto=format&fit=crop&w=900&q=80"
+      },
+      {
+        "layout": "U-Shape",
+        "capacity": 35,
+        "image": "https://images.unsplash.com/photo-1431540015161-0bf868a2d407?auto=format&fit=crop&w=900&q=80"
+      },
+      {
+        "layout": "Theatre",
+        "capacity": 80,
+        "image": "https://images.unsplash.com/photo-1431540015161-0bf868a2d407?auto=format&fit=crop&w=900&q=80"
+      },
+      {
+        "layout": "Cabaret",
+        "capacity": 45,
+        "image": "https://images.unsplash.com/photo-1431540015161-0bf868a2d407?auto=format&fit=crop&w=900&q=80"
+      }
+    ],
+    "cateringAvailable": true,
+    "parkingAvailable": true,
+    "publishStatus": "published",
+    "createdAt": "2026-08-05T00:00:00.000Z"
+  },
+  {
+    "id": "hall-boardroom",
+    "name": "Kapenguria Executive VIP Boardroom",
+    "slug": "kapenguria-boardroom",
+    "description": "Prestigious boardroom designed for corporate boards of directors, legal arbitrations, confidential negotiations, and high-level strategy sessions.",
+    "capacity": {
+      "minGuests": 8,
+      "maxGuests": 25
+    },
+    "dimensions": "9m x 6m (54 m²)",
+    "pricing": {
+      "fullDay": 15000,
+      "halfDay": 10000,
+      "hourly": 2500,
+      "perDelegatePackage": 2750
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1431540015161-0bf868a2d407?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80"
+    ],
+    "featuredImage": "https://images.unsplash.com/photo-1431540015161-0bf868a2d407?auto=format&fit=crop&w=900&q=80",
+    "equipment": [
+      "65\" 4K UHD Video Conferencing Display (Zoom / Teams)",
+      "Logitech Group Conferencecam with 10x Zoom",
+      "Executive Leather Ergonomic Chairs",
+      "Mahogany Conference Table with Inset Power Outlets",
+      "Tea / Nespresso Coffee Station"
+    ],
+    "seatingConfigurations": [
+      {
+        "layout": "Boardroom",
+        "capacity": 20,
+        "image": "https://images.unsplash.com/photo-1431540015161-0bf868a2d407?auto=format&fit=crop&w=900&q=80"
+      },
+      {
+        "layout": "U-Shape",
+        "capacity": 16,
+        "image": "https://images.unsplash.com/photo-1431540015161-0bf868a2d407?auto=format&fit=crop&w=900&q=80"
+      }
+    ],
+    "cateringAvailable": true,
+    "parkingAvailable": true,
+    "publishStatus": "published",
+    "createdAt": "2026-08-08T00:00:00.000Z"
+  }
+]

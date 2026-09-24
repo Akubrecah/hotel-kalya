@@ -1,0 +1,54 @@
+[
+  {
+    "id": "rev-01",
+    "authorName": "Prof. Kenneth Chesire",
+    "authorLocation": "Eldoret / Moi University",
+    "rating": 5,
+    "date": "2026-09-18",
+    "category": "Accommodation & Dining",
+    "comment": "Outstanding hospitality in Kapenguria! The Deluxe Suite had crisp linens, hot shower, and super fast Wi-Fi. The Kienyeji chicken at dinner was authentic and flavourful.",
+    "source": "Google Reviews",
+    "isApproved": true,
+    "isFeatured": true,
+    "createdAt": "2026-09-18T00:00:00.000Z"
+  },
+  {
+    "id": "rev-02",
+    "authorName": "Mercy Wambui",
+    "authorLocation": "Nairobi",
+    "rating": 5,
+    "date": "2026-09-14",
+    "category": "Conferences & Events",
+    "comment": "We held a 3-day health symposium in the Mount Elgon hall. The AV equipment worked flawlessly and the staff catering breaks were punctual and delicious. Sarah and Dennis took great care of our delegates.",
+    "source": "Google Reviews",
+    "isApproved": true,
+    "isFeatured": true,
+    "createdAt": "2026-09-14T00:00:00.000Z"
+  },
+  {
+    "id": "rev-03",
+    "authorName": "David Kiprop",
+    "authorLocation": "Kitale",
+    "rating": 5,
+    "date": "2026-09-08",
+    "category": "Cottages & Gardens",
+    "comment": "The standalone cottages are a peaceful haven. Waking up to garden views and bird songs was heavenly. Perfect getaway for family relaxation.",
+    "source": "Google Reviews",
+    "isApproved": true,
+    "isFeatured": true,
+    "createdAt": "2026-09-08T00:00:00.000Z"
+  },
+  {
+    "id": "rev-04",
+    "authorName": "Eng. Samuel Lokeris",
+    "authorLocation": "Kapenguria",
+    "rating": 5,
+    "date": "2026-08-29",
+    "category": "Restaurant & Nyama Choma",
+    "comment": "Best Nyama Choma in West Pokot without a doubt. Always succulent and well-seasoned. The terrace garden is our regular Friday evening spot.",
+    "source": "Direct Guest Feedback",
+    "isApproved": true,
+    "isFeatured": true,
+    "createdAt": "2026-08-29T00:00:00.000Z"
+  }
+]

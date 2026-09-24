@@ -25,28 +25,69 @@ import {
   Settings,
   UserCheck,
   KeyRound,
+  Trees,
+  Building2,
+  ChefHat,
+  Gift,
+  ImageIcon,
+  Megaphone,
+  Star,
+  Hotel,
 } from "lucide-react";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { useAuth } from "@/context/AuthContext";
 import { useMounted } from "@/lib/useMounted";
 import { cn } from "@/lib/utils";
 
-const ADMIN_NAV = [
-  { label: "Dashboard Overview", href: "/admin", icon: LayoutDashboard },
-  { label: "Reservations Desk", href: "/admin/reservations", icon: Calendar },
-  { label: "Rooms & Inventory", href: "/admin/rooms", icon: Bed },
-  { label: "Housekeeping Oversight", href: "/admin/housekeeping", icon: Sparkles },
-  { label: "Staff & Human Resources", href: "/admin/staff", icon: Users },
-  { label: "Roles & RBAC Permissions", href: "/admin/roles", icon: ShieldCheck },
-  { label: "WhatsApp Service Config", href: "/admin/services", icon: PhoneCall },
-  { label: "Kitchen Display (KDS)", href: "/admin/orders", icon: UtensilsCrossed },
-  { label: "Conferences & Events", href: "/admin/events", icon: PartyPopper },
-  { label: "Guest Members Directory", href: "/admin/users", icon: UserCheck },
-  { label: "Executive Analytics Reports", href: "/admin/reports", icon: BarChart3 },
-  { label: "Guest Inquiries & Form Fills", href: "/admin/inquiries", icon: ClipboardList },
-  { label: "Operational Audit Trail", href: "/admin/audit-log", icon: History },
-  { label: "Brand & Hotel Settings", href: "/admin/settings", icon: Settings },
-  { label: "Project Docs & PDF Exports", href: "/admin/documents", icon: FileText },
+interface NavGroup {
+  sectionTitle: string;
+  items: {
+    label: string;
+    href: string;
+    icon: React.ElementType;
+    badge?: string;
+  }[];
+}
+
+const ADMIN_NAV_GROUPS: NavGroup[] = [
+  {
+    sectionTitle: "Executive & Operations",
+    items: [
+      { label: "Dashboard Overview", href: "/admin", icon: LayoutDashboard },
+      { label: "Reservations Desk", href: "/admin/reservations", icon: Calendar },
+      { label: "Housekeeping Status", href: "/admin/housekeeping", icon: Sparkles },
+      { label: "Kitchen Display (KDS)", href: "/admin/orders", icon: UtensilsCrossed },
+      { label: "Guest Inquiries", href: "/admin/inquiries", icon: ClipboardList },
+      { label: "Operational Audit Trail", href: "/admin/audit-log", icon: History },
+      { label: "Analytics & Reports", href: "/admin/reports", icon: BarChart3 },
+    ],
+  },
+  {
+    sectionTitle: "Dynamic Hospitality CMS",
+    items: [
+      { label: "Rooms & Accommodation", href: "/admin/rooms", icon: Bed, badge: "Live" },
+      { label: "Restaurant Food Menu", href: "/admin/menu", icon: UtensilsCrossed, badge: "Live" },
+      { label: "Gardens & Lawns", href: "/admin/gardens", icon: Trees, badge: "Live" },
+      { label: "Conference Halls", href: "/admin/conferences", icon: Building2, badge: "Live" },
+      { label: "Event & Function Spaces", href: "/admin/events", icon: PartyPopper, badge: "Live" },
+      { label: "Outside Catering", href: "/admin/catering", icon: ChefHat, badge: "Live" },
+      { label: "Airbnb / Apartments", href: "/admin/airbnb", icon: Hotel, badge: "Live" },
+      { label: "Packages & Offers", href: "/admin/offers", icon: Gift, badge: "Live" },
+      { label: "Gallery & Media Library", href: "/admin/gallery", icon: ImageIcon, badge: "Live" },
+      { label: "Announcements & Banners", href: "/admin/announcements", icon: Megaphone, badge: "Live" },
+      { label: "Guest Reviews", href: "/admin/reviews", icon: Star, badge: "Live" },
+    ],
+  },
+  {
+    sectionTitle: "Settings & Administration",
+    items: [
+      { label: "Staff & Human Resources", href: "/admin/staff", icon: Users },
+      { label: "Roles & RBAC Permissions", href: "/admin/roles", icon: ShieldCheck },
+      { label: "WhatsApp Service Config", href: "/admin/services", icon: PhoneCall },
+      { label: "Brand, Maps & Settings", href: "/admin/settings", icon: Settings },
+      { label: "Project Docs & PDF Exports", href: "/admin/documents", icon: FileText },
+    ],
+  },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -184,30 +225,46 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
 
           {/* Navigation Links */}
-          <nav className="space-y-1 pt-2" aria-label="Admin Navigation">
-            <span className="text-[10px] uppercase font-bold tracking-widest text-white/40 px-3 py-1 block">
-              Desk Management
-            </span>
-            {ADMIN_NAV.map((item) => {
-              const active = pathname === item.href;
-              const IconComp = item.icon;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileNavOpen(false)}
-                  className={cn(
-                    "flex items-center gap-3 px-3.5 py-3 rounded-xl text-xs font-bold transition-all",
-                    active
-                      ? "bg-brand-amber text-brand-maroon shadow-md"
-                      : "text-white/80 hover:bg-white/10 hover:text-white"
-                  )}
-                >
-                  <IconComp className={cn("w-4 h-4", active ? "text-brand-maroon" : "text-brand-amber")} />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
+          <nav className="space-y-5 pt-2" aria-label="Admin Navigation">
+            {ADMIN_NAV_GROUPS.map((group) => (
+              <div key={group.sectionTitle} className="space-y-1">
+                <span className="text-[10px] uppercase font-bold tracking-widest text-brand-amber/70 px-3 py-1 block">
+                  {group.sectionTitle}
+                </span>
+                <div className="space-y-1">
+                  {group.items.map((item) => {
+                    const active = pathname === item.href;
+                    const IconComp = item.icon;
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setMobileNavOpen(false)}
+                        className={cn(
+                          "flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all",
+                          active
+                            ? "bg-brand-amber text-brand-maroon shadow-md"
+                            : "text-white/80 hover:bg-white/10 hover:text-white"
+                        )}
+                      >
+                        <div className="flex items-center gap-3">
+                          <IconComp className={cn("w-4 h-4 shrink-0", active ? "text-brand-maroon" : "text-brand-amber")} />
+                          <span>{item.label}</span>
+                        </div>
+                        {item.badge && (
+                          <span className={cn(
+                            "text-[9px] px-1.5 py-0.5 rounded font-extrabold uppercase",
+                            active ? "bg-brand-maroon text-brand-amber" : "bg-white/15 text-brand-amber"
+                          )}>
+                            {item.badge}
+                          </span>
+                        )}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </nav>
         </div>
 
