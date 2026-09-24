@@ -150,6 +150,11 @@ export function Navbar() {
     return pathname === href;
   };
 
+  // Helper to determine if services parent is active (when on child route)
+  const isServicesParentActive = () => {
+    return pathname === "/services" || pathname.startsWith("/services/");
+  };
+
   return (
     <header
       className={cn(
@@ -177,6 +182,7 @@ export function Navbar() {
           >
             {NAV_LINKS.map((link) => {
               const active = isRouteActive(link.href);
+              const isServicesParent = link.dropdownType === "services" && isServicesParentActive();
 
               // Services Dropdown Item
               if (link.dropdownType === "services") {
@@ -191,13 +197,15 @@ export function Navbar() {
                       href={link.href}
                       className={cn(
                         "relative flex items-center gap-1 px-3 py-2 text-sm font-semibold rounded-md transition-all duration-200",
-                        active
+                        isServicesParent
+                          ? "text-brand-maroon font-bold bg-brand-amber/10"
+                          : active
                           ? "text-brand-maroon font-bold bg-brand-amber/10"
                           : "text-brand-dark/80 hover:text-brand-maroon hover:bg-brand-cream"
                       )}
                       aria-haspopup="true"
                       aria-expanded={desktopServicesOpen}
-                      aria-current={active ? "page" : undefined}
+                      aria-current={isServicesParent ? "page" : active ? "page" : undefined}
                     >
                       <span>{link.label}</span>
                       <ChevronDown
@@ -207,7 +215,7 @@ export function Navbar() {
                         )}
                         aria-hidden="true"
                       />
-                      {active && (
+                      {(isServicesParent || active) && (
                         <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-brand-amber rounded-full" />
                       )}
                     </Link>

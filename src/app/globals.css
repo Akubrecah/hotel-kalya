@@ -118,3 +118,18 @@ body {
   height: 2px;
   background-color: var(--color-brand-amber);
 }
+
+/* Focus-visible styles for accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-brand-amber);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-brand-amber);
+  outline-offset: 2px;
+}
