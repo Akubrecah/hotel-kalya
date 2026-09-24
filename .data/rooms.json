@@ -1,0 +1,1330 @@
+[
+  {
+    "id": "room-101",
+    "roomNumber": "101",
+    "name": "Standard Executive Room 101",
+    "type": "Standard Executive Room",
+    "typeSlug": "standard-comfort",
+    "floor": "Ground Floor - East Wing",
+    "description": "Quiet, peaceful room with garden views, queen-size bed, work desk, high-speed Wi-Fi, and sparkling en-suite shower.",
+    "images": [
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 1,
+      "maxGuests": 2
+    },
+    "bedConfiguration": "1 Queen Bed",
+    "amenities": [
+      "Free Wi-Fi",
+      "Hot Shower",
+      "Satellite TV",
+      "Daily Housekeeping",
+      "Balcony Access",
+      "Work Desk"
+    ],
+    "basePrice": 5000,
+    "reservationStatus": "CHECKED-IN",
+    "housekeepingStatus": "CLEANING",
+    "isActive": true
+  },
+  {
+    "id": "room-102",
+    "roomNumber": "102",
+    "name": "Standard Executive Room 102",
+    "type": "Standard Executive Room",
+    "typeSlug": "standard-comfort",
+    "floor": "Ground Floor - East Wing",
+    "description": "Quiet, peaceful room with garden views, queen-size bed, work desk, high-speed Wi-Fi, and sparkling en-suite shower.",
+    "images": [
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 1,
+      "maxGuests": 2
+    },
+    "bedConfiguration": "1 Queen Bed",
+    "amenities": [
+      "Free Wi-Fi",
+      "Hot Shower",
+      "Satellite TV",
+      "Daily Housekeeping",
+      "Balcony Access",
+      "Work Desk"
+    ],
+    "basePrice": 5000,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-103",
+    "roomNumber": "103",
+    "name": "Standard Executive Room 103",
+    "type": "Standard Executive Room",
+    "typeSlug": "standard-comfort",
+    "floor": "Ground Floor - East Wing",
+    "description": "Quiet, peaceful room with garden views, queen-size bed, work desk, high-speed Wi-Fi, and sparkling en-suite shower.",
+    "images": [
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 1,
+      "maxGuests": 2
+    },
+    "bedConfiguration": "1 Queen Bed",
+    "amenities": [
+      "Free Wi-Fi",
+      "Hot Shower",
+      "Satellite TV",
+      "Daily Housekeeping",
+      "Balcony Access",
+      "Work Desk"
+    ],
+    "basePrice": 5000,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "DIRTY",
+    "isActive": true
+  },
+  {
+    "id": "room-104",
+    "roomNumber": "104",
+    "name": "Standard Executive Room 104",
+    "type": "Standard Executive Room",
+    "typeSlug": "standard-comfort",
+    "floor": "Ground Floor - East Wing",
+    "description": "Quiet, peaceful room with garden views, queen-size bed, work desk, high-speed Wi-Fi, and sparkling en-suite shower.",
+    "images": [
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 1,
+      "maxGuests": 2
+    },
+    "bedConfiguration": "1 Queen Bed",
+    "amenities": [
+      "Free Wi-Fi",
+      "Hot Shower",
+      "Satellite TV",
+      "Daily Housekeeping",
+      "Balcony Access",
+      "Work Desk"
+    ],
+    "basePrice": 5000,
+    "reservationStatus": "CHECKED-IN",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-105",
+    "roomNumber": "105",
+    "name": "Standard Executive Room 105",
+    "type": "Standard Executive Room",
+    "typeSlug": "standard-comfort",
+    "floor": "Ground Floor - East Wing",
+    "description": "Quiet, peaceful room with garden views, queen-size bed, work desk, high-speed Wi-Fi, and sparkling en-suite shower.",
+    "images": [
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 1,
+      "maxGuests": 2
+    },
+    "bedConfiguration": "1 Queen Bed",
+    "amenities": [
+      "Free Wi-Fi",
+      "Hot Shower",
+      "Satellite TV",
+      "Daily Housekeeping",
+      "Balcony Access",
+      "Work Desk"
+    ],
+    "basePrice": 5000,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-106",
+    "roomNumber": "106",
+    "name": "Standard Executive Room 106",
+    "type": "Standard Executive Room",
+    "typeSlug": "standard-comfort",
+    "floor": "Ground Floor - East Wing",
+    "description": "Quiet, peaceful room with garden views, queen-size bed, work desk, high-speed Wi-Fi, and sparkling en-suite shower.",
+    "images": [
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 1,
+      "maxGuests": 2
+    },
+    "bedConfiguration": "1 Queen Bed",
+    "amenities": [
+      "Free Wi-Fi",
+      "Hot Shower",
+      "Satellite TV",
+      "Daily Housekeeping",
+      "Balcony Access",
+      "Work Desk"
+    ],
+    "basePrice": 5000,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-107",
+    "roomNumber": "107",
+    "name": "Standard Executive Room 107",
+    "type": "Standard Executive Room",
+    "typeSlug": "standard-comfort",
+    "floor": "Ground Floor - East Wing",
+    "description": "Quiet, peaceful room with garden views, queen-size bed, work desk, high-speed Wi-Fi, and sparkling en-suite shower.",
+    "images": [
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 1,
+      "maxGuests": 2
+    },
+    "bedConfiguration": "1 Queen Bed",
+    "amenities": [
+      "Free Wi-Fi",
+      "Hot Shower",
+      "Satellite TV",
+      "Daily Housekeeping",
+      "Balcony Access",
+      "Work Desk"
+    ],
+    "basePrice": 5000,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "DIRTY",
+    "isActive": true
+  },
+  {
+    "id": "room-108",
+    "roomNumber": "108",
+    "name": "Standard Executive Room 108",
+    "type": "Standard Executive Room",
+    "typeSlug": "standard-comfort",
+    "floor": "Ground Floor - East Wing",
+    "description": "Quiet, peaceful room with garden views, queen-size bed, work desk, high-speed Wi-Fi, and sparkling en-suite shower.",
+    "images": [
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 1,
+      "maxGuests": 2
+    },
+    "bedConfiguration": "1 Queen Bed",
+    "amenities": [
+      "Free Wi-Fi",
+      "Hot Shower",
+      "Satellite TV",
+      "Daily Housekeeping",
+      "Balcony Access",
+      "Work Desk"
+    ],
+    "basePrice": 5000,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-109",
+    "roomNumber": "109",
+    "name": "Standard Executive Room 109",
+    "type": "Standard Executive Room",
+    "typeSlug": "standard-comfort",
+    "floor": "Ground Floor - East Wing",
+    "description": "Quiet, peaceful room with garden views, queen-size bed, work desk, high-speed Wi-Fi, and sparkling en-suite shower.",
+    "images": [
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 1,
+      "maxGuests": 2
+    },
+    "bedConfiguration": "1 Queen Bed",
+    "amenities": [
+      "Free Wi-Fi",
+      "Hot Shower",
+      "Satellite TV",
+      "Daily Housekeeping",
+      "Balcony Access",
+      "Work Desk"
+    ],
+    "basePrice": 5000,
+    "reservationStatus": "MAINTENANCE",
+    "housekeepingStatus": "OUT_OF_ORDER",
+    "isActive": true,
+    "outOfOrderReason": "Bathroom fixture upgrades"
+  },
+  {
+    "id": "room-110",
+    "roomNumber": "110",
+    "name": "Standard Executive Room 110",
+    "type": "Standard Executive Room",
+    "typeSlug": "standard-comfort",
+    "floor": "Ground Floor - East Wing",
+    "description": "Quiet, peaceful room with garden views, queen-size bed, work desk, high-speed Wi-Fi, and sparkling en-suite shower.",
+    "images": [
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 1,
+      "maxGuests": 2
+    },
+    "bedConfiguration": "1 Queen Bed",
+    "amenities": [
+      "Free Wi-Fi",
+      "Hot Shower",
+      "Satellite TV",
+      "Daily Housekeeping",
+      "Balcony Access",
+      "Work Desk"
+    ],
+    "basePrice": 5000,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-201",
+    "roomNumber": "201",
+    "name": "Deluxe Executive Suite 201",
+    "type": "Deluxe Executive Suite",
+    "typeSlug": "deluxe-exec",
+    "floor": "1st & 2nd Floor - Hill View Wing",
+    "description": "Spacious master suite featuring panoramic hillside views of Kapenguria, king bed, lounge seating, smart TV, and complimentary breakfast.",
+    "images": [
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 2,
+      "maxGuests": 3
+    },
+    "bedConfiguration": "1 King Bed",
+    "amenities": [
+      "Free High-speed Wi-Fi",
+      "Smart Flat TV",
+      "Complimentary Breakfast",
+      "Working Desk",
+      "Room Service",
+      "Mini Fridge",
+      "Coffee Station"
+    ],
+    "basePrice": 8500,
+    "reservationStatus": "RESERVED",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-202",
+    "roomNumber": "202",
+    "name": "Deluxe Executive Suite 202",
+    "type": "Deluxe Executive Suite",
+    "typeSlug": "deluxe-exec",
+    "floor": "1st & 2nd Floor - Hill View Wing",
+    "description": "Spacious master suite featuring panoramic hillside views of Kapenguria, king bed, lounge seating, smart TV, and complimentary breakfast.",
+    "images": [
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 2,
+      "maxGuests": 3
+    },
+    "bedConfiguration": "1 King Bed",
+    "amenities": [
+      "Free High-speed Wi-Fi",
+      "Smart Flat TV",
+      "Complimentary Breakfast",
+      "Working Desk",
+      "Room Service",
+      "Mini Fridge",
+      "Coffee Station"
+    ],
+    "basePrice": 8500,
+    "reservationStatus": "CHECKED-IN",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-203",
+    "roomNumber": "203",
+    "name": "Deluxe Executive Suite 203",
+    "type": "Deluxe Executive Suite",
+    "typeSlug": "deluxe-exec",
+    "floor": "1st & 2nd Floor - Hill View Wing",
+    "description": "Spacious master suite featuring panoramic hillside views of Kapenguria, king bed, lounge seating, smart TV, and complimentary breakfast.",
+    "images": [
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 2,
+      "maxGuests": 3
+    },
+    "bedConfiguration": "1 King Bed",
+    "amenities": [
+      "Free High-speed Wi-Fi",
+      "Smart Flat TV",
+      "Complimentary Breakfast",
+      "Working Desk",
+      "Room Service",
+      "Mini Fridge",
+      "Coffee Station"
+    ],
+    "basePrice": 8500,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-204",
+    "roomNumber": "204",
+    "name": "Deluxe Executive Suite 204",
+    "type": "Deluxe Executive Suite",
+    "typeSlug": "deluxe-exec",
+    "floor": "1st & 2nd Floor - Hill View Wing",
+    "description": "Spacious master suite featuring panoramic hillside views of Kapenguria, king bed, lounge seating, smart TV, and complimentary breakfast.",
+    "images": [
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 2,
+      "maxGuests": 3
+    },
+    "bedConfiguration": "1 King Bed",
+    "amenities": [
+      "Free High-speed Wi-Fi",
+      "Smart Flat TV",
+      "Complimentary Breakfast",
+      "Working Desk",
+      "Room Service",
+      "Mini Fridge",
+      "Coffee Station"
+    ],
+    "basePrice": 8500,
+    "reservationStatus": "CHECKED-IN",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-205",
+    "roomNumber": "205",
+    "name": "Deluxe Executive Suite 205",
+    "type": "Deluxe Executive Suite",
+    "typeSlug": "deluxe-exec",
+    "floor": "1st & 2nd Floor - Hill View Wing",
+    "description": "Spacious master suite featuring panoramic hillside views of Kapenguria, king bed, lounge seating, smart TV, and complimentary breakfast.",
+    "images": [
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 2,
+      "maxGuests": 3
+    },
+    "bedConfiguration": "1 King Bed",
+    "amenities": [
+      "Free High-speed Wi-Fi",
+      "Smart Flat TV",
+      "Complimentary Breakfast",
+      "Working Desk",
+      "Room Service",
+      "Mini Fridge",
+      "Coffee Station"
+    ],
+    "basePrice": 8500,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "CLEANING",
+    "isActive": true
+  },
+  {
+    "id": "room-206",
+    "roomNumber": "206",
+    "name": "Deluxe Executive Suite 206",
+    "type": "Deluxe Executive Suite",
+    "typeSlug": "deluxe-exec",
+    "floor": "1st & 2nd Floor - Hill View Wing",
+    "description": "Spacious master suite featuring panoramic hillside views of Kapenguria, king bed, lounge seating, smart TV, and complimentary breakfast.",
+    "images": [
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 2,
+      "maxGuests": 3
+    },
+    "bedConfiguration": "1 King Bed",
+    "amenities": [
+      "Free High-speed Wi-Fi",
+      "Smart Flat TV",
+      "Complimentary Breakfast",
+      "Working Desk",
+      "Room Service",
+      "Mini Fridge",
+      "Coffee Station"
+    ],
+    "basePrice": 8500,
+    "reservationStatus": "RESERVED",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-207",
+    "roomNumber": "207",
+    "name": "Deluxe Executive Suite 207",
+    "type": "Deluxe Executive Suite",
+    "typeSlug": "deluxe-exec",
+    "floor": "1st & 2nd Floor - Hill View Wing",
+    "description": "Spacious master suite featuring panoramic hillside views of Kapenguria, king bed, lounge seating, smart TV, and complimentary breakfast.",
+    "images": [
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 2,
+      "maxGuests": 3
+    },
+    "bedConfiguration": "1 King Bed",
+    "amenities": [
+      "Free High-speed Wi-Fi",
+      "Smart Flat TV",
+      "Complimentary Breakfast",
+      "Working Desk",
+      "Room Service",
+      "Mini Fridge",
+      "Coffee Station"
+    ],
+    "basePrice": 8500,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-208",
+    "roomNumber": "208",
+    "name": "Deluxe Executive Suite 208",
+    "type": "Deluxe Executive Suite",
+    "typeSlug": "deluxe-exec",
+    "floor": "1st & 2nd Floor - Hill View Wing",
+    "description": "Spacious master suite featuring panoramic hillside views of Kapenguria, king bed, lounge seating, smart TV, and complimentary breakfast.",
+    "images": [
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 2,
+      "maxGuests": 3
+    },
+    "bedConfiguration": "1 King Bed",
+    "amenities": [
+      "Free High-speed Wi-Fi",
+      "Smart Flat TV",
+      "Complimentary Breakfast",
+      "Working Desk",
+      "Room Service",
+      "Mini Fridge",
+      "Coffee Station"
+    ],
+    "basePrice": 8500,
+    "reservationStatus": "CHECKED-IN",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-209",
+    "roomNumber": "209",
+    "name": "Deluxe Executive Suite 209",
+    "type": "Deluxe Executive Suite",
+    "typeSlug": "deluxe-exec",
+    "floor": "1st & 2nd Floor - Hill View Wing",
+    "description": "Spacious master suite featuring panoramic hillside views of Kapenguria, king bed, lounge seating, smart TV, and complimentary breakfast.",
+    "images": [
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 2,
+      "maxGuests": 3
+    },
+    "bedConfiguration": "1 King Bed",
+    "amenities": [
+      "Free High-speed Wi-Fi",
+      "Smart Flat TV",
+      "Complimentary Breakfast",
+      "Working Desk",
+      "Room Service",
+      "Mini Fridge",
+      "Coffee Station"
+    ],
+    "basePrice": 8500,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-210",
+    "roomNumber": "210",
+    "name": "Deluxe Executive Suite 210",
+    "type": "Deluxe Executive Suite",
+    "typeSlug": "deluxe-exec",
+    "floor": "1st & 2nd Floor - Hill View Wing",
+    "description": "Spacious master suite featuring panoramic hillside views of Kapenguria, king bed, lounge seating, smart TV, and complimentary breakfast.",
+    "images": [
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 2,
+      "maxGuests": 3
+    },
+    "bedConfiguration": "1 King Bed",
+    "amenities": [
+      "Free High-speed Wi-Fi",
+      "Smart Flat TV",
+      "Complimentary Breakfast",
+      "Working Desk",
+      "Room Service",
+      "Mini Fridge",
+      "Coffee Station"
+    ],
+    "basePrice": 8500,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-211",
+    "roomNumber": "211",
+    "name": "Deluxe Executive Suite 211",
+    "type": "Deluxe Executive Suite",
+    "typeSlug": "deluxe-exec",
+    "floor": "1st & 2nd Floor - Hill View Wing",
+    "description": "Spacious master suite featuring panoramic hillside views of Kapenguria, king bed, lounge seating, smart TV, and complimentary breakfast.",
+    "images": [
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 2,
+      "maxGuests": 3
+    },
+    "bedConfiguration": "1 King Bed",
+    "amenities": [
+      "Free High-speed Wi-Fi",
+      "Smart Flat TV",
+      "Complimentary Breakfast",
+      "Working Desk",
+      "Room Service",
+      "Mini Fridge",
+      "Coffee Station"
+    ],
+    "basePrice": 8500,
+    "reservationStatus": "RESERVED",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-212",
+    "roomNumber": "212",
+    "name": "Deluxe Executive Suite 212",
+    "type": "Deluxe Executive Suite",
+    "typeSlug": "deluxe-exec",
+    "floor": "1st & 2nd Floor - Hill View Wing",
+    "description": "Spacious master suite featuring panoramic hillside views of Kapenguria, king bed, lounge seating, smart TV, and complimentary breakfast.",
+    "images": [
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 2,
+      "maxGuests": 3
+    },
+    "bedConfiguration": "1 King Bed",
+    "amenities": [
+      "Free High-speed Wi-Fi",
+      "Smart Flat TV",
+      "Complimentary Breakfast",
+      "Working Desk",
+      "Room Service",
+      "Mini Fridge",
+      "Coffee Station"
+    ],
+    "basePrice": 8500,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-213",
+    "roomNumber": "213",
+    "name": "Deluxe Executive Suite 213",
+    "type": "Deluxe Executive Suite",
+    "typeSlug": "deluxe-exec",
+    "floor": "1st & 2nd Floor - Hill View Wing",
+    "description": "Spacious master suite featuring panoramic hillside views of Kapenguria, king bed, lounge seating, smart TV, and complimentary breakfast.",
+    "images": [
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 2,
+      "maxGuests": 3
+    },
+    "bedConfiguration": "1 King Bed",
+    "amenities": [
+      "Free High-speed Wi-Fi",
+      "Smart Flat TV",
+      "Complimentary Breakfast",
+      "Working Desk",
+      "Room Service",
+      "Mini Fridge",
+      "Coffee Station"
+    ],
+    "basePrice": 8500,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-214",
+    "roomNumber": "214",
+    "name": "Deluxe Executive Suite 214",
+    "type": "Deluxe Executive Suite",
+    "typeSlug": "deluxe-exec",
+    "floor": "1st & 2nd Floor - Hill View Wing",
+    "description": "Spacious master suite featuring panoramic hillside views of Kapenguria, king bed, lounge seating, smart TV, and complimentary breakfast.",
+    "images": [
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 2,
+      "maxGuests": 3
+    },
+    "bedConfiguration": "1 King Bed",
+    "amenities": [
+      "Free High-speed Wi-Fi",
+      "Smart Flat TV",
+      "Complimentary Breakfast",
+      "Working Desk",
+      "Room Service",
+      "Mini Fridge",
+      "Coffee Station"
+    ],
+    "basePrice": 8500,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "room-215",
+    "roomNumber": "215",
+    "name": "Deluxe Executive Suite 215",
+    "type": "Deluxe Executive Suite",
+    "typeSlug": "deluxe-exec",
+    "floor": "1st & 2nd Floor - Hill View Wing",
+    "description": "Spacious master suite featuring panoramic hillside views of Kapenguria, king bed, lounge seating, smart TV, and complimentary breakfast.",
+    "images": [
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "capacity": {
+      "adults": 2,
+      "children": 2,
+      "maxGuests": 3
+    },
+    "bedConfiguration": "1 King Bed",
+    "amenities": [
+      "Free High-speed Wi-Fi",
+      "Smart Flat TV",
+      "Complimentary Breakfast",
+      "Working Desk",
+      "Room Service",
+      "Mini Fridge",
+      "Coffee Station"
+    ],
+    "basePrice": 8500,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "cottage-1",
+    "roomNumber": "Cottage 1",
+    "name": "Kalya Luxury Cottage 1",
+    "type": "Kalya Luxury Cottage",
+    "typeSlug": "kalya-cottage",
+    "floor": "Garden Wing - Private Compound",
+    "description": "Standalone luxury cottage surrounded by lush manicured lawns, offering maximum privacy, outdoor veranda, and family-sized comfort.",
+    "images": [
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "capacity": {
+      "adults": 4,
+      "children": 2,
+      "maxGuests": 5
+    },
+    "bedConfiguration": "1 King Bed + 1 Queen Bed",
+    "amenities": [
+      "Private Veranda",
+      "Free High-speed Wi-Fi",
+      "Smart TV",
+      "Complimentary Breakfast",
+      "24/7 Security",
+      "Direct Garden Access"
+    ],
+    "basePrice": 12500,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "cottage-2",
+    "roomNumber": "Cottage 2",
+    "name": "Kalya Luxury Cottage 2",
+    "type": "Kalya Luxury Cottage",
+    "typeSlug": "kalya-cottage",
+    "floor": "Garden Wing - Private Compound",
+    "description": "Standalone luxury cottage surrounded by lush manicured lawns, offering maximum privacy, outdoor veranda, and family-sized comfort.",
+    "images": [
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "capacity": {
+      "adults": 4,
+      "children": 2,
+      "maxGuests": 5
+    },
+    "bedConfiguration": "1 King Bed + 1 Queen Bed",
+    "amenities": [
+      "Private Veranda",
+      "Free High-speed Wi-Fi",
+      "Smart TV",
+      "Complimentary Breakfast",
+      "24/7 Security",
+      "Direct Garden Access"
+    ],
+    "basePrice": 12500,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "cottage-3",
+    "roomNumber": "Cottage 3",
+    "name": "Kalya Luxury Cottage 3",
+    "type": "Kalya Luxury Cottage",
+    "typeSlug": "kalya-cottage",
+    "floor": "Garden Wing - Private Compound",
+    "description": "Standalone luxury cottage surrounded by lush manicured lawns, offering maximum privacy, outdoor veranda, and family-sized comfort.",
+    "images": [
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "capacity": {
+      "adults": 4,
+      "children": 2,
+      "maxGuests": 5
+    },
+    "bedConfiguration": "1 King Bed + 1 Queen Bed",
+    "amenities": [
+      "Private Veranda",
+      "Free High-speed Wi-Fi",
+      "Smart TV",
+      "Complimentary Breakfast",
+      "24/7 Security",
+      "Direct Garden Access"
+    ],
+    "basePrice": 12500,
+    "reservationStatus": "CHECKED-IN",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "cottage-4",
+    "roomNumber": "Cottage 4",
+    "name": "Kalya Luxury Cottage 4",
+    "type": "Kalya Luxury Cottage",
+    "typeSlug": "kalya-cottage",
+    "floor": "Garden Wing - Private Compound",
+    "description": "Standalone luxury cottage surrounded by lush manicured lawns, offering maximum privacy, outdoor veranda, and family-sized comfort.",
+    "images": [
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "capacity": {
+      "adults": 4,
+      "children": 2,
+      "maxGuests": 5
+    },
+    "bedConfiguration": "1 King Bed + 1 Queen Bed",
+    "amenities": [
+      "Private Veranda",
+      "Free High-speed Wi-Fi",
+      "Smart TV",
+      "Complimentary Breakfast",
+      "24/7 Security",
+      "Direct Garden Access"
+    ],
+    "basePrice": 12500,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "cottage-5",
+    "roomNumber": "Cottage 5",
+    "name": "Kalya Luxury Cottage 5",
+    "type": "Kalya Luxury Cottage",
+    "typeSlug": "kalya-cottage",
+    "floor": "Garden Wing - Private Compound",
+    "description": "Standalone luxury cottage surrounded by lush manicured lawns, offering maximum privacy, outdoor veranda, and family-sized comfort.",
+    "images": [
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "capacity": {
+      "adults": 4,
+      "children": 2,
+      "maxGuests": 5
+    },
+    "bedConfiguration": "1 King Bed + 1 Queen Bed",
+    "amenities": [
+      "Private Veranda",
+      "Free High-speed Wi-Fi",
+      "Smart TV",
+      "Complimentary Breakfast",
+      "24/7 Security",
+      "Direct Garden Access"
+    ],
+    "basePrice": 12500,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "cottage-6",
+    "roomNumber": "Cottage 6",
+    "name": "Kalya Luxury Cottage 6",
+    "type": "Kalya Luxury Cottage",
+    "typeSlug": "kalya-cottage",
+    "floor": "Garden Wing - Private Compound",
+    "description": "Standalone luxury cottage surrounded by lush manicured lawns, offering maximum privacy, outdoor veranda, and family-sized comfort.",
+    "images": [
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "capacity": {
+      "adults": 4,
+      "children": 2,
+      "maxGuests": 5
+    },
+    "bedConfiguration": "1 King Bed + 1 Queen Bed",
+    "amenities": [
+      "Private Veranda",
+      "Free High-speed Wi-Fi",
+      "Smart TV",
+      "Complimentary Breakfast",
+      "24/7 Security",
+      "Direct Garden Access"
+    ],
+    "basePrice": 12500,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "cottage-7",
+    "roomNumber": "Cottage 7",
+    "name": "Kalya Luxury Cottage 7",
+    "type": "Kalya Luxury Cottage",
+    "typeSlug": "kalya-cottage",
+    "floor": "Garden Wing - Private Compound",
+    "description": "Standalone luxury cottage surrounded by lush manicured lawns, offering maximum privacy, outdoor veranda, and family-sized comfort.",
+    "images": [
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "capacity": {
+      "adults": 4,
+      "children": 2,
+      "maxGuests": 5
+    },
+    "bedConfiguration": "1 King Bed + 1 Queen Bed",
+    "amenities": [
+      "Private Veranda",
+      "Free High-speed Wi-Fi",
+      "Smart TV",
+      "Complimentary Breakfast",
+      "24/7 Security",
+      "Direct Garden Access"
+    ],
+    "basePrice": 12500,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "cottage-8",
+    "roomNumber": "Cottage 8",
+    "name": "Kalya Luxury Cottage 8",
+    "type": "Kalya Luxury Cottage",
+    "typeSlug": "kalya-cottage",
+    "floor": "Garden Wing - Private Compound",
+    "description": "Standalone luxury cottage surrounded by lush manicured lawns, offering maximum privacy, outdoor veranda, and family-sized comfort.",
+    "images": [
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "capacity": {
+      "adults": 4,
+      "children": 2,
+      "maxGuests": 5
+    },
+    "bedConfiguration": "1 King Bed + 1 Queen Bed",
+    "amenities": [
+      "Private Veranda",
+      "Free High-speed Wi-Fi",
+      "Smart TV",
+      "Complimentary Breakfast",
+      "24/7 Security",
+      "Direct Garden Access"
+    ],
+    "basePrice": 12500,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "airbnb-1",
+    "roomNumber": "AirBnB 1",
+    "name": "Kalya Serviced Apartment 1",
+    "type": "AirBnB Serviced Stay",
+    "typeSlug": "kalya-airbnb",
+    "floor": "North Wing - Serviced Annex",
+    "description": "Self-contained serviced apartment complete with kitchenette, private living room, dining nook, and access to all hotel amenities.",
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80"
+    ],
+    "capacity": {
+      "adults": 3,
+      "children": 1,
+      "maxGuests": 4
+    },
+    "bedConfiguration": "2 Double Beds",
+    "amenities": [
+      "Equipped Kitchenette",
+      "Lounge & Dining",
+      "Dedicated Parking",
+      "Garden Access",
+      "24/7 Security",
+      "Weekly Housekeeping"
+    ],
+    "basePrice": 9000,
+    "reservationStatus": "RESERVED",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "airbnb-2",
+    "roomNumber": "AirBnB 2",
+    "name": "Kalya Serviced Apartment 2",
+    "type": "AirBnB Serviced Stay",
+    "typeSlug": "kalya-airbnb",
+    "floor": "North Wing - Serviced Annex",
+    "description": "Self-contained serviced apartment complete with kitchenette, private living room, dining nook, and access to all hotel amenities.",
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80"
+    ],
+    "capacity": {
+      "adults": 3,
+      "children": 1,
+      "maxGuests": 4
+    },
+    "bedConfiguration": "2 Double Beds",
+    "amenities": [
+      "Equipped Kitchenette",
+      "Lounge & Dining",
+      "Dedicated Parking",
+      "Garden Access",
+      "24/7 Security",
+      "Weekly Housekeeping"
+    ],
+    "basePrice": 9000,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "airbnb-3",
+    "roomNumber": "AirBnB 3",
+    "name": "Kalya Serviced Apartment 3",
+    "type": "AirBnB Serviced Stay",
+    "typeSlug": "kalya-airbnb",
+    "floor": "North Wing - Serviced Annex",
+    "description": "Self-contained serviced apartment complete with kitchenette, private living room, dining nook, and access to all hotel amenities.",
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80"
+    ],
+    "capacity": {
+      "adults": 3,
+      "children": 1,
+      "maxGuests": 4
+    },
+    "bedConfiguration": "2 Double Beds",
+    "amenities": [
+      "Equipped Kitchenette",
+      "Lounge & Dining",
+      "Dedicated Parking",
+      "Garden Access",
+      "24/7 Security",
+      "Weekly Housekeeping"
+    ],
+    "basePrice": 9000,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "airbnb-4",
+    "roomNumber": "AirBnB 4",
+    "name": "Kalya Serviced Apartment 4",
+    "type": "AirBnB Serviced Stay",
+    "typeSlug": "kalya-airbnb",
+    "floor": "North Wing - Serviced Annex",
+    "description": "Self-contained serviced apartment complete with kitchenette, private living room, dining nook, and access to all hotel amenities.",
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80"
+    ],
+    "capacity": {
+      "adults": 3,
+      "children": 1,
+      "maxGuests": 4
+    },
+    "bedConfiguration": "2 Double Beds",
+    "amenities": [
+      "Equipped Kitchenette",
+      "Lounge & Dining",
+      "Dedicated Parking",
+      "Garden Access",
+      "24/7 Security",
+      "Weekly Housekeeping"
+    ],
+    "basePrice": 9000,
+    "reservationStatus": "RESERVED",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "airbnb-5",
+    "roomNumber": "AirBnB 5",
+    "name": "Kalya Serviced Apartment 5",
+    "type": "AirBnB Serviced Stay",
+    "typeSlug": "kalya-airbnb",
+    "floor": "North Wing - Serviced Annex",
+    "description": "Self-contained serviced apartment complete with kitchenette, private living room, dining nook, and access to all hotel amenities.",
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80"
+    ],
+    "capacity": {
+      "adults": 3,
+      "children": 1,
+      "maxGuests": 4
+    },
+    "bedConfiguration": "2 Double Beds",
+    "amenities": [
+      "Equipped Kitchenette",
+      "Lounge & Dining",
+      "Dedicated Parking",
+      "Garden Access",
+      "24/7 Security",
+      "Weekly Housekeeping"
+    ],
+    "basePrice": 9000,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "airbnb-6",
+    "roomNumber": "AirBnB 6",
+    "name": "Kalya Serviced Apartment 6",
+    "type": "AirBnB Serviced Stay",
+    "typeSlug": "kalya-airbnb",
+    "floor": "North Wing - Serviced Annex",
+    "description": "Self-contained serviced apartment complete with kitchenette, private living room, dining nook, and access to all hotel amenities.",
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80"
+    ],
+    "capacity": {
+      "adults": 3,
+      "children": 1,
+      "maxGuests": 4
+    },
+    "bedConfiguration": "2 Double Beds",
+    "amenities": [
+      "Equipped Kitchenette",
+      "Lounge & Dining",
+      "Dedicated Parking",
+      "Garden Access",
+      "24/7 Security",
+      "Weekly Housekeeping"
+    ],
+    "basePrice": 9000,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "airbnb-7",
+    "roomNumber": "AirBnB 7",
+    "name": "Kalya Serviced Apartment 7",
+    "type": "AirBnB Serviced Stay",
+    "typeSlug": "kalya-airbnb",
+    "floor": "North Wing - Serviced Annex",
+    "description": "Self-contained serviced apartment complete with kitchenette, private living room, dining nook, and access to all hotel amenities.",
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80"
+    ],
+    "capacity": {
+      "adults": 3,
+      "children": 1,
+      "maxGuests": 4
+    },
+    "bedConfiguration": "2 Double Beds",
+    "amenities": [
+      "Equipped Kitchenette",
+      "Lounge & Dining",
+      "Dedicated Parking",
+      "Garden Access",
+      "24/7 Security",
+      "Weekly Housekeeping"
+    ],
+    "basePrice": 9000,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  },
+  {
+    "id": "airbnb-8",
+    "roomNumber": "AirBnB 8",
+    "name": "Kalya Serviced Apartment 8",
+    "type": "AirBnB Serviced Stay",
+    "typeSlug": "kalya-airbnb",
+    "floor": "North Wing - Serviced Annex",
+    "description": "Self-contained serviced apartment complete with kitchenette, private living room, dining nook, and access to all hotel amenities.",
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80"
+    ],
+    "capacity": {
+      "adults": 3,
+      "children": 1,
+      "maxGuests": 4
+    },
+    "bedConfiguration": "2 Double Beds",
+    "amenities": [
+      "Equipped Kitchenette",
+      "Lounge & Dining",
+      "Dedicated Parking",
+      "Garden Access",
+      "24/7 Security",
+      "Weekly Housekeeping"
+    ],
+    "basePrice": 9000,
+    "reservationStatus": "AVAILABLE",
+    "housekeepingStatus": "READY",
+    "isActive": true
+  }
+]

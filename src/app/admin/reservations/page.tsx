@@ -135,7 +135,7 @@ export default function AdminReservationsPage() {
 
         {/* Status Filters */}
         <div className="flex flex-wrap items-center gap-1.5 w-full md:w-auto">
-          {["all", "Confirmed", "Checked-In", "Completed", "Pending", "Cancelled"].map((st) => (
+          {["all", "CONFIRMED", "CHECKED_IN", "CHECKED_OUT", "CANCELLED"].map((st) => (
             <button
               key={st}
               type="button"
@@ -146,7 +146,7 @@ export default function AdminReservationsPage() {
                   : "bg-gray-100 text-gray-600 hover:bg-gray-200"
               }`}
             >
-              {st === "all" ? "All Bookings" : st}
+              {st === "all" ? "All Bookings" : st.replace("_", " ")}
             </button>
           ))}
         </div>
@@ -201,42 +201,42 @@ export default function AdminReservationsPage() {
                     <td className="py-3.5 px-4 whitespace-nowrap">
                       <span
                         className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                          res.status === "Confirmed"
+                          res.status === "CONFIRMED"
                             ? "bg-emerald-100 text-emerald-700"
-                            : res.status === "Checked-In"
+                            : res.status === "CHECKED_IN"
                             ? "bg-blue-100 text-blue-700"
-                            : res.status === "Completed"
+                            : res.status === "COMPLETED" || res.status === "CHECKED_OUT"
                             ? "bg-gray-100 text-gray-600"
-                            : res.status === "Pending"
+                            : res.status === "PENDING"
                             ? "bg-amber-100 text-amber-800"
                             : "bg-red-100 text-red-700"
                         }`}
                       >
-                        {res.status}
+                        {res.status.replace("_", " ")}
                       </span>
                     </td>
                     <td className="py-3.5 px-4 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-1.5">
-                        {res.status === "Confirmed" && (
+                        {res.status === "CONFIRMED" && (
                           <button
                             type="button"
-                            onClick={() => handleUpdateStatus(res.id, "Checked-In")}
+                            onClick={() => handleUpdateStatus(res.id, "CHECKED_IN")}
                             className="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 font-bold text-[11px] transition-colors"
                           >
                             Check-In
                           </button>
                         )}
-                        {res.status === "Checked-In" && (
+                        {res.status === "CHECKED_IN" && (
                           <button
                             type="button"
-                            onClick={() => handleUpdateStatus(res.id, "Completed")}
+                            onClick={() => handleUpdateStatus(res.id, "CHECKED_OUT")}
                             className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-bold text-[11px] transition-colors"
                           >
                             Check-Out
                           </button>
                         )}
                         <Link
-                          href={`/book/confirmation/${res.id}`}
+                          href={`/guest/bookings/${res.id}`}
                           className="p-1 text-gray-400 hover:text-brand-maroon transition-colors"
                           title="View Voucher"
                         >

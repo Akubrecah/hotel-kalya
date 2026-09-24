@@ -1,0 +1,32 @@
+[
+  {
+    "userId": "Denis Limo (Lead Attendant)",
+    "userName": "Denis Limo (Lead Attendant)",
+    "role": "HOUSEKEEPING",
+    "action": "UPDATED_ROOM_STATUS",
+    "target": "Room 101",
+    "details": "Housekeeping transition: READY -> CLEANING (Strip bedding and sanitize bathroom surfaces)",
+    "id": "aud-1790240483210-963",
+    "timestamp": "2026-09-24T09:01:23.210Z"
+  },
+  {
+    "userId": "system",
+    "userName": "Test Overlap Guest",
+    "role": "GUEST",
+    "action": "CREATED_RESERVATION",
+    "target": "RES-2026-000152",
+    "details": "Created reservation for Room 201 (2026-09-24 to 2026-09-27, KES 25500)",
+    "id": "aud-1790240323966-814",
+    "timestamp": "2026-09-24T08:58:43.966Z"
+  },
+  {
+    "id": "aud-001",
+    "userId": "system",
+    "userName": "System Initialization",
+    "role": "ADMIN",
+    "action": "BOOTSTRAP_DATABASE",
+    "target": "Hotel Kalya Database Engine",
+    "details": "Database repository seeded with 41 rooms, active bookings, and staff roster.",
+    "timestamp": "2026-09-24T06:00:00Z"
+  }
+]

@@ -69,7 +69,7 @@ export default function AdminDashboardPage() {
     orders.reduce((acc, o) => acc + o.total, 0);
 
   const pendingOrders = orders.filter((o) => o.status === "received" || o.status === "preparing");
-  const confirmedBookings = reservations.filter((r) => r.status === "Confirmed" || r.status === "Checked-In");
+  const confirmedBookings = reservations.filter((r) => r.status === "CONFIRMED" || r.status === "CHECKED_IN");
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
@@ -215,9 +215,9 @@ export default function AdminDashboardPage() {
                     <span className="font-bold text-gray-900">{res.guestName}</span>
                     <span
                       className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                        res.status === "Confirmed"
+                        res.status === "CONFIRMED"
                           ? "bg-emerald-100 text-emerald-700"
-                          : res.status === "Checked-In"
+                          : res.status === "CHECKED_IN"
                           ? "bg-blue-100 text-blue-700"
                           : "bg-amber-100 text-amber-800"
                       }`}

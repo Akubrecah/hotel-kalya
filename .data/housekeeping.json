@@ -1,0 +1,12 @@
+[
+  {
+    "id": "HK-1790240483203",
+    "roomId": "room-101",
+    "roomNumber": "101",
+    "previousStatus": "READY",
+    "newStatus": "CLEANING",
+    "staffName": "Denis Limo (Lead Attendant)",
+    "notes": "Strip bedding and sanitize bathroom surfaces",
+    "timestamp": "2026-09-24T09:01:23.203Z"
+  }
+]

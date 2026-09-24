@@ -447,35 +447,41 @@ export function Navbar() {
                         <p className="text-xs font-bold text-brand-maroon truncate">{user.name}</p>
                         <p className="text-[10px] text-brand-dark/60 truncate">{user.email}</p>
                       </div>
-                      {(user.role === "staff" || user.role === "admin") && (
-                        <Link
-                          href="/admin"
-                          className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold text-brand-maroon bg-brand-amber/25 hover:bg-brand-amber/35 transition-colors border border-brand-amber/40"
-                        >
-                          <ShieldCheck className="w-3.5 h-3.5 text-brand-maroon" />
-                          <span>Admin Portal</span>
-                        </Link>
-                      )}
                       <Link
-                        href="/account/profile"
-                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-brand-dark hover:bg-brand-cream transition-colors"
+                        href="/guest/dashboard"
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold text-brand-maroon bg-brand-cream hover:bg-brand-cream/80 transition-colors border border-brand-maroon/10"
                       >
-                        <User className="w-3.5 h-3.5 text-brand-amber" />
-                        <span>Profile Details</span>
+                        <User className="w-3.5 h-3.5 text-brand-amber-dark" />
+                        <span>Guest Lounge Portal</span>
                       </Link>
                       <Link
-                        href="/account/bookings"
+                        href="/staff/dashboard"
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold text-brand-maroon bg-brand-amber/20 hover:bg-brand-amber/30 transition-colors border border-brand-amber/30"
+                      >
+                        <ShieldCheck className="w-3.5 h-3.5 text-brand-maroon" />
+                        <span>Staff Operations</span>
+                      </Link>
+                      <Link
+                        href="/admin"
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold text-white bg-brand-maroon hover:bg-brand-maroon-dark transition-colors"
+                      >
+                        <ShieldCheck className="w-3.5 h-3.5 text-brand-amber" />
+                        <span>Admin Console</span>
+                      </Link>
+                      <div className="h-px bg-gray-100 my-1" />
+                      <Link
+                        href="/guest/bookings"
                         className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-brand-dark hover:bg-brand-cream transition-colors"
                       >
                         <Calendar className="w-3.5 h-3.5 text-brand-amber" />
                         <span>My Bookings</span>
                       </Link>
                       <Link
-                        href="/account/orders"
+                        href="/cart"
                         className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-brand-dark hover:bg-brand-cream transition-colors"
                       >
                         <ShoppingBag className="w-3.5 h-3.5 text-brand-amber" />
-                        <span>Food Orders</span>
+                        <span>Food Orders Cart</span>
                       </Link>
                       <button
                         onClick={() => logout()}
@@ -740,14 +746,34 @@ export function Navbar() {
               })}
             </nav>
 
-            {/* Mobile Booking CTA */}
-            <div className="pt-2">
+            {/* Operational Portals Mobile Bar */}
+            <div className="pt-2 grid grid-cols-2 gap-2">
               <Link
-                href="/book"
+                href="/guest/dashboard"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-brand-cream border border-brand-maroon/15 text-brand-maroon font-bold text-xs"
+              >
+                <User className="w-3.5 h-3.5 text-brand-amber-dark" />
+                <span>Guest Lounge</span>
+              </Link>
+              <Link
+                href="/staff/dashboard"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-brand-amber/20 border border-brand-amber/30 text-brand-maroon font-bold text-xs"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-brand-maroon" />
+                <span>Staff Portal</span>
+              </Link>
+            </div>
+
+            {/* Mobile Booking CTA */}
+            <div className="pt-1">
+              <Link
+                href="/availability"
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-brand-maroon text-white font-bold text-sm uppercase tracking-wider rounded-xl shadow-md hover:bg-brand-maroon-dark transition-colors"
               >
-                <span>Book a Reservation</span>
+                <span>Check Live Availability</span>
                 <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
