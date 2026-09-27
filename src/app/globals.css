@@ -17,10 +17,36 @@
   --color-brand-cream: #FDFBF7;
   --color-brand-dark: #1E0B0F;
 
+  /* Semantic UI Tokens */
+  --color-surface-white: #FFFFFF;
+  --color-surface-subtle: #F8F6F0;
+  --color-surface-card: #FFFFFF;
+  --color-border-subtle: #E8E2D5;
+  --color-border-brand: rgba(124, 19, 34, 0.15);
+  --color-text-main: #1E0B0F;
+  --color-text-muted: #6B7280;
+  --color-status-success: #059669;
+  --color-status-warning: #D97706;
+  --color-status-error: #DC2626;
+  --color-status-info: #2563EB;
+
+  /* Black Template Pack Foundation Tokens */
+  --color-black-bg: #09090B;
+  --color-black-surface: #121215;
+  --color-black-surface-elevated: #18181D;
+  --color-black-surface-card: #1F1F26;
+  --color-black-border: #2A2A32;
+  --color-black-border-subtle: #202026;
+  --color-black-text: #F4F4F5;
+  --color-black-text-muted: #A1A1AA;
+  --color-black-accent: #F2AE1C;
+  --color-black-accent-dark: #D8930F;
+
   /* Font Families */
   --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
 }
+
 
 /* ===================================================================
    Base Styles & Responsive Safeguards
