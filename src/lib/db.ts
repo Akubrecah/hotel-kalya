@@ -791,50 +791,77 @@ export async function createBooking(data: {
   guestName: string;
   guestPhone: string;
   guestEmail: string;
-  roomId: string;
+  roomId?: string;
+  roomNumber?: string;
+  serviceName?: string;
   checkInDate: string;
   checkOutDate: string;
   adults?: number;
   children?: number;
+  totalAmount?: number;
+  amountPaid?: number;
+  balanceDue?: number;
+  paymentPercentage?: number;
+  mpesaReceiptNumber?: string;
   paymentStatus?: "Paid" | "Deposit" | "Pay on Arrival";
   paymentMethod?: string;
   specialRequests?: string;
 }): Promise<{ success: boolean; booking?: Booking; error?: string }> {
-  const room = await getRoomById(data.roomId);
-  if (!room) {
-    return { success: false, error: "Selected room does not exist." };
-  }
+  const targetRoomId = data.roomId || "";
+  const room = targetRoomId ? await getRoomById(targetRoomId) : null;
 
-  // Double booking check
-  const avail = await checkRoomAvailability(data.roomId, data.checkInDate, data.checkOutDate);
-  if (!avail.available) {
-    return { success: false, error: avail.reason || "Double booking prevented: Room is occupied." };
+  // If a specific room was selected, verify double-booking
+  if (room) {
+    const avail = await checkRoomAvailability(room.id, data.checkInDate, data.checkOutDate);
+    if (!avail.available) {
+      return { success: false, error: avail.reason || "Double booking prevented: Room is occupied." };
+    }
   }
 
   const inDate = new Date(data.checkInDate);
   const outDate = new Date(data.checkOutDate);
   const nights = Math.max(1, Math.round((outDate.getTime() - inDate.getTime()) / (1000 * 60 * 60 * 24)));
-  const totalAmount = nights * room.basePrice;
+  const calculatedTotal = room ? nights * room.basePrice : (data.totalAmount || 10000);
+  const totalAmount = data.totalAmount && data.totalAmount > 0 ? data.totalAmount : calculatedTotal;
+
+  const amountPaid = data.amountPaid !== undefined
+    ? data.amountPaid
+    : (data.paymentStatus === "Paid" ? totalAmount : 0);
+  const balanceDue = data.balanceDue !== undefined
+    ? data.balanceDue
+    : Math.max(0, totalAmount - amountPaid);
+  const paymentPercentage = data.paymentPercentage !== undefined
+    ? data.paymentPercentage
+    : (totalAmount > 0 ? Math.round((amountPaid / totalAmount) * 100) : 0);
 
   const bookings = await getBookings();
   const nextSeq = bookings.length + 147;
-  const newBookingId = `RES-${inDate.getFullYear()}-${String(nextSeq).padStart(6, "0")}`;
+  const newBookingId = `RES-${inDate.getFullYear() || 2026}-${String(nextSeq).padStart(6, "0")}`;
+
+  const resolvedRoomId = room ? room.id : (data.roomId || "venue-booking");
+  const resolvedRoomNumber = room ? room.roomNumber : (data.roomNumber || "Venue / Event");
+  const resolvedRoomType = room ? room.type : (data.serviceName || "Hospitality Booking");
 
   const newBooking: Booking = {
     id: newBookingId,
     guestName: data.guestName.trim(),
     guestPhone: data.guestPhone.trim(),
     guestEmail: data.guestEmail.trim(),
-    roomId: room.id,
-    roomNumber: room.roomNumber,
-    roomType: room.type,
+    roomId: resolvedRoomId,
+    roomNumber: resolvedRoomNumber,
+    roomType: resolvedRoomType,
+    serviceName: data.serviceName || resolvedRoomType,
     checkInDate: data.checkInDate,
     checkOutDate: data.checkOutDate,
     nights,
     adults: data.adults || 1,
     children: data.children || 0,
     totalAmount,
-    paymentStatus: data.paymentStatus || "Pay on Arrival",
+    amountPaid,
+    balanceDue,
+    paymentPercentage,
+    mpesaReceiptNumber: data.mpesaReceiptNumber,
+    paymentStatus: data.paymentStatus || (amountPaid >= totalAmount ? "Paid" : amountPaid > 0 ? "Deposit" : "Pay on Arrival"),
     paymentMethod: data.paymentMethod || "M-Pesa STK Push",
     status: "CONFIRMED",
     specialRequests: data.specialRequests,
@@ -845,8 +872,10 @@ export async function createBooking(data: {
   bookings.unshift(newBooking);
   await writeJsonFile("reservations.json", bookings);
 
-  // Update room status
-  await updateRoom(room.id, { reservationStatus: "RESERVED" });
+  // Update room status if room exists
+  if (room) {
+    await updateRoom(room.id, { reservationStatus: "RESERVED" });
+  }
 
   // Log audit event
   await logAuditEvent({
@@ -855,7 +884,7 @@ export async function createBooking(data: {
     role: "GUEST",
     action: "CREATED_RESERVATION",
     target: newBookingId,
-    details: `Created reservation for Room ${room.roomNumber} (${data.checkInDate} to ${data.checkOutDate}, KES ${totalAmount})`,
+    details: `Created reservation for ${resolvedRoomType} (${data.checkInDate} to ${data.checkOutDate}, Total: KES ${totalAmount}, Paid: KES ${amountPaid}, Due: KES ${balanceDue})`,
   });
 
   return { success: true, booking: newBooking };

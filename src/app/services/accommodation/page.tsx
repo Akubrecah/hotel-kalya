@@ -188,7 +188,7 @@ export default async function AccommodationServicePage() {
 
                   <div className="flex flex-wrap gap-3 pt-3">
                     <Link
-                      href={`/booking?roomId=${encodeURIComponent(room.id)}`}
+                      href={`/book?roomId=${encodeURIComponent(room.id)}`}
                       className="bg-brand-maroon hover:bg-brand-maroon-dark text-brand-amber px-7 py-3 rounded-full text-xs font-bold uppercase tracking-wider shadow transition-all flex items-center gap-2"
                     >
                       <span>Book Room</span>

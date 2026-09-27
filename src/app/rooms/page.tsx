@@ -332,7 +332,7 @@ export default function RoomsPage() {
                       </a>
 
                       <Link
-                        href={`/booking?roomId=${encodeURIComponent(room.id)}`}
+                        href={`/book?roomId=${encodeURIComponent(room.id)}`}
                         className="flex-1 flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-brand-maroon hover:bg-brand-maroon-dark text-brand-amber text-xs font-bold shadow transition-colors"
                       >
                         <span>Book Room</span>
@@ -422,7 +422,7 @@ export default function RoomsPage() {
                 <span>Enquire Dates on WhatsApp</span>
               </a>
               <Link
-                href={`/booking?roomId=${encodeURIComponent(selectedCalendarRoom.id)}`}
+                href={`/book?roomId=${encodeURIComponent(selectedCalendarRoom.id)}`}
                 className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-brand-maroon text-brand-amber font-bold text-xs text-center"
               >
                 Proceed to Reservation

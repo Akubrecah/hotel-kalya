@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useState } from "react";
+import React, { use, useState, useEffect } from "react";
 import Link from "next/link";
 import {
   CheckCircle2,
@@ -15,6 +15,9 @@ import {
   Bed,
   Download,
   RefreshCw,
+  CreditCard,
+  User,
+  Users,
 } from "lucide-react";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { DirectionsButton } from "@/components/maps/DirectionsButton";
@@ -22,6 +25,7 @@ import { GoogleMap } from "@/components/maps/GoogleMap";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { BRAND } from "@/lib/constants";
 import { exportElementToRealPdf } from "@/lib/pdf-generator";
+import { Booking } from "@/types/hospitality";
 
 interface ConfirmationPageProps {
   params: Promise<{ id: string }>;
@@ -31,6 +35,20 @@ export default function BookingConfirmationPage({ params }: ConfirmationPageProp
   const resolvedParams = use(params);
   const bookingId = resolvedParams.id;
   const [generatingPdf, setGeneratingPdf] = useState(false);
+  const [booking, setBooking] = useState<Booking | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`/api/bookings/${bookingId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.reservation) {
+          setBooking(data.reservation);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [bookingId]);
 
   const handlePrint = () => {
     if (typeof window !== "undefined") {
@@ -61,7 +79,10 @@ export default function BookingConfirmationPage({ params }: ConfirmationPageProp
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12">
         {/* Printable Voucher Card */}
-        <div id="booking-confirmation-voucher" className="bg-white rounded-3xl border border-brand-maroon/15 shadow-xl overflow-hidden print:border-none print:shadow-none">
+        <div
+          id="booking-confirmation-voucher"
+          className="bg-white rounded-3xl border border-brand-maroon/15 shadow-xl overflow-hidden print:border-none print:shadow-none"
+        >
           {/* Header Banner */}
           <div className="bg-brand-maroon text-white p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div className="flex items-center gap-4">
@@ -88,7 +109,7 @@ export default function BookingConfirmationPage({ params }: ConfirmationPageProp
               <span className="font-mono text-2xl font-black text-white tracking-wider">
                 #{bookingId}
               </span>
-              <p className="text-[11px] text-white/70 mt-0.5">Keep this ID for check-in</p>
+              <p className="text-[11px] text-white/70 mt-0.5">Present this ID upon check-in</p>
             </div>
           </div>
 
@@ -104,14 +125,27 @@ export default function BookingConfirmationPage({ params }: ConfirmationPageProp
                   <div className="flex items-start gap-2.5 text-brand-dark/80">
                     <Bed className="w-4 h-4 text-brand-amber flex-shrink-0 mt-0.5" />
                     <div>
-                      <span className="font-bold text-brand-maroon block">Executive Deluxe Suite / Cottage</span>
+                      <span className="font-bold text-brand-maroon block">
+                        {booking ? `${booking.roomType} (${booking.roomNumber})` : "Executive Deluxe Suite / Cottage"}
+                      </span>
                       <span className="text-brand-dark/60">Includes Complimentary Full Breakfast &amp; Wi-Fi</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-2.5 text-brand-dark/80">
                     <Calendar className="w-4 h-4 text-brand-amber flex-shrink-0" />
-                    <span>Check-in: <strong>From 12:00 PM</strong> | Check-out: <strong>By 10:00 AM</strong></span>
+                    <span>
+                      Check-in: <strong>{booking?.checkInDate || "From 12:00 PM"}</strong> | Check-out: <strong>{booking?.checkOutDate || "By 10:00 AM"}</strong>
+                      {booking?.nights ? ` (${booking.nights} night${booking.nights > 1 ? "s" : ""})` : ""}
+                    </span>
                   </div>
+                  {booking && (
+                    <div className="flex items-center gap-2.5 text-brand-dark/80">
+                      <User className="w-4 h-4 text-brand-amber flex-shrink-0" />
+                      <span>
+                        Primary Guest: <strong>{booking.guestName}</strong> ({booking.guestPhone})
+                      </span>
+                    </div>
+                  )}
                   <div className="flex items-center gap-2.5 text-brand-dark/80">
                     <Clock className="w-4 h-4 text-brand-amber flex-shrink-0" />
                     <span>24/7 Reception &amp; Front-Desk Concierge Available</span>
@@ -140,8 +174,47 @@ export default function BookingConfirmationPage({ params }: ConfirmationPageProp
               </div>
             </div>
 
+            {/* Financial & Payment Breakdown Card */}
+            <div className="bg-brand-cream/50 rounded-2xl p-6 border border-brand-maroon/10 space-y-4">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-brand-maroon flex items-center gap-2">
+                <CreditCard className="w-4 h-4 text-brand-amber" />
+                <span>Payment &amp; Billing Statement</span>
+              </h3>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+                <div className="p-3 bg-white rounded-xl border border-brand-amber-light">
+                  <span className="text-gray-500 block text-[11px]">Total Reservation Fee</span>
+                  <span className="font-serif font-black text-base text-gray-900">
+                    KES {(booking?.totalAmount || 15000).toLocaleString()}
+                  </span>
+                </div>
+
+                <div className="p-3 bg-white rounded-xl border border-brand-amber-light">
+                  <span className="text-gray-500 block text-[11px]">
+                    Amount Paid Online {booking?.paymentPercentage ? `(${booking.paymentPercentage}%)` : ""}
+                  </span>
+                  <span className="font-serif font-black text-base text-emerald-700">
+                    KES {(booking?.amountPaid || 0).toLocaleString()}
+                  </span>
+                  {booking?.mpesaReceiptNumber && (
+                    <span className="text-[10px] text-emerald-800 block font-mono">
+                      M-Pesa: {booking.mpesaReceiptNumber}
+                    </span>
+                  )}
+                </div>
+
+                <div className="p-3 bg-white rounded-xl border border-brand-amber-light">
+                  <span className="text-gray-500 block text-[11px]">Balance Due at Check-In</span>
+                  <span className="font-serif font-black text-base text-brand-maroon">
+                    KES {(booking?.balanceDue ?? (booking?.totalAmount || 15000)).toLocaleString()}
+                  </span>
+                  <span className="text-[10px] text-gray-500 block">Payable via M-Pesa / Cash / Card</span>
+                </div>
+              </div>
+            </div>
+
             {/* Check-In Instructions */}
-            <div className="bg-brand-cream/60 rounded-2xl p-5 border border-brand-maroon/10 space-y-2">
+            <div className="bg-white rounded-2xl p-5 border border-brand-maroon/10 space-y-2">
               <h4 className="font-bold text-xs text-brand-maroon uppercase tracking-wider flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-brand-amber" />
                 <span>Guest Check-In Instructions</span>
@@ -160,7 +233,7 @@ export default function BookingConfirmationPage({ params }: ConfirmationPageProp
                 <DirectionsButton className="py-1 px-3 text-xs" />
               </div>
               <div className="rounded-2xl overflow-hidden border border-brand-maroon/15 shadow-sm">
-                <GoogleMap height="240px" zoom={14} />
+                <GoogleMap height="200px" zoom={14} />
               </div>
             </div>
 
@@ -193,10 +266,10 @@ export default function BookingConfirmationPage({ params }: ConfirmationPageProp
                 </button>
 
                 <Link
-                  href="/account/bookings"
+                  href="/guest/dashboard"
                   className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-brand-cream text-brand-maroon text-xs font-bold hover:bg-brand-cream/80 transition-colors"
                 >
-                  <span>View in My Account</span>
+                  <span>Go to Guest Portal</span>
                 </Link>
               </div>
 

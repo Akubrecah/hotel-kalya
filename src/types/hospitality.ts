@@ -86,6 +86,10 @@ export interface Booking {
   children: number;
   totalAmount: number; // in KES
   totalPrice?: number; // alias
+  amountPaid?: number; // amount paid upfront via M-Pesa or deposit
+  balanceDue?: number; // remaining balance payable at check-in
+  paymentPercentage?: number; // e.g. 100, 50, 25
+  serviceName?: string;
   paymentStatus: "Paid" | "Deposit" | "Pay on Arrival";
   paymentMethod?: string;
   mpesaReceiptNumber?: string;

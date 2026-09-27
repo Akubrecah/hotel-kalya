@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { initiateDarajaStkPush, formatKenyanPhoneNumber } from "@/lib/mpesa";
 
 export async function POST(request: Request) {
   try {
@@ -15,57 +16,50 @@ export async function POST(request: Request) {
       );
     }
 
-    // Clean & normalize Kenyan phone number
-    let cleanPhone = phone.replace(/[^0-9]/g, "");
-    if (cleanPhone.startsWith("0")) {
-      cleanPhone = "254" + cleanPhone.substring(1);
-    } else if (cleanPhone.startsWith("+254")) {
-      cleanPhone = cleanPhone.substring(1);
-    } else if (!cleanPhone.startsWith("254") && cleanPhone.length === 9) {
-      cleanPhone = "254" + cleanPhone;
-    }
-
-    if (cleanPhone.length !== 12 || !cleanPhone.startsWith("254")) {
+    const formattedPhone = formatKenyanPhoneNumber(phone);
+    if (formattedPhone.length !== 12 || !formattedPhone.startsWith("254")) {
       return NextResponse.json(
         {
           success: false,
-          error: "Invalid Kenyan phone number format. Please provide 07XXXXXXXX or 254XXXXXXXXX.",
+          error: "Invalid Kenyan phone number format. Please provide e.g. 0712345678 or 254712345678.",
         },
         { status: 400 }
       );
     }
 
     const payAmount = Math.max(1, Math.round(Number(amount)));
-    const checkoutRequestId = "ws_CO_" + Date.now() + "_" + Math.floor(1000 + Math.random() * 9000);
-    const mpesaReceiptNumber = "QK" + Math.floor(100000 + Math.random() * 900000) + "X";
 
-    // Check if live Daraja credentials exist in environment
-    const consumerKey = process.env.MPESA_CONSUMER_KEY;
-    const consumerSecret = process.env.MPESA_CONSUMER_SECRET;
-    const passkey = process.env.MPESA_PASSKEY;
+    // Initiate real or sandbox STK push via Daraja
+    const stkResult = await initiateDarajaStkPush({
+      phone: formattedPhone,
+      amount: payAmount,
+      accountReference: reference || "HotelKalya",
+      transactionDesc: description || "KalyaServices",
+    });
 
-    const isLiveConfigured = Boolean(consumerKey && consumerSecret && passkey);
-
-    if (isLiveConfigured) {
-      // In live production mode with valid Daraja credentials:
-      // Compute Daraja Password & Timestamp
-      // const timestamp = new Date().toISOString().replace(/[^0-9]/g, "").slice(0, 14);
-      // const password = Buffer.from(shortcode + passkey + timestamp).toString("base64");
-      // Call Safaricom API...
+    if (!stkResult.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: stkResult.error || "Failed to initiate M-Pesa STK Push.",
+        },
+        { status: 400 }
+      );
     }
 
-    // Return instant responsive STK push payload
     return NextResponse.json({
       success: true,
-      mode: isLiveConfigured ? "live" : "simulation",
-      checkoutRequestId,
-      merchantRequestId: "MR-" + Math.floor(10000 + Math.random() * 90000),
-      mpesaReceiptNumber,
-      phone: cleanPhone,
+      mode: stkResult.mode,
+      checkoutRequestId: stkResult.checkoutRequestId,
+      merchantRequestId: stkResult.merchantRequestId,
+      mpesaReceiptNumber: stkResult.mpesaReceiptNumber,
+      phone: formattedPhone,
       amount: payAmount,
       accountReference: reference || "Hotel Kalya",
       transactionDescription: description || "Hotel Kalya Services",
-      customerMessage: `An M-Pesa STK PIN prompt has been initiated on ${cleanPhone}. Please enter your M-Pesa PIN on your phone to complete KES ${payAmount.toLocaleString()}.`,
+      customerMessage:
+        stkResult.customerMessage ||
+        `An M-Pesa STK PIN prompt has been initiated on ${formattedPhone}. Please enter your M-Pesa PIN on your phone to complete KES ${payAmount.toLocaleString()}.`,
     });
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : "Internal Server Error";
