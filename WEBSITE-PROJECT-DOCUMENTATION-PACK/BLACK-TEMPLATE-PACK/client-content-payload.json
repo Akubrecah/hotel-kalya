@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HotelKalyaClientContentPayload",
+  "description": "Structured client data template for Hotel Kalya website and Black Template Pack.",
+  "business": {
+    "name": "[BUSINESS NAME]",
+    "tagline": "[TAGLINE / VALUE PROPOSITION]",
+    "industry": "Hospitality / Boutique Hotel & Resort",
+    "location": "Kapsoya, Eldoret, Uasin Gishu County, Kenya",
+    "physicalAddress": "[BUSINESS ADDRESS: e.g. Off Eldoret-Nairobi Highway, Kapsoya]",
+    "phone": "[PHONE NUMBER: e.g. +254 719 766 649]",
+    "whatsappNumber": "[WHATSAPP NUMBER: e.g. +254 719 766 649]",
+    "email": "[EMAIL ADDRESS: e.g. info@hotelkalya.com]",
+    "reservationEmail": "[EMAIL ADDRESS: e.g. reservations@hotelkalya.com]",
+    "operatingHours": {
+      "reception": "24/7 Front Desk",
+      "restaurant": "6:30 AM – 10:30 PM",
+      "bar": "11:00 AM – Midnight"
+    },
+    "socials": {
+      "facebook": "https://facebook.com/[PAGE]",
+      "instagram": "https://instagram.com/[HANDLE]",
+      "twitter": "https://twitter.com/[HANDLE]",
+      "tripAdvisor": "https://tripadvisor.com/[LISTING]"
+    }
+  },
+  "hero": {
+    "eyebrow": "EXPERIENCE BOUTIQUE HOSPITALITY",
+    "headline": "[HERO HEADLINE: e.g. Luxury Accommodation & Exquisite Dining in Eldoret]",
+    "subheading": "[HERO SUB-HEADLINE: Discover peaceful rooms, authentic local & international cuisine, and versatile modern conference facilities designed for both business and leisure travellers.]",
+    "primaryCta": {
+      "label": "Explore Rooms & Suites",
+      "url": "/rooms"
+    },
+    "secondaryCta": {
+      "label": "View Restaurant Menu",
+      "url": "/dining"
+    },
+    "heroImage": "[UPLOAD IMAGE: 1920x1080 property hero photo]"
+  },
+  "metrics": [
+    { "value": "40+", "label": "Luxury Rooms & Suites" },
+    { "value": "4", "label": "Executive Conference Halls" },
+    { "value": "100%", "label": "Fresh Farm-to-Table Dining" },
+    { "value": "4.8 ★", "label": "Guest Rating across Google & TripAdvisor" }
+  ],
+  "about": {
+    "badge": "ABOUT OUR SANCTUARY",
+    "title": "A Heritage of Warmth, Serenity, and Exquisite Taste",
+    "paragraph1": "[SERVICE DESCRIPTION / PROPERTY STORY: Explain the origins, serene surroundings, and tranquil ambiance.]",
+    "paragraph2": "[SERVICE DESCRIPTION / GUEST PROMISE: Detail the hospitality standards, farm-to-table cuisine, and high-speed executive amenities.]",
+    "images": [
+      "[UPLOAD IMAGE: Property grounds or garden]",
+      "[UPLOAD IMAGE: Welcoming front desk or culinary display]"
+    ]
+  },
+  "rooms": [
+    {
+      "id": "deluxe-single",
+      "name": "[ROOM 1 NAME: Deluxe Single Room]",
+      "badge": "Popular Choice",
+      "pricePerNight": 3500,
+      "currency": "KSh",
+      "capacity": "1 Guest",
+      "bed": "1 Queen Bed",
+      "size": "22 m²",
+      "description": "[ROOM DESCRIPTION: Elegant, quiet room featuring plush queen bedding, high-speed fiber Wi-Fi, modern en-suite shower, and complimentary continental breakfast.]",
+      "amenities": [
+        "High-Speed Fiber Wi-Fi",
+        "En-suite Rain Shower",
+        "32-inch Smart TV",
+        "Complimentary Breakfast",
+        "Work Desk & Chair",
+        "Daily Housekeeping"
+      ],
+      "image": "[UPLOAD IMAGE: Deluxe Room photo]"
+    },
+    {
+      "id": "superior-twin",
+      "name": "[ROOM 2 NAME: Superior Twin Room]",
+      "badge": "Spacious & Comfortable",
+      "pricePerNight": 4500,
+      "currency": "KSh",
+      "capacity": "2 Guests",
+      "bed": "2 Twin Beds",
+      "size": "28 m²",
+      "description": "[ROOM DESCRIPTION: Designed for business partners, colleagues, or friends traveling together. Includes dual premium twin beds, private balcony, and tea/coffee station.]",
+      "amenities": [
+        "High-Speed Fiber Wi-Fi",
+        "Private Balcony",
+        "43-inch Smart TV",
+        "Tea & Coffee Station",
+        "Complimentary Breakfast",
+        "Electronic Safe"
+      ],
+      "image": "[UPLOAD IMAGE: Twin Room photo]"
+    },
+    {
+      "id": "executive-suite",
+      "name": "[ROOM 3 NAME: Executive Presidential Suite]",
+      "badge": "Signature Luxury",
+      "pricePerNight": 8500,
+      "currency": "KSh",
+      "capacity": "2 Adults + 1 Child",
+      "bed": "1 California King Bed",
+      "size": "45 m²",
+      "description": "[ROOM DESCRIPTION: Our premier accommodation with a separate executive lounge, luxury soaking bathtub, espresso coffee machine, and panoramic views.]",
+      "amenities": [
+        "Separate Lounge Area",
+        "Deep Soaking Tub & Shower",
+        "55-inch OLED Smart TV",
+        "Espresso Coffee Machine",
+        "Mini Bar",
+        "Executive Breakfast Included"
+      ],
+      "image": "[UPLOAD IMAGE: Executive Suite photo]"
+    }
+  ],
+  "dining": {
+    "restaurantName": "The Kalya Terrace & Grill",
+    "description": "Indulge in farm-fresh North Rift produce, rich Swahili spices, and tender char-grilled meats in an ambient indoor and open-air garden terrace.",
+    "serviceHours": {
+      "breakfast": "6:30 AM – 10:00 AM",
+      "lunch": "12:00 PM – 3:30 PM",
+      "dinner": "6:30 PM – 10:30 PM"
+    },
+    "signatureDishes": [
+      {
+        "name": "[DISH 1 NAME: Traditional Herb-Roasted Kienyeji Chicken]",
+        "price": 1200,
+        "category": "Main Course",
+        "description": "Slow-braised organic chicken with indigenous herbs, served with traditional ugali and sautéed garden greens.",
+        "image": "[UPLOAD IMAGE: Kienyeji Chicken]"
+      },
+      {
+        "name": "[DISH 2 NAME: Char-Grilled Prime Beef Fillet Mignon]",
+        "price": 1600,
+        "category": "Grills",
+        "description": "Tender aged beef medallion grilled to perfection with red wine peppercorn reduction and potato gratin.",
+        "image": "[UPLOAD IMAGE: Beef Fillet]"
+      },
+      {
+        "name": "[DISH 3 NAME: Whole Lake Victoria Tilapia in Spiced Coconut Broth]",
+        "price": 1400,
+        "category": "Seafood",
+        "description": "Crispy fried fresh tilapia simmered in aromatic Swahili coconut curry sauce.",
+        "image": "[UPLOAD IMAGE: Tilapia]"
+      }
+    ]
+  },
+  "conferences": [
+    {
+      "name": "The Grand Rift Ballroom",
+      "capacity": "Up to 250 Delegates",
+      "fullDayDdr": 2800,
+      "halfDayDdr": 2200,
+      "inclusions": [
+        "1080p HD Projector & Screen",
+        "Wireless Microphones & PA System",
+        "Mid-Morning & Afternoon Tea with Pastries",
+        "3-Course Buffet Lunch",
+        "Notepads, Pens & Mineral Water",
+        "High-Speed Wi-Fi & IT Support"
+      ],
+      "image": "[UPLOAD IMAGE: Conference Hall]"
+    }
+  ],
+  "testimonials": [
+    {
+      "author": "David M.",
+      "location": "Nairobi, Kenya",
+      "role": "Corporate Executive",
+      "rating": 5,
+      "text": "My three-night stay at [BUSINESS NAME] exceeded all expectations. Fast Wi-Fi, immaculate quiet rooms, and the breakfast buffet was fantastic.",
+      "source": "Google Verified Review"
+    },
+    {
+      "author": "Dr. Catherine K.",
+      "location": "Eldoret",
+      "role": "Seminar Organizer",
+      "rating": 5,
+      "text": "We hosted our 120-person medical symposium here. The staff was attentive, AV equipment worked smoothly, and food was praised by all attendees.",
+      "source": "TripAdvisor Review"
+    }
+  ],
+  "contact": {
+    "whatsappNumber": "[WHATSAPP NUMBER: +254 719 766 649]",
+    "phone": "[PHONE NUMBER: +254 719 766 649]",
+    "email": "[EMAIL ADDRESS: reservations@hotelkalya.com]",
+    "address": "[BUSINESS ADDRESS: Off Eldoret-Nairobi Highway, Kapsoya, Eldoret]",
+    "googleMapsUrl": "https://maps.google.com/?q=Hotel+Kalya+Eldoret"
+  }
+}
