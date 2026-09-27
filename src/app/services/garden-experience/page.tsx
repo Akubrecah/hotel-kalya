@@ -17,6 +17,8 @@ import {
 import { IMAGES } from "@/lib/constants";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { getGardens, getHotelSettings } from "@/lib/cms-db";
+import { getStandardWhatsAppUrl } from "@/lib/whatsapp";
+
 
 export const dynamic = "force-dynamic";
 
@@ -184,10 +186,11 @@ export default async function GardenExperiencePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {gardens.map((garden) => {
-              const waMsg = encodeURIComponent(
-                `Hello Hotel Kalya, I would like to enquire about reserving the "${garden.name}" for an upcoming event or visit.`
+              const waUrl = getStandardWhatsAppUrl(
+                `Hello Hotel Kalya, I would like to enquire about reserving the "${garden.name}" for an upcoming event or visit.`,
+                cleanPhone
               );
-              const waUrl = `https://wa.me/${cleanPhone}?text=${waMsg}`;
+
 
               return (
                 <div

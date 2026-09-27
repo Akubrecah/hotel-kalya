@@ -23,29 +23,43 @@ import {
   Flame,
   Wine,
   ShieldCheck,
+  Camera,
+  MapPin,
+  Layers,
 } from "lucide-react";
 import { BrandLogo } from "./BrandLogo";
-import { NAV_LINKS, NAV_SERVICES, NAV_MENU_ITEMS, BRAND } from "@/lib/constants";
+import { NAV_LINKS, BRAND, NavLinkItem } from "@/lib/constants";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 
-const SERVICE_ICONS: Record<string, React.ElementType> = {
-  "/services/accommodation": Bed,
-  "/services/food-service": Utensils,
-  "/services/conferences": Presentation,
-  "/services/outside-catering": Coffee,
+// Map subItem href to its appropriate icon
+const NAV_ICONS: Record<string, React.ElementType> = {
+  // Stay & Accommodation
+  "/rooms": Bed,
+  "/availability": Calendar,
   "/services/airbnb": Sparkles,
-  "/services/garden-experience": Trees,
-};
-
-const MENU_ICONS: Record<string, React.ElementType> = {
+  "/offers": Star,
+  // Dining
   "/menu": Utensils,
   "/menu/breakfast": Coffee,
   "/menu/lunch": Utensils,
   "/menu/dinner": Flame,
   "/menu/drinks": Wine,
-  "/menu/specials": Star,
+  "/services/outside-catering": Coffee,
+  // Events & Services
+  "/services": Sparkles,
+  "/services/conferences": Presentation,
+  "/services/garden-experience": Trees,
+  "/events": Calendar,
+  // Explore
+  "/about": ShieldCheck,
+  "/gallery": Camera,
+  "/reviews": Star,
+  "/location": MapPin,
+  "/template": Layers,
+  // Fallback
+  "/contact": Phone,
 };
 
 export function Navbar() {
@@ -54,15 +68,14 @@ export function Navbar() {
   const { user, logout } = useAuth();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
-  const [mobileMenuCatOpen, setMobileMenuCatOpen] = useState(false);
-  const [desktopServicesOpen, setDesktopServicesOpen] = useState(false);
-  const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [mobileExpandedAccordions, setMobileExpandedAccordions] = useState<Record<string, boolean>>({
+    stay: true, // Default first accordion open for discoverability
+  });
   const [desktopUserMenuOpen, setDesktopUserMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  const servicesTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const menuTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const dropdownTimerRef = useRef<NodeJS.Timeout | null>(null);
   const userTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Track window scroll for sticky navbar shadow
@@ -89,8 +102,7 @@ export function Navbar() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setMobileMenuOpen(false);
-        setDesktopServicesOpen(false);
-        setDesktopMenuOpen(false);
+        setOpenDropdown(null);
         setDesktopUserMenuOpen(false);
       }
     };
@@ -103,34 +115,34 @@ export function Navbar() {
   if (prevPathname !== pathname) {
     setPrevPathname(pathname);
     setMobileMenuOpen(false);
-    setDesktopServicesOpen(false);
-    setDesktopMenuOpen(false);
+    setOpenDropdown(null);
     setDesktopUserMenuOpen(false);
   }
 
   // Dropdown hover handlers with slight debounce
-  const handleServicesEnter = () => {
-    if (servicesTimerRef.current) clearTimeout(servicesTimerRef.current);
-    setDesktopServicesOpen(true);
-  };
-  const handleServicesLeave = () => {
-    servicesTimerRef.current = setTimeout(() => setDesktopServicesOpen(false), 160);
+  const handleDropdownEnter = (id: string) => {
+    if (dropdownTimerRef.current) clearTimeout(dropdownTimerRef.current);
+    setOpenDropdown(id);
   };
 
-  const handleMenuEnter = () => {
-    if (menuTimerRef.current) clearTimeout(menuTimerRef.current);
-    setDesktopMenuOpen(true);
-  };
-  const handleMenuLeave = () => {
-    menuTimerRef.current = setTimeout(() => setDesktopMenuOpen(false), 160);
+  const handleDropdownLeave = () => {
+    dropdownTimerRef.current = setTimeout(() => setOpenDropdown(null), 160);
   };
 
   const handleUserEnter = () => {
     if (userTimerRef.current) clearTimeout(userTimerRef.current);
     setDesktopUserMenuOpen(true);
   };
+
   const handleUserLeave = () => {
     userTimerRef.current = setTimeout(() => setDesktopUserMenuOpen(false), 160);
+  };
+
+  const toggleMobileAccordion = (id: string) => {
+    setMobileExpandedAccordions((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
   };
 
   // Helper to determine if a route is active
@@ -138,21 +150,21 @@ export function Navbar() {
     if (href === "/") {
       return pathname === "/";
     }
-    if (href === "/services") {
-      return pathname === "/services" || pathname.startsWith("/services/");
-    }
-    if (href === "/menu") {
-      return pathname === "/menu" || pathname.startsWith("/menu/");
-    }
-    if (href === "/account") {
-      return pathname === "/account" || pathname.startsWith("/account/");
-    }
-    return pathname === href;
+    return pathname === href || pathname.startsWith(href + "/");
   };
 
-  // Helper to determine if services parent is active (when on child route)
-  const isServicesParentActive = () => {
-    return pathname === "/services" || pathname.startsWith("/services/");
+  // Helper to determine if any sub-item in a dropdown category is active
+  const isParentCategoryActive = (link: NavLinkItem) => {
+    if (link.href === "/") {
+      return pathname === "/";
+    }
+    if (link.subItems && link.subItems.length > 0) {
+      return link.subItems.some((sub) => {
+        if (sub.href === "/") return pathname === "/";
+        return pathname === sub.href || pathname.startsWith(sub.href + "/");
+      });
+    }
+    return pathname === link.href || pathname.startsWith(link.href + "/");
   };
 
   return (
@@ -165,79 +177,90 @@ export function Navbar() {
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-20 gap-2 lg:gap-4">
           {/* Brand Logo */}
           <Link
             href="/"
-            className="flex items-center focus:outline-none focus:ring-2 focus:ring-brand-amber rounded-lg py-1"
+            className="flex items-center flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-brand-amber rounded-lg py-1"
             aria-label="Hotel Kalya Home"
           >
             <BrandLogo />
           </Link>
 
-          {/* Desktop Navigation Links */}
+          {/* Desktop Navigation Links — 6 intuitive top-level items with dropdowns */}
           <nav
-            className="hidden xl:flex items-center space-x-1 lg:space-x-2"
+            className="hidden lg:flex items-center space-x-1 xl:space-x-2 2xl:space-x-3 flex-shrink-0"
             aria-label="Main Navigation"
           >
             {NAV_LINKS.map((link) => {
-              const active = isRouteActive(link.href);
-              const isServicesParent = link.dropdownType === "services" && isServicesParentActive();
+              const active = isParentCategoryActive(link);
+              const isDropdown = Boolean(link.hasDropdown && link.dropdownId && link.subItems);
+              const isOpen = openDropdown === link.dropdownId;
 
-              // Services Dropdown Item
-              if (link.dropdownType === "services") {
+              if (isDropdown && link.dropdownId && link.subItems) {
                 return (
                   <div
-                    key={link.href}
+                    key={link.label}
                     className="relative"
-                    onMouseEnter={handleServicesEnter}
-                    onMouseLeave={handleServicesLeave}
+                    onMouseEnter={() => handleDropdownEnter(link.dropdownId!)}
+                    onMouseLeave={handleDropdownLeave}
                   >
                     <Link
                       href={link.href}
                       className={cn(
-                        "relative flex items-center gap-1 px-3 py-2 text-sm font-semibold rounded-md transition-all duration-200",
-                        isServicesParent
-                          ? "text-brand-maroon font-bold bg-brand-amber/10"
-                          : active
-                          ? "text-brand-maroon font-bold bg-brand-amber/10"
+                        "relative flex items-center gap-1 px-2.5 xl:px-3 py-1.5 xl:py-2 text-xs xl:text-sm font-semibold rounded-md transition-all duration-200 select-none",
+                        active
+                          ? "text-brand-maroon font-bold bg-brand-amber/15 shadow-xs"
                           : "text-brand-dark/80 hover:text-brand-maroon hover:bg-brand-cream"
                       )}
                       aria-haspopup="true"
-                      aria-expanded={desktopServicesOpen}
-                      aria-current={isServicesParent ? "page" : active ? "page" : undefined}
+                      aria-expanded={isOpen}
+                      aria-current={active ? "page" : undefined}
                     >
                       <span>{link.label}</span>
                       <ChevronDown
                         className={cn(
                           "w-3.5 h-3.5 transition-transform duration-200",
-                          desktopServicesOpen ? "rotate-180 text-brand-amber" : "text-brand-dark/50"
+                          isOpen ? "rotate-180 text-brand-amber" : "text-brand-dark/50"
                         )}
                         aria-hidden="true"
                       />
-                      {(isServicesParent || active) && (
-                        <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-brand-amber rounded-full" />
+                      {active && (
+                        <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-brand-amber rounded-full" />
                       )}
                     </Link>
 
-                    {/* Services Dropdown Menu */}
-                    {desktopServicesOpen && (
-                      <div className="absolute top-full left-0 w-80 pt-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                    {/* Categorized Desktop Dropdown Panel */}
+                    {isOpen && (
+                      <div
+                        className={cn(
+                          "absolute top-full pt-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150 w-80 xl:w-88 max-w-[calc(100vw-2rem)]",
+                          link.dropdownId === "stay" && "left-0",
+                          link.dropdownId === "dining" && "left-0",
+                          link.dropdownId === "events" && "left-1/2 -translate-x-1/2",
+                          link.dropdownId === "explore" && "right-0"
+                        )}
+                      >
                         <div className="bg-white rounded-xl shadow-xl border border-brand-maroon/10 p-2.5 space-y-1">
+                          {/* Overview Link Header */}
                           <Link
-                            href="/services"
+                            href={link.href}
                             className={cn(
-                              "flex items-center justify-between p-2 rounded-lg text-xs font-semibold uppercase tracking-wider text-brand-maroon hover:bg-brand-cream transition-colors",
-                              pathname === "/services" && "bg-brand-amber/15 text-brand-maroon font-bold"
+                              "flex items-center justify-between p-2 rounded-lg text-xs font-bold uppercase tracking-wider text-brand-maroon hover:bg-brand-cream transition-colors",
+                              pathname === link.href && "bg-brand-amber/15 text-brand-maroon"
                             )}
                           >
-                            <span>Services Directory Overview</span>
+                            <span>Explore All {link.label}</span>
                             <ChevronRight className="w-3.5 h-3.5 text-brand-amber" />
                           </Link>
+
                           <div className="h-px bg-brand-cream my-1" />
-                          {NAV_SERVICES.map((subItem) => {
-                            const subActive = pathname === subItem.href;
-                            const IconComponent = SERVICE_ICONS[subItem.href] || Sparkles;
+
+                          {/* SubItems */}
+                          {link.subItems.map((subItem) => {
+                            const subActive = isRouteActive(subItem.href);
+                            const IconComponent = NAV_ICONS[subItem.href] || Sparkles;
+
                             return (
                               <Link
                                 key={subItem.href}
@@ -251,7 +274,7 @@ export function Navbar() {
                               >
                                 <div
                                   className={cn(
-                                    "p-1.5 rounded-md mt-0.5 transition-colors",
+                                    "p-1.5 rounded-md mt-0.5 transition-colors flex-shrink-0",
                                     subActive
                                       ? "bg-brand-amber text-brand-maroon"
                                       : "bg-brand-maroon/5 text-brand-maroon group-hover:bg-brand-amber/20"
@@ -260,10 +283,17 @@ export function Navbar() {
                                   <IconComponent className="w-4 h-4" />
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <div className="flex items-center gap-1.5">
-                                    <span className="text-xs font-bold leading-snug">{subItem.label}</span>
-                                    {subActive && (
-                                      <span className="w-1.5 h-1.5 rounded-full bg-brand-amber" />
+                                  <div className="flex items-center justify-between gap-1.5">
+                                    <div className="flex items-center gap-1.5 truncate">
+                                      <span className="text-xs font-bold leading-snug">{subItem.label}</span>
+                                      {subActive && (
+                                        <span className="w-1.5 h-1.5 rounded-full bg-brand-amber flex-shrink-0" />
+                                      )}
+                                    </div>
+                                    {subItem.badge && (
+                                      <span className="text-[10px] font-black uppercase tracking-wider bg-brand-amber/25 text-brand-maroon px-1.5 py-0.5 rounded flex-shrink-0">
+                                        {subItem.badge}
+                                      </span>
                                     )}
                                   </div>
                                   <p className="text-[11px] text-brand-dark/60 leading-tight mt-0.5 line-clamp-1">
@@ -280,116 +310,22 @@ export function Navbar() {
                 );
               }
 
-              // Menu Dropdown Item
-              if (link.dropdownType === "menu") {
-                return (
-                  <div
-                    key={link.href}
-                    className="relative"
-                    onMouseEnter={handleMenuEnter}
-                    onMouseLeave={handleMenuLeave}
-                  >
-                    <Link
-                      href={link.href}
-                      className={cn(
-                        "relative flex items-center gap-1 px-3 py-2 text-sm font-semibold rounded-md transition-all duration-200",
-                        active
-                          ? "text-brand-maroon font-bold bg-brand-amber/10"
-                          : "text-brand-dark/80 hover:text-brand-maroon hover:bg-brand-cream"
-                      )}
-                      aria-haspopup="true"
-                      aria-expanded={desktopMenuOpen}
-                      aria-current={active ? "page" : undefined}
-                    >
-                      <span>{link.label}</span>
-                      <ChevronDown
-                        className={cn(
-                          "w-3.5 h-3.5 transition-transform duration-200",
-                          desktopMenuOpen ? "rotate-180 text-brand-amber" : "text-brand-dark/50"
-                        )}
-                        aria-hidden="true"
-                      />
-                      {active && (
-                        <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-brand-amber rounded-full" />
-                      )}
-                    </Link>
-
-                    {/* Menu Dropdown Panel */}
-                    {desktopMenuOpen && (
-                      <div className="absolute top-full left-0 w-80 pt-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                        <div className="bg-white rounded-xl shadow-xl border border-brand-maroon/10 p-2.5 space-y-1">
-                          <Link
-                            href="/menu"
-                            className={cn(
-                              "flex items-center justify-between p-2 rounded-lg text-xs font-semibold uppercase tracking-wider text-brand-maroon hover:bg-brand-cream transition-colors",
-                              pathname === "/menu" && "bg-brand-amber/15 text-brand-maroon font-bold"
-                            )}
-                          >
-                            <span>Explore Full Digital Menu</span>
-                            <ChevronRight className="w-3.5 h-3.5 text-brand-amber" />
-                          </Link>
-                          <div className="h-px bg-brand-cream my-1" />
-                          {NAV_MENU_ITEMS.slice(1).map((subItem) => {
-                            const subActive = pathname === subItem.href;
-                            const IconComponent = MENU_ICONS[subItem.href] || Utensils;
-                            return (
-                              <Link
-                                key={subItem.href}
-                                href={subItem.href}
-                                className={cn(
-                                  "flex items-start gap-3 p-2 rounded-lg transition-colors group",
-                                  subActive
-                                    ? "bg-brand-amber/15 text-brand-maroon"
-                                    : "hover:bg-brand-cream text-brand-dark"
-                                )}
-                              >
-                                <div
-                                  className={cn(
-                                    "p-1.5 rounded-md mt-0.5 transition-colors",
-                                    subActive
-                                      ? "bg-brand-amber text-brand-maroon"
-                                      : "bg-brand-maroon/5 text-brand-maroon group-hover:bg-brand-amber/20"
-                                  )}
-                                >
-                                  <IconComponent className="w-4 h-4" />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center gap-1.5">
-                                    <span className="text-xs font-bold leading-snug">{subItem.label}</span>
-                                    {subActive && (
-                                      <span className="w-1.5 h-1.5 rounded-full bg-brand-amber" />
-                                    )}
-                                  </div>
-                                  <p className="text-[11px] text-brand-dark/60 leading-tight mt-0.5 line-clamp-1">
-                                    {subItem.desc}
-                                  </p>
-                                </div>
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              }
-
-              // Standard Top-Level Nav Link
+              // Standard Top-Level Link (Home, Contact)
               return (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "relative px-3 py-2 text-sm font-semibold rounded-md transition-all duration-200",
+                    "relative px-2.5 xl:px-3 py-1.5 xl:py-2 text-xs xl:text-sm font-semibold rounded-md transition-all duration-200 select-none",
                     active
-                      ? "text-brand-maroon font-bold bg-brand-amber/10"
+                      ? "text-brand-maroon font-bold bg-brand-amber/15 shadow-xs"
                       : "text-brand-dark/80 hover:text-brand-maroon hover:bg-brand-cream"
                   )}
                   aria-current={active ? "page" : undefined}
                 >
                   <span>{link.label}</span>
                   {active && (
-                    <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-brand-amber rounded-full" />
+                    <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-brand-amber rounded-full" />
                   )}
                 </Link>
               );
@@ -397,12 +333,12 @@ export function Navbar() {
           </nav>
 
           {/* Action CTAs (Cart, Account, Book Now) */}
-          <div className="hidden lg:flex items-center space-x-3">
+          <div className="hidden lg:flex items-center space-x-2 xl:space-x-3 flex-shrink-0">
             {/* Food Order Cart Button */}
             <Link
               href="/cart"
               className={cn(
-                "relative p-2.5 rounded-full border transition-all duration-200 flex items-center justify-center",
+                "relative p-2 xl:p-2.5 rounded-full border transition-all duration-200 flex items-center justify-center",
                 pathname === "/cart"
                   ? "border-brand-maroon bg-brand-amber/15 text-brand-maroon"
                   : "border-brand-maroon/20 hover:border-brand-maroon hover:bg-brand-cream text-brand-dark/80"
@@ -427,7 +363,7 @@ export function Navbar() {
                 <Link
                   href="/account"
                   className={cn(
-                    "flex items-center gap-2 px-3 py-2 rounded-full border text-xs font-bold transition-all",
+                    "flex items-center gap-1.5 xl:gap-2 px-2.5 xl:px-3 py-1.5 xl:py-2 rounded-full border text-xs font-bold transition-all",
                     isRouteActive("/account")
                       ? "border-brand-amber bg-brand-amber/15 text-brand-maroon"
                       : "border-brand-maroon/20 hover:border-brand-maroon bg-white text-brand-dark"
@@ -436,7 +372,7 @@ export function Navbar() {
                   <div className="w-6 h-6 rounded-full bg-brand-maroon text-brand-amber flex items-center justify-center text-xs font-black">
                     {user.name.charAt(0).toUpperCase()}
                   </div>
-                  <span className="max-w-[90px] truncate">{user.name.split(" ")[0]}</span>
+                  <span className="max-w-[80px] xl:max-w-[100px] truncate">{user.name.split(" ")[0]}</span>
                   <ChevronDown className="w-3.5 h-3.5 text-brand-dark/60" />
                 </Link>
 
@@ -497,7 +433,7 @@ export function Navbar() {
             ) : (
               <Link
                 href="/login"
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold text-brand-maroon hover:bg-brand-cream transition-colors border border-brand-maroon/20"
+                className="flex items-center gap-1.5 px-3 py-1.5 xl:py-2 rounded-lg text-xs font-bold text-brand-maroon hover:bg-brand-cream transition-colors border border-brand-maroon/20"
               >
                 <User className="w-3.5 h-3.5 text-brand-amber" />
                 <span>Sign In</span>
@@ -507,14 +443,14 @@ export function Navbar() {
             {/* Direct Booking CTA */}
             <Link
               href="/book"
-              className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-brand-maroon text-white text-xs font-bold uppercase tracking-wider hover:bg-brand-maroon-dark transition-all duration-200 shadow-md hover:shadow-lg active:scale-95"
+              className="inline-flex items-center justify-center px-3.5 xl:px-4 py-2 xl:py-2.5 rounded-lg bg-brand-maroon text-white text-xs font-bold uppercase tracking-wider hover:bg-brand-maroon-dark transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 whitespace-nowrap"
             >
               Reserve Now
             </Link>
           </div>
 
-          {/* Mobile Menu & Cart Trigger */}
-          <div className="flex xl:hidden items-center space-x-2">
+          {/* Mobile Menu & Cart Trigger (screens < lg) */}
+          <div className="flex lg:hidden items-center space-x-2 flex-shrink-0">
             <Link
               href="/cart"
               className="relative p-2 text-brand-dark hover:text-brand-maroon focus:outline-none"
@@ -544,11 +480,11 @@ export function Navbar() {
       {mobileMenuOpen && (
         <div
           onClick={() => setMobileMenuOpen(false)}
-          className="xl:hidden fixed inset-0 top-20 z-50 bg-brand-dark/50 backdrop-blur-sm animate-in fade-in duration-200"
+          className="lg:hidden fixed inset-0 top-20 z-50 bg-brand-dark/50 backdrop-blur-sm animate-in fade-in duration-200"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-white max-h-[calc(100vh-5rem)] overflow-y-auto px-5 py-6 space-y-4 shadow-2xl border-t border-brand-maroon/10"
+            className="bg-white max-h-[calc(100vh-5rem)] overflow-y-auto px-4 sm:px-6 py-5 space-y-4 shadow-2xl border-t border-brand-maroon/10"
           >
             {/* Quick Actions Bar in Mobile Menu */}
             <div className="flex items-center justify-between p-3 bg-brand-cream/80 rounded-xl">
@@ -609,15 +545,16 @@ export function Navbar() {
               </Link>
             )}
 
-            {/* Navigation Links */}
+            {/* Mobile Navigation Links with Accordion Dropdowns */}
             <nav className="space-y-1" aria-label="Mobile Navigation">
               {NAV_LINKS.map((link) => {
-                const active = isRouteActive(link.href);
+                const active = isParentCategoryActive(link);
+                const hasDropdown = Boolean(link.hasDropdown && link.dropdownId && link.subItems);
+                const isExpanded = Boolean(link.dropdownId && mobileExpandedAccordions[link.dropdownId]);
 
-                // Mobile Services Accordion
-                if (link.dropdownType === "services") {
+                if (hasDropdown && link.dropdownId && link.subItems) {
                   return (
-                    <div key={link.href} className="border-b border-brand-cream/80 pb-1">
+                    <div key={link.label} className="border-b border-brand-cream/80 pb-1">
                       <div className="flex items-center justify-between">
                         <Link
                           href={link.href}
@@ -632,99 +569,47 @@ export function Navbar() {
                         </Link>
                         <button
                           type="button"
-                          onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                          onClick={() => toggleMobileAccordion(link.dropdownId!)}
                           className="p-2 text-brand-dark/60 hover:text-brand-maroon focus:outline-none"
-                          aria-label={mobileServicesOpen ? "Collapse Services" : "Expand Services"}
-                          aria-expanded={mobileServicesOpen}
+                          aria-label={isExpanded ? `Collapse ${link.label}` : `Expand ${link.label}`}
+                          aria-expanded={isExpanded}
                         >
                           <ChevronDown
                             className={cn(
                               "w-5 h-5 transition-transform duration-200",
-                              mobileServicesOpen && "rotate-180 text-brand-amber"
+                              isExpanded && "rotate-180 text-brand-amber"
                             )}
                           />
                         </button>
                       </div>
 
-                      {mobileServicesOpen && (
+                      {isExpanded && (
                         <div className="pl-3 pr-1 py-1 space-y-1 bg-brand-cream/40 rounded-xl my-1 border-l-2 border-brand-amber">
-                          {NAV_SERVICES.map((subItem) => {
-                            const subActive = pathname === subItem.href;
-                            const IconComponent = SERVICE_ICONS[subItem.href] || Sparkles;
+                          {link.subItems.map((subItem) => {
+                            const subActive = isRouteActive(subItem.href);
+                            const IconComponent = NAV_ICONS[subItem.href] || Sparkles;
+
                             return (
                               <Link
                                 key={subItem.href}
                                 href={subItem.href}
                                 onClick={() => setMobileMenuOpen(false)}
                                 className={cn(
-                                  "flex items-center gap-2.5 py-2 px-2.5 rounded-lg text-xs font-semibold transition-colors",
+                                  "flex items-center justify-between py-2 px-2.5 rounded-lg text-xs font-semibold transition-colors",
                                   subActive
                                     ? "bg-brand-amber/20 text-brand-maroon font-bold"
                                     : "text-brand-dark/80 hover:bg-brand-cream hover:text-brand-maroon"
                                 )}
                               >
-                                <IconComponent className="w-3.5 h-3.5 text-brand-amber" />
-                                <span>{subItem.label}</span>
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  );
-                }
-
-                // Mobile Menu Accordion
-                if (link.dropdownType === "menu") {
-                  return (
-                    <div key={link.href} className="border-b border-brand-cream/80 pb-1">
-                      <div className="flex items-center justify-between">
-                        <Link
-                          href={link.href}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className={cn(
-                            "flex-1 py-2.5 text-base font-bold transition-colors",
-                            active ? "text-brand-maroon" : "text-brand-dark hover:text-brand-maroon"
-                          )}
-                          aria-current={active ? "page" : undefined}
-                        >
-                          {link.label}
-                        </Link>
-                        <button
-                          type="button"
-                          onClick={() => setMobileMenuCatOpen(!mobileMenuCatOpen)}
-                          className="p-2 text-brand-dark/60 hover:text-brand-maroon focus:outline-none"
-                          aria-label={mobileMenuCatOpen ? "Collapse Menu Categories" : "Expand Menu Categories"}
-                          aria-expanded={mobileMenuCatOpen}
-                        >
-                          <ChevronDown
-                            className={cn(
-                              "w-5 h-5 transition-transform duration-200",
-                              mobileMenuCatOpen && "rotate-180 text-brand-amber"
-                            )}
-                          />
-                        </button>
-                      </div>
-
-                      {mobileMenuCatOpen && (
-                        <div className="pl-3 pr-1 py-1 space-y-1 bg-brand-cream/40 rounded-xl my-1 border-l-2 border-brand-amber">
-                          {NAV_MENU_ITEMS.map((subItem) => {
-                            const subActive = pathname === subItem.href;
-                            const IconComponent = MENU_ICONS[subItem.href] || Utensils;
-                            return (
-                              <Link
-                                key={subItem.href}
-                                href={subItem.href}
-                                onClick={() => setMobileMenuOpen(false)}
-                                className={cn(
-                                  "flex items-center gap-2.5 py-2 px-2.5 rounded-lg text-xs font-semibold transition-colors",
-                                  subActive
-                                    ? "bg-brand-amber/20 text-brand-maroon font-bold"
-                                    : "text-brand-dark/80 hover:bg-brand-cream hover:text-brand-maroon"
+                                <div className="flex items-center gap-2.5 truncate">
+                                  <IconComponent className="w-3.5 h-3.5 text-brand-amber flex-shrink-0" />
+                                  <span className="truncate">{subItem.label}</span>
+                                </div>
+                                {subItem.badge && (
+                                  <span className="text-[10px] font-bold uppercase tracking-wider bg-brand-amber/30 text-brand-maroon px-1.5 py-0.5 rounded ml-2 flex-shrink-0">
+                                    {subItem.badge}
+                                  </span>
                                 )}
-                              >
-                                <IconComponent className="w-3.5 h-3.5 text-brand-amber" />
-                                <span>{subItem.label}</span>
                               </Link>
                             );
                           })}

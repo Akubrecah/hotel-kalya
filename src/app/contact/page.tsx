@@ -16,6 +16,8 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { GoogleMap } from "@/components/maps/GoogleMap";
 import { DirectionsButton } from "@/components/maps/DirectionsButton";
 import { getHotelSettings } from "@/lib/cms-db";
+import { getStandardWhatsAppUrl } from "@/lib/whatsapp";
+
 
 export const dynamic = "force-dynamic";
 
@@ -165,11 +167,13 @@ export default async function ContactPage() {
                   </a>
 
                   <a
-                    href={`https://wa.me/${cleanPhone}?text=Hello%20Hotel%20Kalya%20Front%20Desk,%20I%20have%20an%20inquiry`}
+                    href={getStandardWhatsAppUrl("Hello Hotel Kalya Front Desk, I have an inquiry.", cleanPhone)}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="Direct WhatsApp Chat with Hotel Kalya Front Desk"
                     className="flex items-start gap-4 p-3 rounded-2xl bg-emerald-950/60 border border-emerald-500/30 hover:bg-emerald-950 transition-colors"
                   >
+
                     <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center flex-shrink-0 shadow">
                       <MessageCircle className="w-5 h-5" />
                     </div>

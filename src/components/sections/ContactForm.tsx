@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Send, CheckCircle2, MessageCircle } from "lucide-react";
 import { BRAND } from "@/lib/constants";
+import { getStandardWhatsAppUrl } from "@/lib/whatsapp";
 
 const INQUIRY_TYPES = [
   "Room & Suite Reservations",
@@ -29,16 +30,16 @@ export function ContactForm() {
     e.preventDefault();
     setSubmitted(true);
 
-    const text = encodeURIComponent(
+    const rawMessage =
       `*New Contact Message — Hotel Kalya Website*\n\n` +
-        `👤 *Name:* ${formData.name}\n` +
-        `📞 *Phone:* ${formData.phone}\n` +
-        `✉️ *Email:* ${formData.email || "Not provided"}\n` +
-        `🏷️ *Inquiry Regarding:* ${formData.subject}\n` +
-        `💬 *Message:* ${formData.message}`
-    );
+      `👤 *Name:* ${formData.name}\n` +
+      `📞 *Phone:* ${formData.phone}\n` +
+      `✉️ *Email:* ${formData.email || "Not provided"}\n` +
+      `🏷️ *Inquiry Regarding:* ${formData.subject}\n` +
+      `💬 *Message:* ${formData.message}`;
 
-    const waUrl = `https://wa.me/${BRAND.phoneClean}?text=${text}`;
+    const waUrl = getStandardWhatsAppUrl(rawMessage, BRAND.phoneClean);
+
 
     // Post to admin inquiries API for real-time dashboard tracking & PDF records
     fetch("/api/inquiries", {

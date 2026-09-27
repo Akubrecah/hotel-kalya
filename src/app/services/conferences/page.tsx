@@ -15,6 +15,8 @@ import {
 import { IMAGES } from "@/lib/constants";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { getConferenceHalls, getHotelSettings } from "@/lib/cms-db";
+import { getStandardWhatsAppUrl } from "@/lib/whatsapp";
+
 
 export const dynamic = "force-dynamic";
 
@@ -133,10 +135,11 @@ export default async function ConferencesPage() {
           </div>
 
           {halls.map((hall, idx) => {
-            const waMsg = encodeURIComponent(
-              `Hello Hotel Kalya, I would like to enquire about booking the "${hall.name}" for an upcoming conference/seminar.`
+            const waUrl = getStandardWhatsAppUrl(
+              `Hello Hotel Kalya, I would like to enquire about booking the "${hall.name}" for an upcoming conference/seminar.`,
+              cleanPhone
             );
-            const waUrl = `https://wa.me/${cleanPhone}?text=${waMsg}`;
+
 
             return (
               <div

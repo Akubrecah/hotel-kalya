@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getOffers, createOffer, updateOffer, deleteOffer } from "@/lib/db";
+import { authorizeApiRequest } from "@/lib/rbac";
 
 export async function GET(request: NextRequest) {
   try {
@@ -22,6 +23,11 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = authorizeApiRequest(request, "offers:manage", ["MANAGEMENT", "EXECUTIVE"]);
+    if (!auth.authorized) {
+      return NextResponse.json({ success: false, error: auth.error }, { status: auth.status });
+    }
+
     const body = await request.json();
     if (!body.title || !body.offerPrice) {
       return NextResponse.json(
@@ -42,6 +48,11 @@ export async function POST(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
+    const auth = authorizeApiRequest(request, "offers:manage", ["MANAGEMENT", "EXECUTIVE"]);
+    if (!auth.authorized) {
+      return NextResponse.json({ success: false, error: auth.error }, { status: auth.status });
+    }
+
     const body = await request.json();
     if (!body.id) {
       return NextResponse.json(
@@ -69,6 +80,11 @@ export async function PATCH(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
+    const auth = authorizeApiRequest(request, "offers:manage", ["MANAGEMENT", "EXECUTIVE"]);
+    if (!auth.authorized) {
+      return NextResponse.json({ success: false, error: auth.error }, { status: auth.status });
+    }
+
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     if (!id) {

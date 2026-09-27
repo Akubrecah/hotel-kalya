@@ -17,6 +17,7 @@ import {
 } from "@/types/hospitality";
 import { logAuditEvent, getAuditLogs, getRooms, getRoomById, createRoom, updateRoom, deleteRoom } from "./db";
 export { getRooms, getRoomById, createRoom, updateRoom, deleteRoom, getAuditLogs, logAuditEvent };
+import { UserProfile } from "@/types";
 import { IMAGES, BRAND } from "./constants";
 import { MENU_CATEGORIES, MENU_ITEMS } from "./menu-data";
 
@@ -1582,7 +1583,8 @@ export async function getHotelSettings(): Promise<HotelSettings & { phone?: stri
 }
 
 export async function updateHotelSettings(
-  updates: Partial<HotelSettings> & { phone?: string; whatsappNumber?: string; googleMapsUrl?: string }
+  updates: Partial<HotelSettings> & { phone?: string; whatsappNumber?: string; googleMapsUrl?: string },
+  user?: UserProfile
 ): Promise<HotelSettings> {
   const current = await getHotelSettings();
   const normalizedUpdates: Partial<HotelSettings> & Record<string, any> = { ...updates };
@@ -1605,9 +1607,9 @@ export async function updateHotelSettings(
   await writeJsonFile("hotel_settings.json", updated);
 
   await logAuditEvent({
-    userId: "admin",
-    userName: "System Administrator",
-    role: "ADMIN",
+    userId: user?.id || "system",
+    userName: user?.name || "System Administrator",
+    role: (user?.staffRole as any) || (user?.role?.toUpperCase() as any) || "ADMIN",
     action: "UPDATED_HOTEL_SETTINGS",
     target: "Hotel Settings",
     details: `Updated hotel operational settings & contact details`,

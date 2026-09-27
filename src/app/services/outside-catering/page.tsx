@@ -15,6 +15,8 @@ import {
 import { IMAGES } from "@/lib/constants";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { getCateringPackages, getHotelSettings } from "@/lib/cms-db";
+import { getStandardWhatsAppUrl } from "@/lib/whatsapp";
+
 
 export const dynamic = "force-dynamic";
 
@@ -203,10 +205,11 @@ export default async function OutsideCateringPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {packages.map((pkg) => {
               const packageName = pkg.name || pkg.title || "Outside Catering Package";
-              const waMsg = encodeURIComponent(
-                `Hello Hotel Kalya, I would like to enquire about the "${packageName}" catering package for an upcoming event.`
+              const waUrl = getStandardWhatsAppUrl(
+                `Hello Hotel Kalya, I would like to enquire about the "${packageName}" catering package for an upcoming event.`,
+                cleanPhone
               );
-              const waUrl = `https://wa.me/${cleanPhone}?text=${waMsg}`;
+
 
               return (
                 <div

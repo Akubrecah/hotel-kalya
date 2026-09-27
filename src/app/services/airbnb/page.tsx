@@ -20,6 +20,8 @@ import {
 import { IMAGES } from "@/lib/constants";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { getAirbnbApartments, getHotelSettings } from "@/lib/cms-db";
+import { getStandardWhatsAppUrl } from "@/lib/whatsapp";
+
 
 export const dynamic = "force-dynamic";
 
@@ -190,10 +192,11 @@ export default async function AirbnbServicePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {apartments.map((apt) => {
               const aptName = apt.name || "Serviced Apartment";
-              const waMsg = encodeURIComponent(
-                `Hello Hotel Kalya, I would like to enquire about renting the "${aptName}" serviced apartment.`
+              const waUrl = getStandardWhatsAppUrl(
+                `Hello Hotel Kalya, I would like to enquire about renting the "${aptName}" serviced apartment.`,
+                cleanPhone
               );
-              const waUrl = `https://wa.me/${cleanPhone}?text=${waMsg}`;
+
 
               return (
                 <div

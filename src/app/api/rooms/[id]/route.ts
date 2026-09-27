@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getRoomById, updateRoom, getRoomMonthCalendar } from "@/lib/db";
+import { authorizeApiRequest } from "@/lib/rbac";
 
 export async function GET(
   request: NextRequest,
@@ -45,6 +46,11 @@ export async function PATCH(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const auth = authorizeApiRequest(request, "rooms:write", ["MANAGEMENT", "EXECUTIVE", "HOUSEKEEPING"]);
+    if (!auth.authorized) {
+      return NextResponse.json({ success: false, error: auth.error }, { status: auth.status });
+    }
+
     const { id } = await context.params;
     const body = await request.json();
 

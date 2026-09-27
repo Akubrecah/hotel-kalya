@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { authorizeApiRequest } from "@/lib/rbac";
 
 export interface InquiryRecord {
   id: string;
@@ -132,6 +133,11 @@ const INQUIRIES_STORE: InquiryRecord[] = [
 
 export async function GET(request: NextRequest) {
   try {
+    const auth = authorizeApiRequest(request, "inquiries:manage", ["FRONT_OFFICE", "MANAGEMENT", "EXECUTIVE"]);
+    if (!auth.authorized) {
+      return NextResponse.json({ success: false, error: auth.error }, { status: auth.status });
+    }
+
     const { searchParams } = new URL(request.url);
     const type = searchParams.get("type");
     const status = searchParams.get("status");
@@ -198,6 +204,11 @@ export async function POST(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
+    const auth = authorizeApiRequest(request, "inquiries:manage", ["FRONT_OFFICE", "MANAGEMENT", "EXECUTIVE"]);
+    if (!auth.authorized) {
+      return NextResponse.json({ success: false, error: auth.error }, { status: auth.status });
+    }
+
     const body = await request.json();
     const { id, status } = body;
 

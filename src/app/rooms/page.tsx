@@ -20,6 +20,8 @@ import {
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Room } from "@/types/hospitality";
 import { useMounted } from "@/lib/useMounted";
+import { BRAND } from "@/lib/constants";
+import { getStandardWhatsAppUrl } from "@/lib/whatsapp";
 
 export default function RoomsPage() {
   const mounted = useMounted();
@@ -30,8 +32,9 @@ export default function RoomsPage() {
   const [priceSort, setPriceSort] = useState<"default" | "low" | "high">("default");
   const [selectedCalendarRoom, setSelectedCalendarRoom] = useState<Room | null>(null);
 
-  // WhatsApp enquiry generator
-  const [officialWhatsApp, setOfficialWhatsApp] = useState("+254722650000");
+  // WhatsApp enquiry generator with centralized fallback
+  const [officialWhatsApp, setOfficialWhatsApp] = useState(BRAND.phoneClean);
+
 
   useEffect(() => {
     async function loadData() {
@@ -86,14 +89,13 @@ export default function RoomsPage() {
 
   const getWhatsAppLink = (room: Room) => {
     const msg = `Hello Hotel Kalya, I would like to enquire about Room ${room.roomNumber} (${room.name}) priced at KES ${room.basePrice.toLocaleString()} per night. Please confirm availability.`;
-    return `https://wa.me/${officialWhatsApp.replace("+", "")}?text=${encodeURIComponent(msg)}`;
+    return getStandardWhatsAppUrl(msg, officialWhatsApp);
   };
 
   return (
     <div className="bg-white min-h-screen pb-20">
       <Breadcrumbs
         items={[
-          { label: "Home", href: "/" },
           { label: "Rooms & Accommodation" },
         ]}
       />
@@ -115,18 +117,23 @@ export default function RoomsPage() {
             </div>
             <div className="flex items-center gap-3">
               <a
-                href={`https://wa.me/${officialWhatsApp.replace("+", "")}?text=${encodeURIComponent("Hello Hotel Kalya, I would like to check accommodation options.")}`}
+                href={getStandardWhatsAppUrl(
+                  "Hello Hotel Kalya, I would like to check accommodation options.",
+                  officialWhatsApp
+                )}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-md transition-all"
+                aria-label="Chat with Front Desk about accommodation on WhatsApp"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-md transition-all active:scale-95"
               >
-                <MessageCircle className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4 flex-shrink-0" />
                 <span>WhatsApp Front Desk</span>
               </a>
             </div>
           </div>
         </div>
       </section>
+
 
       {/* Search & Filter Bar */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">

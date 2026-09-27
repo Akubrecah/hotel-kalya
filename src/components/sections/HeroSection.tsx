@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Sparkles, ArrowRight, MessageCircle } from "lucide-react";
 import { BRAND, IMAGES } from "@/lib/constants";
+import { getStandardWhatsAppUrl } from "@/lib/whatsapp";
 
 const SERVICE_BADGES = [
   { label: "Accommodation", href: "/services/accommodation" },
@@ -65,14 +66,16 @@ export function HeroSection() {
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <a
-                href={`https://wa.me/${BRAND.phoneClean}?text=Hello%20Hotel%20Kalya,%20I%20would%20like%20to%20inquire%20about%20booking.`}
+                href={getStandardWhatsAppUrl("Hello Hotel Kalya, I would like to inquire about booking.")}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Direct WhatsApp booking inquiries"
                 className="bg-white/10 hover:bg-white/20 border border-white/25 text-white px-6 py-3.5 rounded-full font-semibold text-sm transition-colors flex items-center gap-2"
               >
                 <MessageCircle className="w-4 h-4 text-emerald-400" />
                 <span>WhatsApp Enquiries</span>
               </a>
+
             </div>
           </div>
 

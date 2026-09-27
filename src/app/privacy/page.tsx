@@ -14,10 +14,10 @@ export default function PrivacyPage() {
     <div className="bg-white min-h-screen pb-20">
       <Breadcrumbs
         items={[
-          { label: "Home", href: "/" },
           { label: "Privacy Policy" },
         ]}
       />
+
 
       <section className="py-12 lg:py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">

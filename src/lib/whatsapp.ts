@@ -1,4 +1,5 @@
 import { ServiceContact } from "@/types/hospitality";
+import { BRAND } from "@/lib/constants";
 
 export interface WhatsAppInquiryContext {
   serviceKey: "accommodation" | "restaurant" | "conference" | "catering" | "garden" | "general";
@@ -149,3 +150,13 @@ export function buildContextualWhatsAppUrl(
 
   return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
 }
+
+/**
+ * Normalizes phone numbers and generates standard WhatsApp direct URL
+ */
+export function getStandardWhatsAppUrl(customMessage?: string, phoneNumber?: string): string {
+  const cleanPhone = (phoneNumber || BRAND.phoneClean).replace(/\D/g, "");
+  const message = customMessage || "Hello Hotel Kalya, I would like to inquire about booking & reservations.";
+  return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+}
+

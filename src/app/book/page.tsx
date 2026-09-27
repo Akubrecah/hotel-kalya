@@ -5,7 +5,9 @@ import Link from "next/link";
 import { Send, CheckCircle2, Phone, Mail, MapPin, Clock, MessageCircle, FileText } from "lucide-react";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { BRAND, SERVICE_CATEGORIES } from "@/lib/constants";
+import { getStandardWhatsAppUrl } from "@/lib/whatsapp";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+
 import { GoogleMap } from "@/components/maps/GoogleMap";
 import { DirectionsButton } from "@/components/maps/DirectionsButton";
 import { MpesaModal } from "@/components/payments/MpesaModal";
@@ -70,19 +72,19 @@ export default function BookPage() {
       // Offline fallback
     }
 
-    const textMsg = encodeURIComponent(
+    const rawMessage =
       `*New Website Booking Enquiry - Hotel Kalya Kapenguria*\n\n` +
-        `🔖 *Reference:* #${generatedId}\n` +
-        `👤 *Name:* ${form.name || "Guest"}\n` +
-        `📞 *Phone:* ${form.phone}\n` +
-        `✉️ *Email:* ${form.email || "Not specified"}\n` +
-        `🏨 *Service Required:* ${form.service}\n` +
-        `📅 *Date / Check-In:* ${form.date || "Not specified"}\n` +
-        `👥 *Number of Guests / Delegates:* ${form.guests || "Not specified"}\n` +
-        `📝 *Notes/Message:* ${form.message || "Please provide rates and availability."}`
-    );
+      `🔖 *Reference:* #${generatedId}\n` +
+      `👤 *Name:* ${form.name || "Guest"}\n` +
+      `📞 *Phone:* ${form.phone}\n` +
+      `✉️ *Email:* ${form.email || "Not specified"}\n` +
+      `🏨 *Service Required:* ${form.service}\n` +
+      `📅 *Date / Check-In:* ${form.date || "Not specified"}\n` +
+      `👥 *Number of Guests / Delegates:* ${form.guests || "Not specified"}\n` +
+      `📝 *Notes/Message:* ${form.message || "Please provide rates and availability."}`;
 
-    const waUrl = `https://wa.me/${officialWhatsApp}?text=${textMsg}`;
+    const waUrl = getStandardWhatsAppUrl(rawMessage, officialWhatsApp);
+
 
     setTimeout(() => {
       window.open(waUrl, "_blank", "noopener,noreferrer");
@@ -358,15 +360,17 @@ export default function BookPage() {
 
                   <div className="pt-4 border-t border-white/15">
                     <a
-                      href={`https://wa.me/${officialWhatsApp}?text=Hello%20Hotel%20Kalya%20Kapenguria`}
+                      href={getStandardWhatsAppUrl("Hello Hotel Kalya Front Desk, I would like to inquire directly about bookings.", officialWhatsApp)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow"
+                      aria-label="Chat directly with Hotel Kalya on WhatsApp"
+                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow transition-colors active:scale-95"
                     >
                       <MessageCircle className="w-4 h-4" />
                       <span>Chat on WhatsApp Directly</span>
                     </a>
                   </div>
+
                 </div>
               </div>
 

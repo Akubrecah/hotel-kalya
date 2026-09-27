@@ -17,7 +17,9 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { BRAND } from "@/lib/constants";
+import { getStandardWhatsAppUrl } from "@/lib/whatsapp";
 import { OrderType } from "@/types";
+
 import { MpesaModal } from "@/components/payments/MpesaModal";
 
 export default function CartPage() {
@@ -79,7 +81,8 @@ ${itemsText}
 *Special Instructions:* ${specialNotes || "None"}
 _Submitted via Hotel Kalya Digital Menu_`;
 
-    const whatsappUrl = `https://wa.me/${BRAND.phoneClean}?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = getStandardWhatsAppUrl(message, BRAND.phoneClean);
+
 
     // Sync order to backend API
     try {

@@ -20,6 +20,9 @@ import {
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
+import { BRAND } from "@/lib/constants";
+import { getStandardWhatsAppUrl } from "@/lib/whatsapp";
+
 
 const GUEST_NAV = [
   { label: "My Dashboard", href: "/guest/dashboard", icon: LayoutDashboard },
@@ -122,14 +125,16 @@ export default function GuestLayout({ children }: { children: React.ReactNode })
               <span>Dining &amp; Room Service</span>
             </Link>
             <a
-              href="https://wa.me/254719766649"
+              href={getStandardWhatsAppUrl("Hello Duty Manager, I am a resident guest at Hotel Kalya and require assistance.", BRAND.phoneClean)}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Contact Duty Manager on WhatsApp"
               className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-brand-amber hover:text-white hover:bg-brand-amber/20 transition-colors"
             >
               <PhoneCall className="w-3.5 h-3.5" />
               <span>WhatsApp Duty Manager</span>
             </a>
+
           </div>
         </div>
 

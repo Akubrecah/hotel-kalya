@@ -5,14 +5,23 @@ import { cn } from "@/lib/utils";
 interface BrandLogoProps {
   className?: string;
   light?: boolean;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
+  iconOnly?: boolean;
+  hideTagline?: boolean;
 }
 
-export function BrandLogo({ className, light = false, size = "md" }: BrandLogoProps) {
+export function BrandLogo({
+  className,
+  light = false,
+  size = "md",
+  iconOnly = false,
+  hideTagline = false,
+}: BrandLogoProps) {
   const sizeClasses = {
     sm: "scale-90 origin-left",
     md: "",
     lg: "scale-110 origin-left",
+    xl: "scale-125 origin-left",
   }[size];
 
   return (
@@ -49,38 +58,44 @@ export function BrandLogo({ className, light = false, size = "md" }: BrandLogoPr
         </svg>
       </div>
 
-      {/* Brand typography with tagline */}
-      <div className="flex flex-col leading-tight">
-        <div className="flex items-center gap-1.5">
-          <span
-            className={cn(
-              "font-serif tracking-wider font-extrabold text-lg sm:text-xl",
-              light ? "text-white" : "text-brand-maroon"
-            )}
-          >
-            HOTEL
-          </span>
-          <span
-            className={cn(
-              "font-serif tracking-wider font-extrabold text-lg sm:text-xl",
-              light ? "text-brand-amber" : "text-brand-amber-dark"
-            )}
-          >
-            KALYA
-          </span>
-        </div>
-        <span
-          className={cn(
-            "text-[9px] uppercase tracking-[0.22em] font-semibold",
-            light ? "text-brand-amber-light" : "text-brand-maroon/80"
+      {/* Brand typography with tagline (hidden when iconOnly) */}
+      {!iconOnly && (
+        <div className="flex flex-col leading-tight">
+          <div className="flex items-center gap-1.5">
+            <span
+              className={cn(
+                "font-serif tracking-wider font-extrabold text-lg sm:text-xl",
+                light ? "text-white" : "text-brand-maroon"
+              )}
+            >
+              HOTEL
+            </span>
+            <span
+              className={cn(
+                "font-serif tracking-wider font-extrabold text-lg sm:text-xl",
+                light ? "text-brand-amber" : "text-brand-amber-dark"
+              )}
+            >
+              KALYA
+            </span>
+          </div>
+          {!hideTagline && (
+            <>
+              <span
+                className={cn(
+                  "text-[9px] uppercase tracking-[0.22em] font-semibold",
+                  light ? "text-brand-amber-light" : "text-brand-maroon/80"
+                )}
+              >
+                HOSPITALITY REDEFINED
+              </span>
+              <span className="text-[8.5px] uppercase tracking-[0.16em] font-medium text-brand-sage">
+                KAPENGURIA • WEST POKOT
+              </span>
+            </>
           )}
-        >
-          HOSPITALITY REDEFINED
-        </span>
-        <span className="text-[8.5px] uppercase tracking-[0.16em] font-medium text-brand-sage">
-          KAPENGURIA • WEST POKOT
-        </span>
-      </div>
+        </div>
+      )}
     </div>
   );
 }

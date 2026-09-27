@@ -129,7 +129,15 @@ export type PermissionKey =
   | "staff:manage"
   | "roles:manage"
   | "settings:manage"
-  | "audit:view";
+  | "audit:view"
+  | "menu:manage"
+  | "inquiries:manage"
+  | "reviews:manage"
+  | "offers:manage"
+  | "gallery:manage"
+  | "announcements:manage"
+  | "airbnb:manage"
+  | "documents:manage";
 
 export interface RoleDefinition {
   id: string;

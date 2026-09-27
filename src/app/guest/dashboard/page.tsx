@@ -16,6 +16,9 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { Booking } from "@/types/hospitality";
+import { BRAND } from "@/lib/constants";
+import { getStandardWhatsAppUrl } from "@/lib/whatsapp";
+
 
 export default function GuestDashboardPage() {
   const { user } = useAuth();
@@ -83,14 +86,16 @@ export default function GuestDashboardPage() {
               <span>Order Room Service</span>
             </Link>
             <a
-              href="https://wa.me/254719766649?text=Hello%20Hotel%20Kalya%20Front%20Desk,%20I%20am%20a%20guest%20in%20house%20and%20require%20assistance."
+              href={getStandardWhatsAppUrl("Hello Hotel Kalya Front Desk, I am a guest in house and require assistance.", BRAND.phoneClean)}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600/80 hover:bg-emerald-600 text-white font-bold text-xs transition-all"
+              aria-label="Contact Duty Desk on WhatsApp"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600/80 hover:bg-emerald-600 text-white font-bold text-xs transition-all active:scale-95"
             >
               <PhoneCall className="w-4 h-4" />
               <span>WhatsApp Duty Desk</span>
             </a>
+
           </div>
         </div>
 

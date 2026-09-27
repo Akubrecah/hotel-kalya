@@ -50,5 +50,19 @@
     "isApproved": true,
     "isFeatured": true,
     "createdAt": "2026-08-29T00:00:00.000Z"
+  },
+  {
+    "authorName": "Security Tester",
+    "authorLocation": "Kapenguria",
+    "rating": 5,
+    "date": "2026-09-27",
+    "category": "General",
+    "comment": "Lovely peaceful gardens",
+    "source": "Direct Guest Feedback",
+    "isApproved": false,
+    "isFeatured": false,
+    "id": "rev-1790494626760",
+    "publishStatus": "published",
+    "createdAt": "2026-09-27T07:37:06.760Z"
   }
 ]

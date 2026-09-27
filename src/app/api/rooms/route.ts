@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getRooms, searchAvailableRooms, createRoom, updateRoom, deleteRoom } from "@/lib/db";
+import { authorizeApiRequest } from "@/lib/rbac";
 
 export async function GET(request: NextRequest) {
   try {
@@ -59,6 +60,11 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = authorizeApiRequest(request, "rooms:write", ["MANAGEMENT", "EXECUTIVE"]);
+    if (!auth.authorized) {
+      return NextResponse.json({ success: false, error: auth.error }, { status: auth.status });
+    }
+
     const body = await request.json();
     if (!body.roomNumber || !body.name || !body.type || !body.basePrice) {
       return NextResponse.json(
@@ -83,6 +89,11 @@ export async function POST(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
+    const auth = authorizeApiRequest(request, "rooms:write", ["MANAGEMENT", "EXECUTIVE", "HOUSEKEEPING"]);
+    if (!auth.authorized) {
+      return NextResponse.json({ success: false, error: auth.error }, { status: auth.status });
+    }
+
     const body = await request.json();
     const id = body.id || body.roomNumber;
     if (!id) {
@@ -114,6 +125,11 @@ export async function PATCH(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
+    const auth = authorizeApiRequest(request, "rooms:write", ["MANAGEMENT", "EXECUTIVE"]);
+    if (!auth.authorized) {
+      return NextResponse.json({ success: false, error: auth.error }, { status: auth.status });
+    }
+
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     if (!id) {

@@ -15,6 +15,8 @@ import {
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { getOffers, getHotelSettings } from "@/lib/cms-db";
 import { IMAGES } from "@/lib/constants";
+import { getStandardWhatsAppUrl } from "@/lib/whatsapp";
+
 
 export const dynamic = "force-dynamic";
 
@@ -85,10 +87,11 @@ export default async function OffersPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {offers.map((offer) => {
-                const waMsg = encodeURIComponent(
-                  `Hello Hotel Kalya, I would like to redeem or enquire about the "${offer.title}" package.`
+                const waUrl = getStandardWhatsAppUrl(
+                  `Hello Hotel Kalya, I would like to redeem or enquire about the "${offer.title}" package.`,
+                  cleanPhone
                 );
-                const waUrl = `https://wa.me/${cleanPhone}?text=${waMsg}`;
+
 
                 return (
                   <div

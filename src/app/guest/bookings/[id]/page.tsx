@@ -9,10 +9,13 @@ import {
   ArrowLeft,
   XCircle,
   AlertTriangle,
+  Download,
+  RefreshCw,
 } from "lucide-react";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { Booking } from "@/types/hospitality";
 import { buildContextualWhatsAppUrl } from "@/lib/whatsapp";
+import { exportElementToRealPdf } from "@/lib/pdf-generator";
 
 export default function GuestBookingDetailPage() {
   const params = useParams();
@@ -21,6 +24,7 @@ export default function GuestBookingDetailPage() {
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(true);
   const [cancelling, setCancelling] = useState(false);
+  const [generatingPdf, setGeneratingPdf] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [showCancelModal, setShowCancelModal] = useState(false);
 
@@ -74,6 +78,16 @@ export default function GuestBookingDetailPage() {
     }
   };
 
+  const handleDownloadRealPdf = async () => {
+    if (!booking) return;
+    setGeneratingPdf(true);
+    await exportElementToRealPdf("guest-booking-voucher-container", {
+      filename: `Hotel-Kalya-Voucher-${booking.id}.pdf`,
+      footerText: `Hotel Kalya Kapenguria • Official Voucher #${booking.id}`,
+    });
+    setGeneratingPdf(false);
+  };
+
   if (loading) {
     return (
       <div className="p-12 text-center bg-white rounded-3xl border border-gray-100 max-w-4xl mx-auto">
@@ -123,14 +137,30 @@ export default function GuestBookingDetailPage() {
           <span>Back to All Bookings</span>
         </Link>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <button
+            type="button"
+            disabled={generatingPdf}
+            onClick={handleDownloadRealPdf}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-maroon text-white font-bold text-xs shadow-sm hover:bg-brand-maroon-dark transition-all disabled:opacity-50"
+            title="Download Real PDF File"
+          >
+            {generatingPdf ? (
+              <RefreshCw className="w-3.5 h-3.5 animate-spin text-brand-amber" />
+            ) : (
+              <Download className="w-3.5 h-3.5 text-brand-amber" />
+            )}
+            <span>{generatingPdf ? "Generating..." : "Download Real PDF (.pdf)"}</span>
+          </button>
+
           <button
             type="button"
             onClick={() => window.print()}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-bold text-xs shadow-sm transition-all"
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-bold text-xs shadow-sm transition-all"
+            title="Browser Print"
           >
             <Printer className="w-3.5 h-3.5 text-gray-500" />
-            <span>Print Official Voucher</span>
+            <span>Print Slip</span>
           </button>
 
           <a
@@ -157,11 +187,14 @@ export default function GuestBookingDetailPage() {
       </div>
 
       {/* Official Printable Voucher Document */}
-      <div className="bg-white rounded-3xl p-8 sm:p-10 border border-gray-200 shadow-md space-y-8 print:shadow-none print:border-none print:p-0">
+      <div
+        id="guest-booking-voucher-container"
+        className="bg-white rounded-3xl p-8 sm:p-10 border border-gray-200 shadow-md space-y-8 print:shadow-none print:border-none print:p-0"
+      >
         {/* Document Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start gap-6 border-b border-gray-200 pb-8">
           <div>
-            <BrandLogo size="md" />
+            <BrandLogo size="md" hideTagline />
             <p className="text-xs text-gray-500 mt-2">
               Kapenguria, West Pokot County, Kenya • Phone: +254 719 766649
             </p>

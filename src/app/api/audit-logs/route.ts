@@ -38,8 +38,13 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = authorizeApiRequest(request, "audit:view", ["EXECUTIVE", "MANAGEMENT", "FRONT_OFFICE"]);
+    if (!auth.authorized || !auth.user) {
+      return NextResponse.json({ success: false, error: auth.error || "Authentication required" }, { status: auth.status || 401 });
+    }
+
     const body = await request.json();
-    const { action, target, details, status, department, role, userName, userId } = body;
+    const { action, target, details, status } = body;
 
     if (!action || !target) {
       return NextResponse.json(
@@ -48,15 +53,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Bind identity strictly to authenticated user session to preserve audit trail integrity
     await logAuditEvent({
-      userId: userId || "staff",
-      userName: userName || "Staff Operator",
-      role: role || "STAFF",
-      department: department || "Operations",
-      action,
-      target,
-      details: details || "",
-      status: status || "SUCCESS",
+      userId: auth.user.id,
+      userName: auth.user.name,
+      role: (auth.user.staffRole as any) || (auth.user.role?.toUpperCase() as any) || "STAFF",
+      department: auth.user.department || "Operations",
+      action: String(action).slice(0, 100),
+      target: String(target).slice(0, 150),
+      details: details ? String(details).slice(0, 500) : "",
+      status: status === "DENIED" ? "DENIED" : "SUCCESS",
     });
 
     return NextResponse.json({

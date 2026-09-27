@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import Link from "next/link";
 import {
   CheckCircle2,
@@ -13,12 +13,15 @@ import {
   ArrowRight,
   ShieldCheck,
   Bed,
+  Download,
+  RefreshCw,
 } from "lucide-react";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { DirectionsButton } from "@/components/maps/DirectionsButton";
 import { GoogleMap } from "@/components/maps/GoogleMap";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { BRAND } from "@/lib/constants";
+import { exportElementToRealPdf } from "@/lib/pdf-generator";
 
 interface ConfirmationPageProps {
   params: Promise<{ id: string }>;
@@ -27,11 +30,21 @@ interface ConfirmationPageProps {
 export default function BookingConfirmationPage({ params }: ConfirmationPageProps) {
   const resolvedParams = use(params);
   const bookingId = resolvedParams.id;
+  const [generatingPdf, setGeneratingPdf] = useState(false);
 
   const handlePrint = () => {
     if (typeof window !== "undefined") {
       window.print();
     }
+  };
+
+  const handleDownloadRealPdf = async () => {
+    setGeneratingPdf(true);
+    await exportElementToRealPdf("booking-confirmation-voucher", {
+      filename: `Hotel-Kalya-Voucher-${bookingId}.pdf`,
+      footerText: `Hotel Kalya Kapenguria • Official Voucher #${bookingId}`,
+    });
+    setGeneratingPdf(false);
   };
 
   return (
@@ -48,7 +61,7 @@ export default function BookingConfirmationPage({ params }: ConfirmationPageProp
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12">
         {/* Printable Voucher Card */}
-        <div className="bg-white rounded-3xl border border-brand-maroon/15 shadow-xl overflow-hidden print:border-none print:shadow-none">
+        <div id="booking-confirmation-voucher" className="bg-white rounded-3xl border border-brand-maroon/15 shadow-xl overflow-hidden print:border-none print:shadow-none">
           {/* Header Banner */}
           <div className="bg-brand-maroon text-white p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div className="flex items-center gap-4">
@@ -153,15 +166,32 @@ export default function BookingConfirmationPage({ params }: ConfirmationPageProp
 
             {/* Action Buttons (Hidden on Print) */}
             <div className="pt-4 flex flex-wrap items-center justify-between gap-4 print:hidden border-t border-brand-cream">
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  disabled={generatingPdf}
+                  onClick={handleDownloadRealPdf}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-maroon text-white text-xs font-bold hover:bg-brand-maroon-dark transition-colors shadow-sm disabled:opacity-50"
+                  title="Download High-Resolution Real PDF Voucher"
+                >
+                  {generatingPdf ? (
+                    <RefreshCw className="w-4 h-4 animate-spin text-brand-amber" />
+                  ) : (
+                    <Download className="w-4 h-4 text-brand-amber" />
+                  )}
+                  <span>{generatingPdf ? "Generating PDF..." : "Download Real PDF (.pdf)"}</span>
+                </button>
+
                 <button
                   type="button"
                   onClick={handlePrint}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-brand-maroon/20 text-brand-maroon text-xs font-bold hover:bg-brand-cream transition-colors shadow-sm"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-brand-maroon/20 text-brand-maroon text-xs font-bold hover:bg-brand-cream transition-colors shadow-sm"
+                  title="Browser Print"
                 >
                   <Printer className="w-4 h-4 text-brand-amber" />
-                  <span>Print Voucher / Save PDF</span>
+                  <span>Print Slip</span>
                 </button>
+
                 <Link
                   href="/account/bookings"
                   className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-brand-cream text-brand-maroon text-xs font-bold hover:bg-brand-cream/80 transition-colors"
@@ -172,7 +202,7 @@ export default function BookingConfirmationPage({ params }: ConfirmationPageProp
 
               <Link
                 href="/"
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-brand-maroon text-white text-xs font-bold uppercase tracking-wider hover:bg-brand-maroon-dark transition-colors shadow"
+                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-brand-cream text-brand-maroon border border-brand-maroon/20 text-xs font-bold uppercase tracking-wider hover:bg-brand-cream/80 transition-colors"
               >
                 <span>Return to Homepage</span>
                 <ArrowRight className="w-3.5 h-3.5 text-brand-amber" />
@@ -182,8 +212,10 @@ export default function BookingConfirmationPage({ params }: ConfirmationPageProp
 
           {/* Voucher Footer */}
           <div className="bg-brand-cream/80 border-t border-brand-maroon/10 p-4 px-6 flex items-center justify-between text-[11px] text-brand-dark/60">
-            <BrandLogo size="sm" />
-            <span>Hospitality Redefined • Kapenguria, West Pokot County</span>
+            <BrandLogo size="sm" hideTagline />
+            <span className="font-medium text-brand-maroon/80">
+              Official Guest Reservation Voucher • Issued by Front Office Concierge
+            </span>
           </div>
         </div>
       </div>

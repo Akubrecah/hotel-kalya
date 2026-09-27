@@ -7,16 +7,34 @@ export const BRAND = {
   name: "HOTEL KALYA",
   tagline: "HOSPITALITY REDEFINED",
   location: "Kapenguria, West Pokot County, Kenya",
+  address: "Kapenguria Town, Off Kitale-Lodwar Highway, West Pokot County, Kenya",
   phone: "+254 719 766649",
   phoneClean: "254719766649",
+  whatsappNumber: "+254 719 766649",
+  whatsappClean: "254719766649",
   email: "hotelkalya@gmail.com",
   operatingHours: {
-    reception: "24/7",
-    restaurant: "6:30 AM – 10:00 PM",
+    reception: "24/7 Daily",
+    restaurant: "6:30 AM – 10:00 PM Daily",
+    conferences: "7:00 AM – 8:00 PM Daily",
+    gardens: "8:00 AM – 6:30 PM Daily",
+  },
+  socials: {
+    facebook: "https://facebook.com/hotelkalyakapenguria",
+    instagram: "https://instagram.com/hotelkalya",
+    twitter: "https://twitter.com/hotelkalya",
+    whatsapp: "https://wa.me/254719766649",
   },
   googleMapsUrl:
     "https://maps.google.com/?q=Kapenguria,+West+Pokot,+Kenya",
 } as const;
+
+export const LEGAL_LINKS = [
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms & Conditions", href: "/terms" },
+  { label: "Cookie Policy", href: "/cookies" },
+] as const;
+
 
 // ---------------------------------------------------------------------------
 // Unsplash stock images — will be replaced with real hotel photos later
@@ -74,45 +92,83 @@ export interface NavSubItem {
   label: string;
   href: string;
   desc: string;
+  badge?: string;
 }
-
-export const NAV_SERVICES: NavSubItem[] = [
-  { label: "Accommodation", href: "/services/accommodation", desc: "Executive suites, standard rooms & cottages" },
-  { label: "Food Service & Dining", href: "/services/food-service", desc: "Farm-fresh Kenyan & continental cuisine" },
-  { label: "Conference Facilities", href: "/services/conferences", desc: "Modern seminar halls & boardroom" },
-  { label: "Outside Catering", href: "/services/outside-catering", desc: "Professional mobile event catering" },
-  { label: "AirBnB Short-Stays", href: "/services/airbnb", desc: "Self-contained serviced apartments" },
-  { label: "Garden Experience", href: "/services/garden-experience", desc: "Lush grounds, photoshoots & dining" },
-];
-
-export const NAV_MENU_ITEMS: NavSubItem[] = [
-  { label: "All Menu Items", href: "/menu", desc: "Explore our complete digital dining menu" },
-  { label: "Breakfast", href: "/menu/breakfast", desc: "Farm breakfast, Kalya special tea, fresh fruits" },
-  { label: "Lunch", href: "/menu/lunch", desc: "Hearty stews, grilled specialties, fresh accompaniments" },
-  { label: "Dinner", href: "/menu/dinner", desc: "Chef's gourmet courses, tender nyama choma & fish" },
-  { label: "Drinks & Refreshments", href: "/menu/drinks", desc: "Fresh juices, spiced tea, smoothies & sodas" },
-  { label: "Chef's Specials", href: "/menu/specials", desc: "Signature Kapenguria kienyeji chicken & platter" },
-];
 
 export interface NavLinkItem {
   label: string;
   href: string;
   hasDropdown?: boolean;
-  dropdownType?: "services" | "menu";
+  dropdownId?: "stay" | "dining" | "events" | "explore";
+  subItems?: NavSubItem[];
 }
+
+export const NAV_STAY_ITEMS: NavSubItem[] = [
+  { label: "Rooms & Suites", href: "/rooms", desc: "Executive suites, standard rooms & highland cottages", badge: "Popular" },
+  { label: "Check Availability", href: "/availability", desc: "Live room calendars & instant direct booking", badge: "Instant" },
+  { label: "AirBnB Short-Stays", href: "/services/airbnb", desc: "Fully-furnished self-contained serviced apartments" },
+  { label: "Special Offers & Packages", href: "/offers", desc: "Weekend getaways, couple escapes & holiday discounts", badge: "Special" },
+];
+
+export const NAV_DINING_ITEMS: NavSubItem[] = [
+  { label: "Full Dining Menu", href: "/menu", desc: "Complete farm-to-table digital culinary menu" },
+  { label: "Breakfast Service", href: "/menu/breakfast", desc: "Farm breakfast, Kalya special tea & fresh pastries" },
+  { label: "Lunch & Afternoon Grill", href: "/menu/lunch", desc: "Hearty stews, grilled specialties & accompaniments" },
+  { label: "Dinner & Chef's Cut", href: "/menu/dinner", desc: "Tender nyama choma, lake tilapia & wine pairings" },
+  { label: "Drinks & Refreshments", href: "/menu/drinks", desc: "Fresh juices, spiced tea, smoothies & craft beverages" },
+  { label: "Outside Event Catering", href: "/services/outside-catering", desc: "Mobile event catering and banquets up to 2,000 guests" },
+];
+
+export const NAV_SERVICES_ITEMS: NavSubItem[] = [
+  { label: "Services Directory", href: "/services", desc: "Overview of all Kalya guest experiences & services" },
+  { label: "Conference Facilities", href: "/services/conferences", desc: "Modern seminar halls, DDR packages & boardrooms", badge: "Top Pick" },
+  { label: "Outside Event Catering", href: "/services/outside-catering", desc: "Banquets, corporate functions & mobile catering" },
+  { label: "Kalya Garden Experience", href: "/services/garden-experience", desc: "Lush botanical lawns, photoshoots & garden weddings" },
+  { label: "Upcoming Events & Retreats", href: "/events", desc: "Highland marathons, corporate galas & entertainment" },
+];
+
+export const NAV_EXPLORE_ITEMS: NavSubItem[] = [
+  { label: "About Hotel Kalya", href: "/about", desc: "Our heritage, serene Kapenguria location & hospitality values" },
+  { label: "Photo & Video Gallery", href: "/gallery", desc: "Virtual tour of rooms, gardens, restaurant & halls" },
+  { label: "Guest Reviews & Ratings", href: "/reviews", desc: "Verified testimonials & ratings across Google & TripAdvisor" },
+  { label: "Location & Directions", href: "/location", desc: "Kapenguria highway access, interactive map & GPS pin" },
+  { label: "Client Template Pack", href: "/template", desc: "Executive dark template, client handover kit & JSON payload", badge: "New" },
+];
+
+// Backwards-compatible aliases
+export const NAV_SERVICES: NavSubItem[] = NAV_SERVICES_ITEMS;
+export const NAV_MENU_ITEMS: NavSubItem[] = NAV_DINING_ITEMS;
 
 export const NAV_LINKS: NavLinkItem[] = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Rooms", href: "/rooms" },
-  { label: "Availability", href: "/availability" },
-  { label: "Services", href: "/services", hasDropdown: true, dropdownType: "services" },
-  { label: "Menu", href: "/menu", hasDropdown: true, dropdownType: "menu" },
-  { label: "Offers", href: "/offers" },
-  { label: "Events", href: "/events" },
-  { label: "Gallery", href: "/gallery" },
-  { label: "Reviews", href: "/reviews" },
-  { label: "Location", href: "/location" },
+  {
+    label: "Stay",
+    href: "/rooms",
+    hasDropdown: true,
+    dropdownId: "stay",
+    subItems: NAV_STAY_ITEMS,
+  },
+  {
+    label: "Dining",
+    href: "/menu",
+    hasDropdown: true,
+    dropdownId: "dining",
+    subItems: NAV_DINING_ITEMS,
+  },
+  {
+    label: "Events & Services",
+    href: "/services",
+    hasDropdown: true,
+    dropdownId: "events",
+    subItems: NAV_SERVICES_ITEMS,
+  },
+  {
+    label: "Explore",
+    href: "/about",
+    hasDropdown: true,
+    dropdownId: "explore",
+    subItems: NAV_EXPLORE_ITEMS,
+  },
   { label: "Contact", href: "/contact" },
 ];
 

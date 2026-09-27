@@ -1,8 +1,14 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getOperationalAnalytics } from "@/lib/db";
+import { authorizeApiRequest } from "@/lib/rbac";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const auth = authorizeApiRequest(request, "reports:view", ["MANAGEMENT", "EXECUTIVE"]);
+    if (!auth.authorized) {
+      return NextResponse.json({ success: false, error: auth.error }, { status: auth.status });
+    }
+
     const analytics = await getOperationalAnalytics();
     return NextResponse.json({
       success: true,

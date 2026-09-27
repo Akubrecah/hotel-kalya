@@ -102,10 +102,10 @@ export default function ReviewsPage() {
     <div className="bg-white min-h-screen">
       <Breadcrumbs
         items={[
-          { label: "Home", href: "/" },
           { label: "Guest Reviews & Ratings" },
         ]}
       />
+
 
       {/* Page Header */}
       <section className="bg-brand-cream/80 py-12 lg:py-16 border-b border-brand-maroon/10">

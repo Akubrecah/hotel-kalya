@@ -14,30 +14,59 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const guestPhone = searchParams.get("phone");
 
-    // If not a specific guest phone lookup, enforce Front Office / Executive staff authorization
-    if (!guestPhone) {
-      const auth = authorizeApiRequest(request, "view_reservations", [
-        "FRONT_OFFICE",
-        "MANAGEMENT",
-        "EXECUTIVE",
-      ]);
+    const auth = authorizeApiRequest(request, "view_reservations", [
+      "FRONT_OFFICE",
+      "MANAGEMENT",
+      "EXECUTIVE",
+    ]);
 
-      if (!auth.authorized) {
-        await logAuditEvent({
-          userId: auth.user?.id || "unauthorized_caller",
-          userName: auth.user?.name || "Unknown Caller",
-          role: auth.user?.staffRole || "UNKNOWN",
-          department: auth.user?.department || "UNKNOWN",
-          action: "UNAUTHORIZED_RESERVATIONS_ACCESS",
-          target: "/api/bookings",
-          details: auth.error || "Blocked cross-department reservation roster access.",
-          status: "DENIED",
+    // If caller is NOT a staff member with reservation privileges, check if they are an authenticated guest looking up their OWN reservations
+    if (!auth.authorized) {
+      if (auth.user && auth.user.role === "guest") {
+        const guestEmail = auth.user.email?.toLowerCase();
+        const guestPhoneClean = auth.user.phone?.replace(/[^0-9]/g, "");
+
+        let bookings = await getBookings();
+        bookings = bookings.filter((b) => {
+          const bEmailMatch = Boolean(guestEmail && b.guestEmail?.toLowerCase() === guestEmail);
+          const bPhoneClean = b.guestPhone?.replace(/[^0-9]/g, "");
+          const bPhoneMatch = Boolean(
+            guestPhoneClean &&
+            guestPhoneClean.length >= 9 &&
+            bPhoneClean &&
+            bPhoneClean.endsWith(guestPhoneClean.slice(-9))
+          );
+          return bEmailMatch || bPhoneMatch;
         });
-        return NextResponse.json(
-          { success: false, error: auth.error },
-          { status: auth.status }
-        );
+
+        const formatted = bookings.map((b) => ({
+          ...b,
+          service: b.roomType || "Accommodation",
+          guestsCount: `${b.adults} Adults${b.children ? `, ${b.children} Children` : ""}`,
+        }));
+
+        return NextResponse.json({
+          success: true,
+          total: formatted.length,
+          reservations: formatted,
+        });
       }
+
+      await logAuditEvent({
+        userId: auth.user?.id || "unauthorized_caller",
+        userName: auth.user?.name || "Unknown Caller",
+        role: auth.user?.staffRole || "UNKNOWN",
+        department: auth.user?.department || "UNKNOWN",
+        action: "UNAUTHORIZED_RESERVATIONS_ACCESS",
+        target: "/api/bookings",
+        details: auth.error || "Blocked cross-department reservation roster access.",
+        status: "DENIED",
+      });
+
+      return NextResponse.json(
+        { success: false, error: auth.error },
+        { status: auth.status }
+      );
     }
 
     const statusFilter = searchParams.get("status");
@@ -56,7 +85,13 @@ export async function GET(request: NextRequest) {
     }
 
     if (guestPhone) {
-      bookings = bookings.filter((b) => b.guestPhone.includes(guestPhone));
+      const cleanTarget = guestPhone.replace(/[^0-9]/g, "");
+      bookings = bookings.filter((b) => {
+        const bPhoneClean = b.guestPhone.replace(/[^0-9]/g, "");
+        return cleanTarget.length >= 9
+          ? bPhoneClean.endsWith(cleanTarget.slice(-9))
+          : bPhoneClean === cleanTarget;
+      });
     }
 
     // Map to compatible structure for existing table views

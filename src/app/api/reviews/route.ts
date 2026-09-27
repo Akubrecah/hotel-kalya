@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getReviews, createReview, updateReview, deleteReview } from "@/lib/db";
+import { authorizeApiRequest } from "@/lib/rbac";
 
 export async function GET(request: NextRequest) {
   try {
@@ -30,16 +31,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Only authenticated staff with reviews:manage can auto-approve reviews
+    const auth = authorizeApiRequest(request, "reviews:manage", ["FRONT_OFFICE", "MANAGEMENT", "EXECUTIVE"]);
+    const isStaff = auth.authorized;
+
     const review = await createReview({
-      authorName: body.authorName,
-      authorLocation: body.authorLocation || "Kapenguria",
-      rating: Number(body.rating),
+      authorName: String(body.authorName).slice(0, 80),
+      authorLocation: String(body.authorLocation || "Kapenguria").slice(0, 80),
+      rating: Math.min(5, Math.max(1, Number(body.rating) || 5)),
       date: body.date || new Date().toISOString().split("T")[0],
       category: body.category || "General",
-      comment: body.comment,
+      comment: String(body.comment).slice(0, 1000),
       source: body.source || "Direct Guest Feedback",
-      isApproved: body.isApproved !== undefined ? Boolean(body.isApproved) : true,
-      isFeatured: body.isFeatured !== undefined ? Boolean(body.isFeatured) : false,
+      isApproved: isStaff && body.isApproved !== undefined ? Boolean(body.isApproved) : false,
+      isFeatured: isStaff && body.isFeatured !== undefined ? Boolean(body.isFeatured) : false,
     });
     return NextResponse.json({ success: true, review }, { status: 201 });
   } catch (error) {
@@ -52,6 +57,11 @@ export async function POST(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
+    const auth = authorizeApiRequest(request, "reviews:manage", ["FRONT_OFFICE", "MANAGEMENT", "EXECUTIVE"]);
+    if (!auth.authorized) {
+      return NextResponse.json({ success: false, error: auth.error }, { status: auth.status });
+    }
+
     const body = await request.json();
     if (!body.id) {
       return NextResponse.json(
@@ -79,6 +89,11 @@ export async function PATCH(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
+    const auth = authorizeApiRequest(request, "reviews:manage", ["FRONT_OFFICE", "MANAGEMENT", "EXECUTIVE"]);
+    if (!auth.authorized) {
+      return NextResponse.json({ success: false, error: auth.error }, { status: auth.status });
+    }
+
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     if (!id) {

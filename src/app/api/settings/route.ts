@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getHotelSettings, updateHotelSettings } from "@/lib/db";
+import { authorizeApiRequest } from "@/lib/rbac";
 
 export async function GET() {
   try {
@@ -18,8 +19,13 @@ export async function GET() {
 
 export async function PATCH(request: NextRequest) {
   try {
+    const auth = authorizeApiRequest(request, "settings:manage", ["EXECUTIVE"]);
+    if (!auth.authorized) {
+      return NextResponse.json({ success: false, error: auth.error }, { status: auth.status });
+    }
+
     const body = await request.json();
-    const updated = await updateHotelSettings(body);
+    const updated = await updateHotelSettings(body, auth.user);
     return NextResponse.json({
       success: true,
       settings: updated,
