@@ -93,20 +93,20 @@ export default function StaffKitchenKDSPage() {
       {/* Title & Polling Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-brand-maroon flex items-center gap-3">
+          <h1 className="font-serif text-2xl sm:text-3xl font-black text-brand-maroon flex items-center gap-3">
             <span>Kitchen Display System (KDS)</span>
             <span className="px-2.5 py-0.5 rounded-full bg-brand-amber text-brand-maroon text-xs font-extrabold uppercase">
               Live Cooking
             </span>
           </h1>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-brand-dark/60 font-sans">
             Real-time kitchen order dispatch, dish preparation tracking, and waiter pickup alerts
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-amber/15 border border-brand-amber/30 text-brand-maroon text-xs font-bold">
+            <span className="w-2 h-2 rounded-full bg-brand-amber-dark animate-ping" />
             <span>KDS Station 1 (Hot Line)</span>
           </div>
 
@@ -114,7 +114,7 @@ export default function StaffKitchenKDSPage() {
             type="button"
             onClick={loadOrders}
             disabled={loading}
-            className="p-2 rounded-xl bg-white border border-gray-200 text-brand-maroon hover:bg-gray-50 shadow-sm"
+            className="p-2 rounded-xl bg-brand-cream border border-brand-maroon/20 text-brand-maroon hover:bg-white transition-all shadow-sm"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
           </button>
@@ -129,13 +129,13 @@ export default function StaffKitchenKDSPage() {
           className={`p-4 rounded-3xl border text-left transition-all ${
             statusFilter === "ACTIVE"
               ? "bg-brand-maroon text-white border-brand-maroon shadow-md"
-              : "bg-white border-gray-200 text-gray-800 hover:bg-gray-50"
+              : "bg-white border-brand-maroon/10 text-brand-dark hover:border-brand-maroon/30"
           }`}
         >
           <span className="text-[10px] uppercase font-bold tracking-wider block opacity-70">
             All In-Kitchen Tickets
           </span>
-          <p className="text-2xl font-bold font-serif">{activeOrders.length}</p>
+          <p className="text-2xl font-black font-serif">{activeOrders.length}</p>
           <span className="text-[10px] opacity-80 font-semibold">Live in preparation</span>
         </button>
 
@@ -219,17 +219,17 @@ export default function StaffKitchenKDSPage() {
                 }`}
               >
                 {/* Ticket Top Header */}
-                <div className="p-4 bg-white border-b border-gray-200 flex items-center justify-between">
+                <div className="p-4 bg-brand-cream border-b border-brand-maroon/10 flex items-center justify-between">
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="font-mono text-sm font-extrabold text-brand-maroon">
                         {ticket.id}
                       </span>
-                      <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-700">
+                      <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-white border border-brand-maroon/15 text-brand-maroon">
                         {ticket.orderType.replace("_", " ")}
                       </span>
                     </div>
-                    <p className="text-xs font-bold text-gray-900 mt-1">
+                    <p className="text-xs font-serif font-bold text-brand-dark mt-1">
                       {ticket.roomOrTableNumber || "Main Dining Area"}
                     </p>
                   </div>

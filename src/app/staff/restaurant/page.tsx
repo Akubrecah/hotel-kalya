@@ -164,10 +164,10 @@ export default function StaffRestaurantPage() {
       {/* Title */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-brand-maroon">
+          <h1 className="font-serif text-2xl sm:text-3xl font-black text-brand-maroon">
             Waitstaff &amp; Table Dining Console
           </h1>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-brand-dark/60 font-sans">
             Real-time table occupancy, waitstaff order taking, and bill request dispatch
           </p>
         </div>
@@ -175,14 +175,14 @@ export default function StaffRestaurantPage() {
         <div className="flex items-center gap-2">
           <Link
             href="/staff/orders"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-brand-cream border border-brand-maroon/20 text-brand-maroon font-bold text-xs hover:bg-brand-cream/80"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-brand-cream border border-brand-maroon/20 text-brand-maroon font-bold text-xs hover:bg-white transition-all shadow-sm"
           >
             <span>Kitchen Display (KDS) ↗</span>
           </Link>
           <button
             type="button"
             onClick={loadOrders}
-            className="p-2 rounded-xl bg-white border border-gray-200 text-brand-maroon hover:bg-gray-50 shadow-sm"
+            className="p-2 rounded-xl bg-brand-cream border border-brand-maroon/20 text-brand-maroon hover:bg-white transition-all shadow-sm"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
           </button>
@@ -190,7 +190,7 @@ export default function StaffRestaurantPage() {
       </div>
 
       {/* Area Filter Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto bg-white p-2 rounded-2xl border border-gray-200 shadow-sm">
+      <div className="flex items-center gap-2 overflow-x-auto bg-white p-2 rounded-2xl border border-brand-maroon/10 shadow-sm">
         {["ALL", "Main Restaurant", "Garden Terrace", "Upper Gazebo"].map((area) => (
           <button
             key={area}
@@ -199,7 +199,7 @@ export default function StaffRestaurantPage() {
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
               activeArea === area
                 ? "bg-brand-maroon text-white shadow-sm"
-                : "text-gray-600 hover:bg-gray-100"
+                : "text-brand-dark/70 hover:bg-brand-cream hover:text-brand-maroon"
             }`}
           >
             {area === "ALL" ? "All Dining Areas" : area}

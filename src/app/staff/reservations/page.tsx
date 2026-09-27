@@ -107,10 +107,10 @@ export default function StaffReservationsPage() {
       {/* Title */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-brand-maroon">
+          <h1 className="font-serif text-2xl sm:text-3xl font-black text-brand-maroon">
             Front Desk &amp; Reservation Operations
           </h1>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-brand-dark/60 font-sans">
             Real-time guest arrivals, check-in processing, departures, and room allocations
           </p>
         </div>
@@ -119,7 +119,7 @@ export default function StaffReservationsPage() {
           type="button"
           onClick={loadBookings}
           disabled={loading}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-gray-200 text-xs font-bold text-gray-700 hover:bg-gray-50 shadow-sm"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-brand-cream border border-brand-maroon/20 text-xs font-bold text-brand-maroon hover:bg-white transition-all shadow-sm"
         >
           <RefreshCw className={`w-3.5 h-3.5 text-brand-maroon ${loading ? "animate-spin" : ""}`} />
           <span>Sync Desk</span>
@@ -128,33 +128,33 @@ export default function StaffReservationsPage() {
 
       {/* Front Desk Metrics Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-3xl border border-gray-200 shadow-sm space-y-1">
-          <span className="text-[10px] uppercase font-bold text-gray-400 block">Today&apos;s Arrivals</span>
-          <p className="text-2xl font-bold text-blue-700 font-serif">{todayArrivals}</p>
-          <span className="text-[10px] text-gray-500">Expected Check-ins</span>
+        <div className="bg-white p-4 rounded-3xl border border-brand-maroon/10 shadow-sm space-y-1">
+          <span className="text-[10px] uppercase font-bold text-brand-dark/50 block tracking-wider">Today&apos;s Arrivals</span>
+          <p className="text-2xl font-black text-brand-maroon font-serif">{todayArrivals}</p>
+          <span className="text-[10px] text-brand-dark/60">Expected Check-ins</span>
         </div>
 
-        <div className="bg-white p-4 rounded-3xl border border-gray-200 shadow-sm space-y-1">
-          <span className="text-[10px] uppercase font-bold text-gray-400 block">In-House Guests</span>
-          <p className="text-2xl font-bold text-emerald-700 font-serif">{inHouseGuests}</p>
-          <span className="text-[10px] text-emerald-600 font-semibold">Active Checked-In</span>
+        <div className="bg-white p-4 rounded-3xl border border-brand-maroon/10 shadow-sm space-y-1">
+          <span className="text-[10px] uppercase font-bold text-brand-dark/50 block tracking-wider">In-House Guests</span>
+          <p className="text-2xl font-black text-emerald-700 font-serif">{inHouseGuests}</p>
+          <span className="text-[10px] text-emerald-700 font-bold">Active Checked-In</span>
         </div>
 
-        <div className="bg-white p-4 rounded-3xl border border-gray-200 shadow-sm space-y-1">
-          <span className="text-[10px] uppercase font-bold text-gray-400 block">Today&apos;s Departures</span>
-          <p className="text-2xl font-bold text-amber-700 font-serif">{todayDepartures}</p>
-          <span className="text-[10px] text-gray-500">Scheduled Check-outs</span>
+        <div className="bg-white p-4 rounded-3xl border border-brand-maroon/10 shadow-sm space-y-1">
+          <span className="text-[10px] uppercase font-bold text-brand-dark/50 block tracking-wider">Today&apos;s Departures</span>
+          <p className="text-2xl font-black text-brand-amber-dark font-serif">{todayDepartures}</p>
+          <span className="text-[10px] text-brand-dark/60">Scheduled Check-outs</span>
         </div>
 
-        <div className="bg-white p-4 rounded-3xl border border-gray-200 shadow-sm space-y-1">
-          <span className="text-[10px] uppercase font-bold text-gray-400 block">Upcoming Confirmed</span>
-          <p className="text-2xl font-bold text-brand-maroon font-serif">{confirmedCount}</p>
-          <span className="text-[10px] text-gray-500">Future Bookings</span>
+        <div className="bg-white p-4 rounded-3xl border border-brand-maroon/10 shadow-sm space-y-1">
+          <span className="text-[10px] uppercase font-bold text-brand-dark/50 block tracking-wider">Upcoming Confirmed</span>
+          <p className="text-2xl font-black text-brand-maroon font-serif">{confirmedCount}</p>
+          <span className="text-[10px] text-brand-dark/60">Future Bookings</span>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-3 rounded-2xl border border-gray-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-3 rounded-2xl border border-brand-maroon/10 shadow-sm">
         <div className="flex items-center gap-1.5 overflow-x-auto pb-2 sm:pb-0">
           {[
             { label: "All Reservations", value: "ALL" },
@@ -169,8 +169,8 @@ export default function StaffReservationsPage() {
               onClick={() => setStatusFilter(tab.value)}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-colors ${
                 statusFilter === tab.value
-                  ? "bg-brand-maroon text-white shadow"
-                  : "text-gray-600 hover:bg-gray-100"
+                  ? "bg-brand-maroon text-white shadow-sm"
+                  : "text-brand-dark/70 hover:bg-brand-cream hover:text-brand-maroon"
               }`}
             >
               {tab.label}
@@ -179,21 +179,21 @@ export default function StaffReservationsPage() {
         </div>
 
         <div className="relative w-full sm:w-72">
-          <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-brand-dark/40 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search guest, ref, room, phone..."
-            className="w-full pl-9 pr-3 py-1.5 text-xs bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-amber focus:bg-white"
+            className="w-full pl-9 pr-3 py-1.5 text-xs bg-brand-cream/60 border border-brand-maroon/15 rounded-xl text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-amber focus:bg-white"
           />
         </div>
       </div>
 
       {/* Reservations Table */}
-      <div className="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-3xl border border-brand-maroon/10 shadow-sm overflow-hidden">
         {loading ? (
-          <div className="p-12 text-center text-xs text-gray-400 animate-pulse">
+          <div className="p-12 text-center text-xs text-brand-dark/40 animate-pulse font-sans">
             Loading reservations registry...
           </div>
         ) : filtered.length === 0 ? (
@@ -317,7 +317,7 @@ export default function StaffReservationsPage() {
             {/* Desktop Table View (lg+) */}
             <div className="hidden lg:block overflow-x-auto">
               <table className="w-full text-left text-xs">
-              <thead className="bg-[#FAF9F5] border-b border-gray-200 text-gray-500 font-bold uppercase text-[10px] tracking-wider">
+              <thead className="bg-brand-cream border-b border-brand-maroon/10 text-brand-maroon font-bold uppercase text-[10px] tracking-wider font-serif">
                 <tr>
                   <th className="py-3.5 px-4">Ref Number</th>
                   <th className="py-3.5 px-4">Guest Details</th>
@@ -328,7 +328,7 @@ export default function StaffReservationsPage() {
                   <th className="py-3.5 px-4 text-right">Desk Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-brand-maroon/5">
                 {filtered.map((b) => {
                   const isOperating = actionLoading === b.id;
                   const waUrl = `https://wa.me/${b.guestPhone.replace(/\D/g, "")}?text=${encodeURIComponent(
@@ -336,43 +336,43 @@ export default function StaffReservationsPage() {
                   )}`;
 
                   return (
-                    <tr key={b.id} className="hover:bg-brand-cream/30 transition-colors">
+                    <tr key={b.id} className="hover:bg-brand-cream/40 transition-colors">
                       {/* Ref */}
                       <td className="py-3.5 px-4">
                         <span className="font-mono font-bold text-brand-maroon block">{b.id}</span>
-                        <span className="text-[10px] text-gray-400">
+                        <span className="text-[10px] text-brand-dark/50">
                           {new Date(b.createdAt).toLocaleDateString()}
                         </span>
                       </td>
 
                       {/* Guest */}
                       <td className="py-3.5 px-4">
-                        <p className="font-bold text-gray-900">{b.guestName}</p>
-                        <p className="text-[11px] text-gray-500">{b.guestPhone}</p>
-                        <p className="text-[10px] text-gray-400 truncate max-w-[140px]">{b.guestEmail}</p>
+                        <p className="font-bold text-brand-dark">{b.guestName}</p>
+                        <p className="text-[11px] text-brand-dark/60">{b.guestPhone}</p>
+                        <p className="text-[10px] text-brand-dark/40 truncate max-w-[140px]">{b.guestEmail}</p>
                       </td>
 
                       {/* Room */}
                       <td className="py-3.5 px-4">
-                        <span className="inline-block px-2 py-0.5 rounded-lg bg-gray-100 font-bold text-gray-900">
+                        <span className="inline-block px-2 py-0.5 rounded-lg bg-brand-cream border border-brand-maroon/15 font-serif font-bold text-brand-maroon">
                           Room {b.roomNumber}
                         </span>
-                        <p className="text-[11px] text-gray-500 mt-0.5">{b.roomType}</p>
+                        <p className="text-[11px] text-brand-dark/60 mt-0.5">{b.roomType}</p>
                       </td>
 
                       {/* Dates */}
                       <td className="py-3.5 px-4">
-                        <p className="font-semibold text-gray-800">
+                        <p className="font-semibold text-brand-dark">
                           {b.checkInDate} → {b.checkOutDate}
                         </p>
-                        <p className="text-[11px] text-gray-500">
+                        <p className="text-[11px] text-brand-dark/60">
                           {b.nights} {b.nights === 1 ? "night" : "nights"} • {b.adults} Adults
                         </p>
                       </td>
 
                       {/* Financials */}
                       <td className="py-3.5 px-4">
-                        <p className="font-bold text-gray-900">KES {b.totalAmount.toLocaleString()}</p>
+                        <p className="font-bold text-brand-dark">KES {b.totalAmount.toLocaleString()}</p>
                         <span
                           className={`text-[10px] font-bold ${
                             b.paymentStatus === "Paid"

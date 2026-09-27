@@ -562,20 +562,20 @@ export default function StaffDashboardPage() {
       {effectiveRole === "WAITER" && (
         <div className="space-y-6">
           {/* Restaurant Floor Plan */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+          <div className="bg-white rounded-3xl p-6 border border-brand-maroon/10 shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="font-serif text-lg font-bold text-brand-maroon flex items-center gap-2">
-                  <UtensilsCrossed className="w-5 h-5 text-brand-amber" />
+                  <UtensilsCrossed className="w-5 h-5 text-brand-amber-dark" />
                   <span>Restaurant Floor Plan &amp; Table Activity</span>
                 </h2>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-brand-dark/60 font-sans">
                   Main Dining Room, Garden Gazebos, and Mountain View Terrace tables
                 </p>
               </div>
               <Link
                 href="/staff/restaurant"
-                className="px-3.5 py-1.5 rounded-xl bg-brand-maroon text-white font-bold text-xs hover:bg-brand-maroon-dark transition-colors shadow-sm"
+                className="px-3.5 py-1.5 rounded-xl bg-brand-maroon text-white font-bold text-xs hover:bg-brand-maroon-dark transition-colors shadow-xs"
               >
                 + Take New Order
               </Link>
@@ -594,40 +594,40 @@ export default function StaffDashboardPage() {
                   key={t.table}
                   className={`p-4 rounded-2xl border text-center space-y-2 transition-all ${
                     t.status === "OCCUPIED"
-                      ? "bg-amber-50/60 border-amber-200"
+                      ? "bg-brand-maroon/5 border-brand-maroon/20"
                       : t.status === "BILL_REQUESTED"
-                      ? "bg-blue-50/60 border-blue-200"
+                      ? "bg-brand-amber/15 border-brand-amber/30"
                       : "bg-emerald-50/60 border-emerald-200"
                   }`}
                 >
-                  <span className="text-sm font-bold text-gray-900 block font-serif">{t.table}</span>
-                  <span className="text-[10px] text-gray-500 block">{t.location} • {t.pax}</span>
+                  <span className="text-sm font-bold text-brand-dark block font-serif">{t.table}</span>
+                  <span className="text-[10px] text-brand-dark/60 block font-sans">{t.location} • {t.pax}</span>
                   <span
-                    className={`inline-block px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase ${
+                    className={`inline-block px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${
                       t.status === "OCCUPIED"
-                        ? "bg-amber-100 text-amber-800"
+                        ? "bg-brand-maroon/10 text-brand-maroon border border-brand-maroon/20"
                         : t.status === "BILL_REQUESTED"
-                        ? "bg-blue-100 text-blue-800 animate-pulse"
-                        : "bg-emerald-100 text-emerald-800"
+                        ? "bg-brand-amber/20 text-brand-amber-dark border border-brand-amber/30 animate-pulse"
+                        : "bg-emerald-50 text-emerald-800 border border-emerald-200"
                     }`}
                   >
                     {t.status.replace("_", " ")}
                   </span>
-                  <p className="text-[11px] font-mono font-bold text-gray-700">{t.bill}</p>
+                  <p className="text-[11px] font-mono font-bold text-brand-dark">{t.bill}</p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Active Dining & Kitchen Orders Feed */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+          <div className="bg-white rounded-3xl p-6 border border-brand-maroon/10 shadow-xs space-y-4">
             <h2 className="font-serif text-lg font-bold text-brand-maroon">
               Active Dining &amp; Room Service Orders
             </h2>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-[#FAF9F5] border-b border-gray-200 text-gray-400 font-bold uppercase text-[10px]">
+              <table className="w-full text-left text-xs font-sans">
+                <thead className="bg-brand-cream border-b border-brand-maroon/10 text-brand-maroon/70 font-serif font-bold uppercase text-[10px]">
                   <tr>
                     <th className="py-3 px-4">Order ID</th>
                     <th className="py-3 px-4">Table / Room</th>
@@ -638,7 +638,7 @@ export default function StaffDashboardPage() {
                     <th className="py-3 px-4 text-right">Waitstaff Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-brand-maroon/5">
                   {orders.map((o) => (
                     <tr key={o.id} className="hover:bg-brand-cream/30">
                       <td className="py-3 px-4 font-mono font-bold text-brand-maroon">{o.id}</td>
@@ -697,20 +697,20 @@ export default function StaffDashboardPage() {
       {effectiveRole === "CHEF" && (
         <div className="space-y-6">
           {/* Active Cooking Tickets */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+          <div className="bg-white rounded-3xl p-6 border border-brand-maroon/10 shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="font-serif text-lg font-bold text-brand-maroon flex items-center gap-2">
-                  <ChefHat className="w-5 h-5 text-brand-amber" />
+                  <ChefHat className="w-5 h-5 text-brand-amber-dark" />
                   <span>Kitchen Display System (KDS) Live Tickets</span>
                 </h2>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-brand-dark/60 font-sans">
                   Real-time cooking line progression and prep queue
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <span className="px-2.5 py-1 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-1.5">
-                  <Flame className="w-3.5 h-3.5 text-amber-600" />
+                <span className="px-2.5 py-1 rounded-xl bg-brand-cream border border-brand-maroon/15 text-brand-maroon text-xs font-bold flex items-center gap-1.5 font-sans">
+                  <Flame className="w-3.5 h-3.5 text-brand-amber-dark" />
                   <span>Kitchen Line 1 &amp; 2 Active</span>
                 </span>
               </div>
@@ -722,20 +722,20 @@ export default function StaffDashboardPage() {
                 .map((o) => (
                   <div
                     key={o.id}
-                    className="p-5 rounded-3xl border-2 border-brand-maroon/20 bg-brand-cream/30 space-y-3 relative shadow-sm"
+                    className="p-5 rounded-3xl border border-brand-maroon/15 bg-brand-cream/50 space-y-3 relative shadow-xs"
                   >
                     <div className="flex items-center justify-between border-b border-brand-maroon/10 pb-2">
                       <div>
                         <span className="font-mono text-xs font-bold text-brand-maroon block">{o.id}</span>
-                        <span className="text-xs font-bold text-gray-800 font-serif">
+                        <span className="text-xs font-bold text-brand-dark font-serif">
                           {o.roomOrTableNumber} ({o.orderType.replace("_", " ")})
                         </span>
                       </div>
                       <span
-                        className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase ${
+                        className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
                           o.status === "preparing"
-                            ? "bg-amber-100 text-amber-800 animate-pulse"
-                            : "bg-blue-100 text-blue-800"
+                            ? "bg-brand-amber/20 text-brand-amber-dark border border-brand-amber/30 animate-pulse"
+                            : "bg-brand-maroon/10 text-brand-maroon border border-brand-maroon/20"
                         }`}
                       >
                         {o.status}
@@ -743,16 +743,16 @@ export default function StaffDashboardPage() {
                     </div>
 
                     <div className="space-y-1.5">
-                      <span className="text-[10px] font-bold uppercase text-gray-400">Order Items:</span>
-                      <ul className="text-xs space-y-1">
+                      <span className="text-[10px] font-bold uppercase text-brand-maroon/60 font-sans">Order Items:</span>
+                      <ul className="text-xs space-y-1 font-sans">
                         {o.items.map((i, idx) => (
-                          <li key={idx} className="flex items-start justify-between font-bold text-gray-900">
+                          <li key={idx} className="flex items-start justify-between font-bold text-brand-dark">
                             <span>{i.quantity}x {i.menuItem.name}</span>
                           </li>
                         ))}
                       </ul>
                       {o.specialNotes && (
-                        <p className="text-[11px] text-amber-900 bg-amber-50 p-2 rounded-xl border border-amber-200/80 font-medium">
+                        <p className="text-[11px] text-brand-maroon bg-brand-amber/15 p-2 rounded-xl border border-brand-amber/30 font-medium">
                           Note: {o.specialNotes}
                         </p>
                       )}
@@ -763,7 +763,7 @@ export default function StaffDashboardPage() {
                         <button
                           type="button"
                           onClick={() => handleUpdateOrderStatus(o.id, "preparing")}
-                          className="flex-1 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs shadow-sm transition-colors"
+                          className="flex-1 py-2 rounded-xl bg-brand-amber hover:bg-brand-amber-dark text-brand-maroon font-bold text-xs shadow-xs transition-colors"
                         >
                           Start Cooking
                         </button>
@@ -772,7 +772,7 @@ export default function StaffDashboardPage() {
                         <button
                           type="button"
                           onClick={() => handleUpdateOrderStatus(o.id, "ready")}
-                          className="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition-colors"
+                          className="flex-1 py-2 rounded-xl bg-brand-maroon hover:bg-brand-maroon-dark text-white font-bold text-xs shadow-xs transition-colors"
                         >
                           Mark Ready for Waitstaff
                         </button>
@@ -784,11 +784,11 @@ export default function StaffDashboardPage() {
           </div>
 
           {/* 86 Board / Ingredients Availability */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+          <div className="bg-white rounded-3xl p-6 border border-brand-maroon/10 shadow-xs space-y-4">
             <h2 className="font-serif text-lg font-bold text-brand-maroon">
               Kitchen 86 Board (Stock Toggles)
             </h2>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-brand-dark/60 font-sans">
               Toggle ingredients out-of-stock to alert dining waitstaff instantly
             </p>
 
@@ -823,20 +823,20 @@ export default function StaffDashboardPage() {
       {/* ========================================================================= */}
       {effectiveRole === "EVENT_COORDINATOR" && (
         <div className="space-y-6">
-          <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+          <div className="bg-white rounded-3xl p-6 border border-brand-maroon/10 shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="font-serif text-lg font-bold text-brand-maroon flex items-center gap-2">
-                  <Presentation className="w-5 h-5 text-brand-amber" />
+                  <Presentation className="w-5 h-5 text-brand-amber-dark" />
                   <span>Conference Halls &amp; Event Spaces Schedule</span>
                 </h2>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-brand-dark/60 font-sans">
                   Mount Elgon Hall, Cherang&apos;any Hall, Executive Boardroom, and Kalya Gardens
                 </p>
               </div>
               <Link
                 href="/staff/conference"
-                className="px-3.5 py-1.5 rounded-xl bg-brand-maroon text-white font-bold text-xs hover:bg-brand-maroon-dark transition-colors shadow-sm"
+                className="px-3.5 py-1.5 rounded-xl bg-brand-maroon text-white font-bold text-xs hover:bg-brand-maroon-dark transition-colors shadow-xs"
               >
                 Manage Bookings
               </Link>
@@ -872,24 +872,24 @@ export default function StaffDashboardPage() {
                   teaStatus: "Continuous Tea / Coffee",
                 },
               ].map((h) => (
-                <div key={h.hall} className="p-5 rounded-3xl border border-gray-200 bg-gray-50/50 space-y-3">
+                <div key={h.hall} className="p-5 rounded-3xl border border-brand-maroon/10 bg-white space-y-3 shadow-xs">
                   <div className="flex items-center justify-between">
                     <h3 className="font-serif font-bold text-sm text-brand-maroon">{h.hall}</h3>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-brand-amber/20 text-brand-maroon font-bold">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-brand-amber/15 text-brand-maroon font-bold border border-brand-amber/30">
                       {h.capacity}
                     </span>
                   </div>
-                  <div className="space-y-1 text-xs text-gray-700">
-                    <p className="font-bold text-gray-900">{h.event}</p>
-                    <p className="text-[11px] text-gray-500">⏰ {h.timing}</p>
-                    <p className="text-[11px] text-gray-500">📐 Setup: {h.setup}</p>
-                    <p className="text-[11px] text-gray-500">🎙️ AV: {h.av}</p>
-                    <p className="text-[11px] text-emerald-700 font-semibold">☕ Catering: {h.teaStatus}</p>
+                  <div className="space-y-1 text-xs text-brand-dark font-sans">
+                    <p className="font-bold text-brand-dark">{h.event}</p>
+                    <p className="text-[11px] text-brand-dark/60">⏰ {h.timing}</p>
+                    <p className="text-[11px] text-brand-dark/60">📐 Setup: {h.setup}</p>
+                    <p className="text-[11px] text-brand-dark/60">🎙️ AV: {h.av}</p>
+                    <p className="text-[11px] text-emerald-800 font-semibold">☕ Catering: {h.teaStatus}</p>
                   </div>
                   <button
                     type="button"
                     onClick={() => alert(`Checklist verified for ${h.hall}`)}
-                    className="w-full py-1.5 rounded-xl bg-white border border-gray-200 text-xs font-bold text-brand-maroon hover:bg-brand-cream transition-colors"
+                    className="w-full py-1.5 rounded-xl bg-brand-cream border border-brand-maroon/15 text-xs font-bold text-brand-maroon hover:bg-brand-amber/15 transition-colors"
                   >
                     Verify AV &amp; Setup Ready
                   </button>
@@ -905,20 +905,20 @@ export default function StaffDashboardPage() {
       {/* ========================================================================= */}
       {effectiveRole === "CATERING_STAFF" && (
         <div className="space-y-6">
-          <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+          <div className="bg-white rounded-3xl p-6 border border-brand-maroon/10 shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="font-serif text-lg font-bold text-brand-maroon flex items-center gap-2">
-                  <Truck className="w-5 h-5 text-brand-amber" />
+                  <Truck className="w-5 h-5 text-brand-amber-dark" />
                   <span>Outside Catering Banquets &amp; Transport Schedule</span>
                 </h2>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-brand-dark/60 font-sans">
                   Off-site county events, private banquets, and transport van dispatch
                 </p>
               </div>
               <Link
                 href="/staff/catering"
-                className="px-3.5 py-1.5 rounded-xl bg-brand-maroon text-white font-bold text-xs hover:bg-brand-maroon-dark transition-colors shadow-sm"
+                className="px-3.5 py-1.5 rounded-xl bg-brand-maroon text-white font-bold text-xs hover:bg-brand-maroon-dark transition-colors shadow-xs"
               >
                 Logistics Plan
               </Link>
@@ -945,23 +945,23 @@ export default function StaffDashboardPage() {
                   status: "CONFIRMED",
                 },
               ].map((c, i) => (
-                <div key={i} className="p-5 rounded-3xl border border-gray-200 bg-gray-50/50 space-y-3">
+                <div key={i} className="p-5 rounded-3xl border border-brand-maroon/10 bg-white space-y-3 shadow-xs">
                   <div className="flex items-center justify-between">
                     <h3 className="font-serif font-bold text-sm text-brand-maroon">{c.client}</h3>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
                       {c.status}
                     </span>
                   </div>
-                  <div className="space-y-1 text-xs text-gray-700">
-                    <p className="font-semibold text-gray-900">📍 Venue: {c.venue} ({c.guests})</p>
-                    <p className="text-[11px] text-gray-600">🚐 Transport: {c.van}</p>
-                    <p className="text-[11px] text-gray-600">🍽️ Menu: {c.menu}</p>
-                    <p className="text-[11px] text-gray-600">👥 Team: {c.staff}</p>
+                  <div className="space-y-1 text-xs text-brand-dark font-sans">
+                    <p className="font-semibold text-brand-dark">📍 Venue: {c.venue} ({c.guests})</p>
+                    <p className="text-[11px] text-brand-dark/70">🚐 Transport: {c.van}</p>
+                    <p className="text-[11px] text-brand-dark/70">🍽️ Menu: {c.menu}</p>
+                    <p className="text-[11px] text-brand-dark/70">👥 Team: {c.staff}</p>
                   </div>
                   <button
                     type="button"
                     onClick={() => alert(`Van packing verified for ${c.client}`)}
-                    className="w-full py-1.5 rounded-xl bg-brand-maroon text-white font-bold text-xs hover:bg-brand-maroon-dark transition-colors shadow-sm"
+                    className="w-full py-1.5 rounded-xl bg-brand-maroon text-white font-bold text-xs hover:bg-brand-maroon-dark transition-colors shadow-xs"
                   >
                     Confirm Van Departure Checklist
                   </button>
@@ -977,9 +977,9 @@ export default function StaffDashboardPage() {
       {/* ========================================================================= */}
       {effectiveRole === "MAINTENANCE" && (
         <div className="space-y-6">
-          <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+          <div className="bg-white rounded-3xl p-6 border border-brand-maroon/10 shadow-xs space-y-4">
             <h2 className="font-serif text-lg font-bold text-brand-maroon flex items-center gap-2">
-              <Wrench className="w-5 h-5 text-brand-amber" />
+              <Wrench className="w-5 h-5 text-brand-amber-dark" />
               <span>Room Maintenance &amp; Repair Work Orders</span>
             </h2>
 
@@ -989,19 +989,19 @@ export default function StaffDashboardPage() {
                 { room: "Cottage 4", issue: "Balcony door latch alignment", severity: "MEDIUM", assigned: "Eng. Samuel" },
                 { room: "Boardroom", issue: "HDMI wall jack signal flickering", severity: "LOW", assigned: "IT Kevin" },
               ].map((t) => (
-                <div key={t.room} className="p-4 rounded-2xl border border-gray-200 bg-gray-50/50 space-y-2">
+                <div key={t.room} className="p-4 rounded-2xl border border-brand-maroon/10 bg-white space-y-2 shadow-xs">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-sm text-brand-maroon">{t.room}</span>
-                    <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded bg-red-100 text-red-800">
+                    <span className="font-bold text-sm text-brand-maroon font-serif">{t.room}</span>
+                    <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full bg-brand-maroon/10 text-brand-maroon border border-brand-maroon/20">
                       {t.severity}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-700">{t.issue}</p>
-                  <p className="text-[10px] text-gray-400">Assigned: {t.assigned}</p>
+                  <p className="text-xs text-brand-dark font-sans">{t.issue}</p>
+                  <p className="text-[10px] text-brand-dark/50 font-sans">Assigned: {t.assigned}</p>
                   <button
                     type="button"
                     onClick={() => alert(`Marked ${t.room} repair as completed.`)}
-                    className="w-full py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm"
+                    className="w-full py-1.5 rounded-xl bg-brand-maroon hover:bg-brand-maroon-dark text-white font-bold text-xs shadow-xs transition-colors"
                   >
                     Mark Resolved
                   </button>
@@ -1039,42 +1039,42 @@ export default function StaffDashboardPage() {
             </div>
           )}
 
-          {/* Executive Overview KPI Cards */}
+          {/* Executive Overview KPI Cards — Hotel Kalya Palette */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            <div className="bg-white p-4 rounded-3xl border border-gray-200/80 shadow-sm space-y-1">
-              <span className="text-[10px] uppercase font-bold text-gray-400 block">Total Rooms</span>
-              <p className="text-2xl font-bold text-brand-maroon font-serif">{rooms.length || 41}</p>
-              <span className="text-[10px] text-gray-500">All Wings</span>
+            <div className="bg-white p-4 rounded-3xl border border-brand-maroon/10 shadow-xs space-y-1">
+              <span className="text-[10px] uppercase font-bold text-brand-maroon/70 block font-sans">Total Rooms</span>
+              <p className="text-2xl font-black text-brand-maroon font-serif">{rooms.length || 41}</p>
+              <span className="text-[10px] text-brand-dark/60 font-sans">All Wings</span>
             </div>
 
-            <div className="bg-emerald-50/60 p-4 rounded-3xl border border-emerald-200/80 shadow-sm space-y-1">
-              <span className="text-[10px] uppercase font-bold text-emerald-800 block">Available (Ready)</span>
-              <p className="text-2xl font-bold text-emerald-700 font-serif">{readyRooms.length}</p>
-              <span className="text-[10px] text-emerald-600 font-semibold">Ready to sell</span>
+            <div className="bg-white p-4 rounded-3xl border border-emerald-200 bg-gradient-to-br from-white to-emerald-50/40 shadow-xs space-y-1">
+              <span className="text-[10px] uppercase font-bold text-emerald-800 block font-sans">Available (Ready)</span>
+              <p className="text-2xl font-black text-emerald-800 font-serif">{readyRooms.length}</p>
+              <span className="text-[10px] text-emerald-700 font-semibold font-sans">Ready to sell</span>
             </div>
 
-            <div className="bg-blue-50/60 p-4 rounded-3xl border border-blue-200/80 shadow-sm space-y-1">
-              <span className="text-[10px] uppercase font-bold text-blue-800 block">Occupied</span>
-              <p className="text-2xl font-bold text-blue-700 font-serif">{inHouseGuests.length}</p>
-              <span className="text-[10px] text-blue-600 font-semibold">Active stays</span>
+            <div className="bg-white p-4 rounded-3xl border border-brand-amber/30 bg-gradient-to-br from-white to-brand-amber/10 shadow-xs space-y-1">
+              <span className="text-[10px] uppercase font-bold text-brand-amber-dark block font-sans">Occupied</span>
+              <p className="text-2xl font-black text-brand-amber-dark font-serif">{inHouseGuests.length}</p>
+              <span className="text-[10px] text-brand-amber-dark/80 font-semibold font-sans">Active stays</span>
             </div>
 
-            <div className="bg-red-50/60 p-4 rounded-3xl border border-red-200/80 shadow-sm space-y-1">
-              <span className="text-[10px] uppercase font-bold text-red-800 block">Dirty Rooms</span>
-              <p className="text-2xl font-bold text-red-700 font-serif">{dirtyRooms.length}</p>
-              <span className="text-[10px] text-red-600 font-semibold">Needs turnover</span>
+            <div className="bg-white p-4 rounded-3xl border border-brand-maroon/20 shadow-xs space-y-1">
+              <span className="text-[10px] uppercase font-bold text-brand-maroon block font-sans">Dirty Rooms</span>
+              <p className="text-2xl font-black text-brand-maroon font-serif">{dirtyRooms.length}</p>
+              <span className="text-[10px] text-brand-maroon/70 font-semibold font-sans">Needs turnover</span>
             </div>
 
-            <div className="bg-amber-50/60 p-4 rounded-3xl border border-amber-200/80 shadow-sm space-y-1">
-              <span className="text-[10px] uppercase font-bold text-amber-900 block">Cleaning in Progress</span>
-              <p className="text-2xl font-bold text-amber-700 font-serif">{cleaningRooms.length}</p>
-              <span className="text-[10px] text-amber-700 font-semibold">Housekeeping</span>
+            <div className="bg-white p-4 rounded-3xl border border-brand-amber/20 shadow-xs space-y-1">
+              <span className="text-[10px] uppercase font-bold text-brand-amber-dark block font-sans">Cleaning</span>
+              <p className="text-2xl font-black text-brand-amber-dark font-serif">{cleaningRooms.length}</p>
+              <span className="text-[10px] text-brand-amber-dark/70 font-semibold font-sans">Housekeeping</span>
             </div>
 
-            <div className="bg-gray-100 p-4 rounded-3xl border border-gray-200 shadow-sm space-y-1">
-              <span className="text-[10px] uppercase font-bold text-gray-500 block">Out of Order</span>
-              <p className="text-2xl font-bold text-gray-700 font-serif">{outOfOrderRooms.length}</p>
-              <span className="text-[10px] text-gray-500 font-semibold">Maintenance</span>
+            <div className="bg-brand-cream p-4 rounded-3xl border border-brand-maroon/10 shadow-xs space-y-1">
+              <span className="text-[10px] uppercase font-bold text-brand-dark/60 block font-sans">Out of Order</span>
+              <p className="text-2xl font-black text-brand-dark/70 font-serif">{outOfOrderRooms.length}</p>
+              <span className="text-[10px] text-brand-dark/50 font-sans">Maintenance</span>
             </div>
           </div>
 
@@ -1082,74 +1082,74 @@ export default function StaffDashboardPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <Link
               href="/admin/roles"
-              className="bg-white p-5 rounded-3xl border border-gray-200 hover:border-brand-maroon hover:shadow-md transition-all space-y-2 group"
+              className="bg-white p-5 rounded-3xl border border-brand-maroon/10 hover:border-brand-maroon/30 hover:shadow-md transition-all space-y-2 group shadow-xs"
             >
               <div className="w-10 h-10 rounded-2xl bg-brand-maroon text-white flex items-center justify-center font-bold">
                 <ShieldCheck className="w-5 h-5 text-brand-amber" />
               </div>
-              <h3 className="font-bold text-sm text-gray-900 group-hover:text-brand-maroon transition-colors">
+              <h3 className="font-bold text-sm text-brand-dark group-hover:text-brand-maroon transition-colors font-serif">
                 Role &amp; RBAC Management
               </h3>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-brand-dark/60 font-sans">
                 Create custom staff roles, configure granular permissions, and edit access.
               </p>
             </Link>
 
             <Link
               href="/admin/staff"
-              className="bg-white p-5 rounded-3xl border border-gray-200 hover:border-brand-amber hover:shadow-md transition-all space-y-2 group"
+              className="bg-white p-5 rounded-3xl border border-brand-maroon/10 hover:border-brand-amber/50 hover:shadow-md transition-all space-y-2 group shadow-xs"
             >
               <div className="w-10 h-10 rounded-2xl bg-brand-amber text-brand-maroon flex items-center justify-center font-bold">
-                <Calendar className="w-5 h-5" />
+                <Calendar className="w-5 h-5 text-brand-maroon" />
               </div>
-              <h3 className="font-bold text-sm text-gray-900 group-hover:text-brand-maroon transition-colors">
+              <h3 className="font-bold text-sm text-brand-dark group-hover:text-brand-maroon transition-colors font-serif">
                 Staff Roster &amp; Shifts
               </h3>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-brand-dark/60 font-sans">
                 Manage employees, assign roles, and maintain WhatsApp emergency numbers.
               </p>
             </Link>
 
             <Link
               href="/admin/reports"
-              className="bg-white p-5 rounded-3xl border border-gray-200 hover:border-brand-maroon hover:shadow-md transition-all space-y-2 group"
+              className="bg-white p-5 rounded-3xl border border-brand-maroon/10 hover:border-brand-maroon/30 hover:shadow-md transition-all space-y-2 group shadow-xs"
             >
-              <div className="w-10 h-10 rounded-2xl bg-emerald-700 text-white flex items-center justify-center font-bold">
+              <div className="w-10 h-10 rounded-2xl bg-emerald-800 text-white flex items-center justify-center font-bold">
                 <TrendingUp className="w-5 h-5 text-emerald-200" />
               </div>
-              <h3 className="font-bold text-sm text-gray-900 group-hover:text-brand-maroon transition-colors">
+              <h3 className="font-bold text-sm text-brand-dark group-hover:text-brand-maroon transition-colors font-serif">
                 Financial &amp; ADR Reports
               </h3>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-brand-dark/60 font-sans">
                 Live occupancy rate, RevPAR, dining revenue, and monthly trends.
               </p>
             </Link>
 
             <Link
               href="/admin/audit-log"
-              className="bg-white p-5 rounded-3xl border border-gray-200 hover:border-brand-maroon hover:shadow-md transition-all space-y-2 group"
+              className="bg-white p-5 rounded-3xl border border-brand-maroon/10 hover:border-brand-maroon/30 hover:shadow-md transition-all space-y-2 group shadow-xs"
             >
-              <div className="w-10 h-10 rounded-2xl bg-gray-800 text-white flex items-center justify-center font-bold">
-                <Clock className="w-5 h-5 text-gray-300" />
+              <div className="w-10 h-10 rounded-2xl bg-brand-maroon-dark text-white flex items-center justify-center font-bold">
+                <Clock className="w-5 h-5 text-brand-amber" />
               </div>
-              <h3 className="font-bold text-sm text-gray-900 group-hover:text-brand-maroon transition-colors">
+              <h3 className="font-bold text-sm text-brand-dark group-hover:text-brand-maroon transition-colors font-serif">
                 Operational Audit Trail
               </h3>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-brand-dark/60 font-sans">
                 Review room status transitions, check-in history, and staff action logs.
               </p>
             </Link>
           </div>
 
           {/* Master Recent Reservations Stream */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+          <div className="bg-white rounded-3xl p-6 border border-brand-maroon/10 shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="font-serif text-lg font-bold text-brand-maroon">
                 360° Real-Time Reservation Movements
               </h2>
               <Link
                 href="/staff/reservations"
-                className="text-xs font-bold text-brand-maroon hover:text-brand-amber-dark flex items-center gap-1"
+                className="text-xs font-bold text-brand-maroon hover:text-brand-amber-dark flex items-center gap-1 font-sans transition-colors"
               >
                 <span>Full Reservation Register</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -1157,9 +1157,9 @@ export default function StaffDashboardPage() {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead>
-                  <tr className="border-b border-gray-200 text-gray-400 font-bold uppercase text-[10px]">
+              <table className="w-full text-left text-xs font-sans">
+                <thead className="bg-brand-cream border-b border-brand-maroon/10 text-brand-maroon/70 font-serif font-bold uppercase text-[10px]">
+                  <tr>
                     <th className="py-3 px-4">Ref Number</th>
                     <th className="py-3 px-4">Guest</th>
                     <th className="py-3 px-4">Room</th>
@@ -1169,7 +1169,7 @@ export default function StaffDashboardPage() {
                     <th className="py-3 px-4 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-brand-maroon/5">
                   {bookings.slice(0, 6).map((b) => (
                     <tr key={b.id} className="hover:bg-brand-cream/30">
                       <td className="py-3 px-4 font-mono font-bold text-brand-maroon">{b.id}</td>

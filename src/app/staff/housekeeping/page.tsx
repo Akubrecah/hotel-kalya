@@ -111,23 +111,23 @@ export default function StaffHousekeepingPage() {
       {/* Title & Attendant Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-brand-maroon">
+          <h1 className="font-serif text-2xl sm:text-3xl font-black text-brand-maroon">
             Housekeeping Management Board
           </h1>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-brand-dark/60 font-sans">
             Real-time room sanitation cycle with staff attribution and audit trail
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-xl shadow-sm text-xs">
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-brand-cream border border-brand-maroon/20 rounded-xl shadow-sm text-xs">
             <User className="w-3.5 h-3.5 text-brand-amber-dark" />
             <input
               type="text"
               value={attendantName}
               onChange={(e) => setAttendantName(e.target.value)}
               placeholder="Staff Name"
-              className="bg-transparent font-bold text-gray-800 text-xs focus:outline-none w-48"
+              className="bg-transparent font-bold text-brand-dark text-xs focus:outline-none w-48"
             />
           </div>
 
@@ -135,7 +135,7 @@ export default function StaffHousekeepingPage() {
             type="button"
             onClick={loadData}
             disabled={loading}
-            className="p-2 rounded-xl bg-white border border-gray-200 text-brand-maroon hover:bg-gray-50 shadow-sm"
+            className="p-2 rounded-xl bg-brand-cream border border-brand-maroon/20 text-brand-maroon hover:bg-white transition-all shadow-sm"
             title="Refresh"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
@@ -150,15 +150,15 @@ export default function StaffHousekeepingPage() {
           onClick={() => setFilterState("DIRTY")}
           className={`p-4 rounded-3xl border text-left transition-all ${
             filterState === "DIRTY"
-              ? "bg-red-500 text-white border-red-600 shadow-md"
-              : "bg-red-50/70 border-red-200 text-red-800 hover:bg-red-100"
+              ? "bg-red-600 text-white border-red-700 shadow-md"
+              : "bg-white border-brand-maroon/10 text-brand-dark hover:border-red-300"
           }`}
         >
-          <span className="text-[10px] uppercase font-bold tracking-wider block opacity-80">
+          <span className="text-[10px] uppercase font-bold tracking-wider block text-brand-dark/50">
             Dirty Rooms
           </span>
-          <p className="text-2xl font-bold font-serif">{dirtyCount}</p>
-          <span className="text-[10px] font-semibold">Needs Cleaning</span>
+          <p className="text-2xl font-black font-serif text-red-600">{dirtyCount}</p>
+          <span className="text-[10px] font-semibold text-brand-dark/60">Needs Cleaning</span>
         </button>
 
         <button
@@ -166,15 +166,15 @@ export default function StaffHousekeepingPage() {
           onClick={() => setFilterState("CLEANING")}
           className={`p-4 rounded-3xl border text-left transition-all ${
             filterState === "CLEANING"
-              ? "bg-amber-500 text-white border-amber-600 shadow-md"
-              : "bg-amber-50/70 border-amber-200 text-amber-900 hover:bg-amber-100"
+              ? "bg-brand-amber-dark text-white border-brand-amber shadow-md"
+              : "bg-white border-brand-maroon/10 text-brand-dark hover:border-amber-300"
           }`}
         >
-          <span className="text-[10px] uppercase font-bold tracking-wider block opacity-80">
+          <span className="text-[10px] uppercase font-bold tracking-wider block text-brand-dark/50">
             In Progress
           </span>
-          <p className="text-2xl font-bold font-serif">{cleaningCount}</p>
-          <span className="text-[10px] font-semibold">Being Sanitized</span>
+          <p className="text-2xl font-black font-serif text-brand-amber-dark">{cleaningCount}</p>
+          <span className="text-[10px] font-semibold text-brand-dark/60">Being Sanitized</span>
         </button>
 
         <button
@@ -182,15 +182,15 @@ export default function StaffHousekeepingPage() {
           onClick={() => setFilterState("CLEAN")}
           className={`p-4 rounded-3xl border text-left transition-all ${
             filterState === "CLEAN"
-              ? "bg-blue-500 text-white border-blue-600 shadow-md"
-              : "bg-blue-50/70 border-blue-200 text-blue-800 hover:bg-blue-100"
+              ? "bg-blue-600 text-white border-blue-700 shadow-md"
+              : "bg-white border-brand-maroon/10 text-brand-dark hover:border-blue-300"
           }`}
         >
-          <span className="text-[10px] uppercase font-bold tracking-wider block opacity-80">
+          <span className="text-[10px] uppercase font-bold tracking-wider block text-brand-dark/50">
             Cleaned
           </span>
-          <p className="text-2xl font-bold font-serif">{cleanCount}</p>
-          <span className="text-[10px] font-semibold">Ready for Inspect</span>
+          <p className="text-2xl font-black font-serif text-blue-700">{cleanCount}</p>
+          <span className="text-[10px] font-semibold text-brand-dark/60">Ready for Inspect</span>
         </button>
 
         <button
@@ -199,14 +199,14 @@ export default function StaffHousekeepingPage() {
           className={`p-4 rounded-3xl border text-left transition-all ${
             filterState === "READY"
               ? "bg-emerald-600 text-white border-emerald-700 shadow-md"
-              : "bg-emerald-50/70 border-emerald-200 text-emerald-800 hover:bg-emerald-100"
+              : "bg-white border-brand-maroon/10 text-brand-dark hover:border-emerald-300"
           }`}
         >
-          <span className="text-[10px] uppercase font-bold tracking-wider block opacity-80">
+          <span className="text-[10px] uppercase font-bold tracking-wider block text-brand-dark/50">
             Ready for Guest
           </span>
-          <p className="text-2xl font-bold font-serif">{readyCount}</p>
-          <span className="text-[10px] font-semibold">Inspected &amp; Pristine</span>
+          <p className="text-2xl font-black font-serif text-emerald-700">{readyCount}</p>
+          <span className="text-[10px] font-semibold text-emerald-700 font-bold">Inspected &amp; Pristine</span>
         </button>
 
         <button
@@ -214,20 +214,20 @@ export default function StaffHousekeepingPage() {
           onClick={() => setFilterState("OUT_OF_ORDER")}
           className={`p-4 rounded-3xl border text-left transition-all ${
             filterState === "OUT_OF_ORDER"
-              ? "bg-gray-700 text-white border-gray-800 shadow-md"
-              : "bg-gray-100 border-gray-200 text-gray-700 hover:bg-gray-200"
+              ? "bg-brand-maroon text-white border-brand-maroon-dark shadow-md"
+              : "bg-white border-brand-maroon/10 text-brand-dark hover:border-brand-maroon/30"
           }`}
         >
-          <span className="text-[10px] uppercase font-bold tracking-wider block opacity-80">
+          <span className="text-[10px] uppercase font-bold tracking-wider block text-brand-dark/50">
             Out of Order
           </span>
-          <p className="text-2xl font-bold font-serif">{outOfOrderCount}</p>
-          <span className="text-[10px] font-semibold">Maintenance</span>
+          <p className="text-2xl font-black font-serif text-brand-maroon">{outOfOrderCount}</p>
+          <span className="text-[10px] font-semibold text-brand-dark/60">Maintenance</span>
         </button>
       </div>
 
       {filterState !== "ALL" && (
-        <div className="flex items-center justify-between bg-white p-3 rounded-2xl border border-gray-200 text-xs">
+        <div className="flex items-center justify-between bg-white p-3 rounded-2xl border border-brand-maroon/10 text-xs">
           <span>Filtering by: <strong className="uppercase font-bold text-brand-maroon">{filterState}</strong></span>
           <button
             type="button"
@@ -372,7 +372,7 @@ export default function StaffHousekeepingPage() {
       </div>
 
       {/* Housekeeping Real-Time Audit Log */}
-      <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+      <div className="bg-white rounded-3xl p-6 border border-brand-maroon/10 shadow-sm space-y-4">
         <div className="flex items-center gap-2">
           <History className="w-4 h-4 text-brand-maroon" />
           <h2 className="font-serif text-base font-bold text-brand-maroon">
@@ -382,7 +382,7 @@ export default function StaffHousekeepingPage() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-[#FAF9F5] border-b border-gray-200 text-gray-500 font-bold uppercase text-[10px] tracking-wider">
+            <thead className="bg-brand-cream border-b border-brand-maroon/10 text-brand-maroon font-serif font-bold uppercase text-[10px] tracking-wider">
               <tr>
                 <th className="py-3 px-4">Timestamp</th>
                 <th className="py-3 px-4">Room</th>
@@ -391,21 +391,21 @@ export default function StaffHousekeepingPage() {
                 <th className="py-3 px-4">Notes</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-brand-maroon/5">
               {tasks.slice(0, 10).map((t) => (
-                <tr key={t.id} className="hover:bg-brand-cream/30">
-                  <td className="py-3 px-4 text-gray-500 whitespace-nowrap">
+                <tr key={t.id} className="hover:bg-brand-cream/40 transition-colors">
+                  <td className="py-3 px-4 text-brand-dark/60 whitespace-nowrap">
                     {new Date(t.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} •{" "}
                     {new Date(t.timestamp).toLocaleDateString()}
                   </td>
-                  <td className="py-3 px-4 font-bold text-brand-maroon">Room {t.roomNumber}</td>
+                  <td className="py-3 px-4 font-serif font-bold text-brand-maroon">Room {t.roomNumber}</td>
                   <td className="py-3 px-4">
-                    <span className="font-mono text-gray-500">{t.previousStatus}</span>
+                    <span className="font-mono text-brand-dark/50">{t.previousStatus}</span>
                     <span className="mx-2 text-brand-amber font-bold">→</span>
                     <span className="font-mono font-bold text-emerald-700">{t.newStatus}</span>
                   </td>
-                  <td className="py-3 px-4 font-semibold text-gray-800">{t.staffName}</td>
-                  <td className="py-3 px-4 text-gray-500">{t.notes || "—"}</td>
+                  <td className="py-3 px-4 font-semibold text-brand-dark">{t.staffName}</td>
+                  <td className="py-3 px-4 text-brand-dark/60">{t.notes || "—"}</td>
                 </tr>
               ))}
             </tbody>
