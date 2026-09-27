@@ -220,18 +220,18 @@ export default function StaffDashboardPage() {
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
       {/* Top Banner: Luxury Executive Workstation Hero */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#2A0B13] via-[#43141F] to-[#1D060D] border border-amber-500/20 text-white p-6 sm:p-7 shadow-md">
-        {/* Subtle decorative glow */}
-        <div className="absolute -right-16 -top-16 w-56 h-56 rounded-full bg-brand-amber/10 blur-3xl pointer-events-none" />
-        <div className="absolute right-1/3 -bottom-16 w-48 h-48 rounded-full bg-brand-maroon-light/20 blur-2xl pointer-events-none" />
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-maroon-dark via-brand-maroon to-brand-maroon-dark border border-brand-amber/30 text-white p-6 sm:p-7 shadow-lg">
+        {/* Subtle decorative glow matching main website luxury feel */}
+        <div className="absolute -right-16 -top-16 w-56 h-56 rounded-full bg-brand-amber/15 blur-3xl pointer-events-none" />
+        <div className="absolute right-1/3 -bottom-16 w-48 h-48 rounded-full bg-brand-amber/10 blur-2xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
           <div className="space-y-1.5">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="px-3 py-1 rounded-full bg-amber-400/15 border border-amber-400/25 text-amber-200 font-mono text-[11px] font-bold tracking-wide uppercase">
+              <span className="px-3 py-1 rounded-full bg-brand-amber/20 border border-brand-amber/30 text-brand-amber-light font-mono text-[11px] font-bold tracking-wide uppercase">
                 {effectiveRole} STATION
               </span>
-              <span className="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-1.5">
+              <span className="px-3 py-1 rounded-full bg-white/10 border border-white/15 text-brand-amber-light text-xs font-semibold flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 Shift Active • {roleMeta.dept}
               </span>
@@ -239,7 +239,7 @@ export default function StaffDashboardPage() {
             <h1 className="font-serif text-2xl sm:text-3xl font-bold text-white tracking-tight">
               {roleMeta.label}
             </h1>
-            <p className="text-xs text-stone-300 max-w-2xl leading-relaxed">
+            <p className="text-xs text-brand-cream/80 max-w-2xl leading-relaxed font-sans">
               Welcome back, <strong className="text-white font-semibold">{user?.name || "Staff Member"}</strong>. Workstation connected to central hotel dispatch and operations.
             </p>
           </div>
@@ -249,10 +249,10 @@ export default function StaffDashboardPage() {
               type="button"
               onClick={loadData}
               disabled={loading}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-xs font-bold text-white border border-white/15 transition-all shadow-sm backdrop-blur-sm cursor-pointer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-amber hover:bg-brand-amber-dark active:scale-95 text-xs font-bold text-brand-maroon transition-all shadow-md cursor-pointer"
               title="Reload live workstation telemetry and folios"
             >
-              <RefreshCw className={`w-3.5 h-3.5 text-brand-amber ${loading ? "animate-spin" : ""}`} />
+              <RefreshCw className={`w-3.5 h-3.5 text-brand-maroon ${loading ? "animate-spin" : ""}`} />
               <span>{loading ? "Updating..." : "Refresh Data"}</span>
             </button>
           </div>
@@ -264,48 +264,48 @@ export default function StaffDashboardPage() {
       {/* ========================================================================= */}
       {effectiveRole === "RECEPTIONIST" && (
         <div className="space-y-6">
-          {/* Quick Metrics */}
+          {/* Quick Metrics — Hotel Kalya Brand Palette */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="bg-blue-50/70 p-4 rounded-3xl border border-blue-200/80 shadow-sm">
-              <span className="text-[10px] uppercase font-bold text-blue-800 block">Expected Arrivals Today</span>
-              <p className="text-3xl font-serif font-black text-blue-900 mt-1">{confirmedArrivals.length}</p>
-              <span className="text-[10px] text-blue-600 font-semibold">Ready for check-in</span>
+            <div className="bg-white p-5 rounded-3xl border border-brand-maroon/10 shadow-xs space-y-1">
+              <span className="text-[10px] uppercase font-bold text-brand-maroon/70 block tracking-wider font-sans">Expected Arrivals</span>
+              <p className="text-3xl font-serif font-black text-brand-maroon mt-1">{confirmedArrivals.length}</p>
+              <span className="text-[10px] text-brand-dark/60 font-semibold">Ready for check-in</span>
             </div>
 
-            <div className="bg-emerald-50/70 p-4 rounded-3xl border border-emerald-200/80 shadow-sm">
-              <span className="text-[10px] uppercase font-bold text-emerald-800 block">In-House Guests</span>
-              <p className="text-3xl font-serif font-black text-emerald-900 mt-1">{inHouseGuests.length}</p>
+            <div className="bg-white p-5 rounded-3xl border border-brand-maroon/10 shadow-xs space-y-1">
+              <span className="text-[10px] uppercase font-bold text-emerald-700 block tracking-wider font-sans">In-House Guests</span>
+              <p className="text-3xl font-serif font-black text-emerald-800 mt-1">{inHouseGuests.length}</p>
               <span className="text-[10px] text-emerald-600 font-semibold">Active stay folios</span>
             </div>
 
-            <div className="bg-amber-50/70 p-4 rounded-3xl border border-amber-200/80 shadow-sm">
-              <span className="text-[10px] uppercase font-bold text-amber-800 block">Rooms Ready to Sell</span>
-              <p className="text-3xl font-serif font-black text-amber-900 mt-1">{readyRooms.length}</p>
-              <span className="text-[10px] text-amber-600 font-semibold">Inspected &amp; Clean</span>
+            <div className="bg-white p-5 rounded-3xl border border-brand-amber/30 bg-gradient-to-br from-white to-brand-amber/5 shadow-xs space-y-1">
+              <span className="text-[10px] uppercase font-bold text-brand-amber-dark block tracking-wider font-sans">Rooms Ready to Sell</span>
+              <p className="text-3xl font-serif font-black text-brand-amber-dark mt-1">{readyRooms.length}</p>
+              <span className="text-[10px] text-brand-amber-dark/80 font-semibold">Inspected &amp; Clean</span>
             </div>
 
-            <div className="bg-red-50/70 p-4 rounded-3xl border border-red-200/80 shadow-sm">
-              <span className="text-[10px] uppercase font-bold text-red-800 block">Rooms Need Cleaning</span>
-              <p className="text-3xl font-serif font-black text-red-900 mt-1">{dirtyRooms.length + cleaningRooms.length}</p>
-              <span className="text-[10px] text-red-600 font-semibold">Dirty / Housekeeping</span>
+            <div className="bg-white p-5 rounded-3xl border border-brand-maroon/10 shadow-xs space-y-1">
+              <span className="text-[10px] uppercase font-bold text-brand-maroon-dark block tracking-wider font-sans">Rooms Need Cleaning</span>
+              <p className="text-3xl font-serif font-black text-brand-maroon-dark mt-1">{dirtyRooms.length + cleaningRooms.length}</p>
+              <span className="text-[10px] text-brand-maroon/70 font-semibold">Dirty / Housekeeping</span>
             </div>
           </div>
 
           {/* Today's Expected Arrivals */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+          <div className="bg-white rounded-3xl p-6 border border-brand-maroon/10 shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="font-serif text-lg font-bold text-brand-maroon flex items-center gap-2">
-                  <Calendar className="w-5 h-5 text-brand-amber" />
+                  <Calendar className="w-5 h-5 text-brand-amber-dark" />
                   <span>Front Desk — Today&apos;s Arrivals</span>
                 </h2>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-brand-dark/60 font-sans">
                   Verify guest identification, check room readiness, and issue key cards
                 </p>
               </div>
               <Link
                 href="/staff/reservations"
-                className="text-xs font-bold text-brand-maroon hover:text-brand-amber-dark flex items-center gap-1"
+                className="text-xs font-bold text-brand-maroon hover:text-brand-amber-dark flex items-center gap-1 font-sans transition-colors"
               >
                 <span>Full Reservation Desk</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -313,13 +313,13 @@ export default function StaffDashboardPage() {
             </div>
 
             {confirmedArrivals.length === 0 ? (
-              <div className="p-8 text-center bg-gray-50 rounded-2xl text-xs text-gray-500">
+              <div className="p-8 text-center bg-brand-cream rounded-2xl text-xs text-brand-dark/60 border border-brand-maroon/10 font-sans">
                 No pending arrivals awaiting check-in for today.
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
-                  <thead className="bg-[#FAF9F5] border-b border-gray-200 text-gray-400 font-bold uppercase text-[10px]">
+                <table className="w-full text-left text-xs font-sans">
+                  <thead className="bg-brand-cream border-b border-brand-maroon/10 text-brand-maroon/70 font-serif font-bold uppercase text-[10px]">
                     <tr>
                       <th className="py-3 px-4">Booking Ref</th>
                       <th className="py-3 px-4">Guest Name</th>
@@ -330,25 +330,27 @@ export default function StaffDashboardPage() {
                       <th className="py-3 px-4 text-right">Front Desk Action</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100">
+                  <tbody className="divide-y divide-brand-maroon/5">
                     {confirmedArrivals.map((b) => {
                       const roomObj = rooms.find((r) => r.roomNumber === b.roomNumber);
                       const isReady = roomObj?.housekeepingStatus === "READY";
                       return (
-                        <tr key={b.id} className="hover:bg-brand-cream/30">
+                        <tr key={b.id} className="hover:bg-brand-cream/60 transition-colors">
                           <td className="py-3 px-4 font-mono font-bold text-brand-maroon">{b.id}</td>
-                          <td className="py-3 px-4 font-bold text-gray-900">{b.guestName}</td>
-                          <td className="py-3 px-4 font-bold text-gray-800">Room {b.roomNumber}</td>
-                          <td className="py-3 px-4 text-gray-600">
+                          <td className="py-3 px-4 font-bold text-brand-dark">{b.guestName}</td>
+                          <td className="py-3 px-4 font-bold text-brand-maroon font-serif">Room {b.roomNumber}</td>
+                          <td className="py-3 px-4 text-brand-dark/70">
                             {b.checkInDate} ({b.nights} nights)
                           </td>
-                          <td className="py-3 px-4 font-mono font-bold text-gray-800">
+                          <td className="py-3 px-4 font-mono font-bold text-brand-dark">
                             KES {(b.totalAmount || b.totalPrice || 0).toLocaleString()}
                           </td>
                           <td className="py-3 px-4">
                             <span
-                              className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase ${
-                                isReady ? "bg-emerald-100 text-emerald-800" : "bg-red-100 text-red-800"
+                              className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${
+                                isReady
+                                  ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                                  : "bg-brand-maroon/10 text-brand-maroon border border-brand-maroon/20"
                               }`}
                             >
                               {roomObj?.housekeepingStatus || "READY"}
@@ -359,7 +361,7 @@ export default function StaffDashboardPage() {
                               type="button"
                               onClick={() => handleUpdateBookingStatus(b.id, "CHECKED_IN")}
                               disabled={updatingId === b.id}
-                              className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors shadow-sm disabled:opacity-50"
+                              className="px-3.5 py-1.5 rounded-xl bg-brand-maroon hover:bg-brand-maroon-dark text-white font-bold text-xs transition-colors shadow-xs disabled:opacity-50"
                             >
                               {updatingId === b.id ? "Processing..." : "Complete Check-In"}
                             </button>
@@ -374,27 +376,27 @@ export default function StaffDashboardPage() {
           </div>
 
           {/* In-House Guests Table */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+          <div className="bg-white rounded-3xl p-6 border border-brand-maroon/10 shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="font-serif text-lg font-bold text-brand-maroon flex items-center gap-2">
-                  <Bed className="w-5 h-5 text-emerald-600" />
+                  <Bed className="w-5 h-5 text-emerald-700" />
                   <span>In-House Guests Currently Staying</span>
                 </h2>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-brand-dark/60 font-sans">
                   Active room occupancy, folio reconciliation, and checkout departure processing
                 </p>
               </div>
             </div>
 
             {inHouseGuests.length === 0 ? (
-              <div className="p-8 text-center bg-gray-50 rounded-2xl text-xs text-gray-500">
+              <div className="p-8 text-center bg-brand-cream rounded-2xl text-xs text-brand-dark/60 border border-brand-maroon/10 font-sans">
                 No in-house guests currently registered.
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
-                  <thead className="bg-[#FAF9F5] border-b border-gray-200 text-gray-400 font-bold uppercase text-[10px]">
+                <table className="w-full text-left text-xs font-sans">
+                  <thead className="bg-brand-cream border-b border-brand-maroon/10 text-brand-maroon/70 font-serif font-bold uppercase text-[10px]">
                     <tr>
                       <th className="py-3 px-4">Room #</th>
                       <th className="py-3 px-4">Guest</th>
@@ -404,13 +406,13 @@ export default function StaffDashboardPage() {
                       <th className="py-3 px-4 text-right">Departure Processing</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100">
+                  <tbody className="divide-y divide-brand-maroon/5">
                     {inHouseGuests.map((b) => (
-                      <tr key={b.id} className="hover:bg-brand-cream/30">
-                        <td className="py-3 px-4 font-bold text-brand-maroon">Room {b.roomNumber}</td>
-                        <td className="py-3 px-4 font-bold text-gray-900">{b.guestName}</td>
-                        <td className="py-3 px-4 text-gray-600 font-mono">{b.guestPhone}</td>
-                        <td className="py-3 px-4 text-gray-600">{b.checkOutDate}</td>
+                      <tr key={b.id} className="hover:bg-brand-cream/60 transition-colors">
+                        <td className="py-3 px-4 font-bold text-brand-maroon font-serif">Room {b.roomNumber}</td>
+                        <td className="py-3 px-4 font-bold text-brand-dark">{b.guestName}</td>
+                        <td className="py-3 px-4 text-brand-dark/70 font-mono">{b.guestPhone}</td>
+                        <td className="py-3 px-4 text-brand-dark/70">{b.checkOutDate}</td>
                         <td className="py-3 px-4 font-mono font-bold text-emerald-700">
                           KES {(b.totalAmount || b.totalPrice || 0).toLocaleString()} (Paid)
                         </td>
@@ -419,7 +421,7 @@ export default function StaffDashboardPage() {
                             type="button"
                             onClick={() => handleUpdateBookingStatus(b.id, "CHECKED_OUT")}
                             disabled={updatingId === b.id}
-                            className="px-3.5 py-1.5 rounded-xl bg-brand-maroon hover:bg-brand-maroon-dark text-white font-bold text-xs transition-colors shadow-sm disabled:opacity-50"
+                            className="px-3.5 py-1.5 rounded-xl bg-brand-maroon hover:bg-brand-maroon-dark text-white font-bold text-xs transition-colors shadow-xs disabled:opacity-50"
                           >
                             {updatingId === b.id ? "Checking Out..." : "Process Check-Out"}
                           </button>
@@ -439,45 +441,45 @@ export default function StaffDashboardPage() {
       {/* ========================================================================= */}
       {effectiveRole === "HOUSEKEEPING" && (
         <div className="space-y-6">
-          {/* Cleanliness Summary Banner */}
+          {/* Cleanliness Summary Banner — Hotel Kalya Palette */}
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-            <div className="bg-red-50 p-4 rounded-2xl border border-red-200">
-              <span className="text-[10px] uppercase font-bold text-red-700 block">🔴 Dirty (Needs Cleaning)</span>
-              <p className="text-2xl font-bold text-red-800 font-serif mt-1">{dirtyRooms.length}</p>
+            <div className="bg-white p-4 rounded-2xl border border-brand-maroon/20 shadow-xs">
+              <span className="text-[10px] uppercase font-bold text-brand-maroon block font-sans">🔴 Dirty (Turnover)</span>
+              <p className="text-2xl font-black text-brand-maroon font-serif mt-1">{dirtyRooms.length}</p>
             </div>
-            <div className="bg-amber-50 p-4 rounded-2xl border border-amber-200">
-              <span className="text-[10px] uppercase font-bold text-amber-700 block">🟡 Cleaning In Progress</span>
-              <p className="text-2xl font-bold text-amber-800 font-serif mt-1">{cleaningRooms.length}</p>
+            <div className="bg-white p-4 rounded-2xl border border-brand-amber/30 shadow-xs">
+              <span className="text-[10px] uppercase font-bold text-brand-amber-dark block font-sans">🟡 In Progress</span>
+              <p className="text-2xl font-black text-brand-amber-dark font-serif mt-1">{cleaningRooms.length}</p>
             </div>
-            <div className="bg-blue-50 p-4 rounded-2xl border border-blue-200">
-              <span className="text-[10px] uppercase font-bold text-blue-700 block">🔵 Clean (Awaiting Inspection)</span>
-              <p className="text-2xl font-bold text-blue-800 font-serif mt-1">{cleanRooms.length}</p>
+            <div className="bg-white p-4 rounded-2xl border border-brand-maroon/10 shadow-xs">
+              <span className="text-[10px] uppercase font-bold text-brand-dark/70 block font-sans">🔵 Clean (Inspect)</span>
+              <p className="text-2xl font-black text-brand-dark font-serif mt-1">{cleanRooms.length}</p>
             </div>
-            <div className="bg-emerald-50 p-4 rounded-2xl border border-emerald-200">
-              <span className="text-[10px] uppercase font-bold text-emerald-700 block">🟢 Ready for Guests</span>
-              <p className="text-2xl font-bold text-emerald-800 font-serif mt-1">{readyRooms.length}</p>
+            <div className="bg-white p-4 rounded-2xl border border-emerald-200 shadow-xs">
+              <span className="text-[10px] uppercase font-bold text-emerald-700 block font-sans">🟢 Ready for Guests</span>
+              <p className="text-2xl font-black text-emerald-800 font-serif mt-1">{readyRooms.length}</p>
             </div>
-            <div className="bg-gray-100 p-4 rounded-2xl border border-gray-200">
-              <span className="text-[10px] uppercase font-bold text-gray-600 block">⚫ Out of Order</span>
-              <p className="text-2xl font-bold text-gray-800 font-serif mt-1">{outOfOrderRooms.length}</p>
+            <div className="bg-brand-cream p-4 rounded-2xl border border-brand-maroon/10 shadow-xs">
+              <span className="text-[10px] uppercase font-bold text-brand-dark/60 block font-sans">⚫ Out of Order</span>
+              <p className="text-2xl font-black text-brand-dark/70 font-serif mt-1">{outOfOrderRooms.length}</p>
             </div>
           </div>
 
           {/* Interactive Room Sanitation Board */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+          <div className="bg-white rounded-3xl p-6 border border-brand-maroon/10 shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="font-serif text-lg font-bold text-brand-maroon flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-brand-amber" />
+                  <Sparkles className="w-5 h-5 text-brand-amber-dark" />
                   <span>Interactive Room Sanitation Board (One-Tap Status)</span>
                 </h2>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-brand-dark/60 font-sans">
                   Tap any status pill to update the hotel inventory in real-time
                 </p>
               </div>
               <Link
                 href="/staff/housekeeping"
-                className="text-xs font-bold text-brand-maroon hover:text-brand-amber-dark flex items-center gap-1"
+                className="text-xs font-bold text-brand-maroon hover:text-brand-amber-dark flex items-center gap-1 font-sans transition-colors"
               >
                 <span>Full Board</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -488,24 +490,24 @@ export default function StaffDashboardPage() {
               {rooms.slice(0, 12).map((r) => (
                 <div
                   key={r.id}
-                  className="p-4 rounded-2xl border border-gray-200 bg-gray-50/50 hover:bg-white hover:shadow-sm transition-all space-y-3"
+                  className="p-4 rounded-2xl border border-brand-maroon/10 bg-white hover:border-brand-maroon/25 hover:shadow-xs transition-all space-y-3"
                 >
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="text-xs font-mono font-bold text-brand-maroon block">
                         Room {r.roomNumber}
                       </span>
-                      <span className="text-[10px] text-gray-500 font-semibold">{r.name}</span>
+                      <span className="text-[10px] text-brand-dark/60 font-semibold">{r.name}</span>
                     </div>
                     <span
-                      className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase ${
+                      className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${
                         r.housekeepingStatus === "READY"
-                          ? "bg-emerald-100 text-emerald-800"
+                          ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
                           : r.housekeepingStatus === "DIRTY"
-                          ? "bg-red-100 text-red-800"
+                          ? "bg-brand-maroon/10 text-brand-maroon border border-brand-maroon/20"
                           : r.housekeepingStatus === "CLEANING"
-                          ? "bg-amber-100 text-amber-800"
-                          : "bg-blue-100 text-blue-800"
+                          ? "bg-brand-amber/15 text-brand-amber-dark border border-brand-amber/30"
+                          : "bg-brand-cream text-brand-dark border border-brand-maroon/10"
                       }`}
                     >
                       {r.housekeepingStatus}
@@ -518,7 +520,7 @@ export default function StaffDashboardPage() {
                       type="button"
                       onClick={() => handleUpdateHousekeeping(r.id, "DIRTY")}
                       disabled={updatingId === r.id || r.housekeepingStatus === "DIRTY"}
-                      className="py-1 px-1 rounded bg-red-100 hover:bg-red-200 text-red-800 disabled:opacity-30"
+                      className="py-1 px-1 rounded-lg bg-brand-maroon/10 hover:bg-brand-maroon/20 text-brand-maroon border border-brand-maroon/20 disabled:opacity-30 transition-colors"
                     >
                       Dirty
                     </button>
@@ -526,7 +528,7 @@ export default function StaffDashboardPage() {
                       type="button"
                       onClick={() => handleUpdateHousekeeping(r.id, "CLEANING")}
                       disabled={updatingId === r.id || r.housekeepingStatus === "CLEANING"}
-                      className="py-1 px-1 rounded bg-amber-100 hover:bg-amber-200 text-amber-800 disabled:opacity-30"
+                      className="py-1 px-1 rounded-lg bg-brand-amber/15 hover:bg-brand-amber/25 text-brand-amber-dark border border-brand-amber/30 disabled:opacity-30 transition-colors"
                     >
                       Cleaning
                     </button>
@@ -534,7 +536,7 @@ export default function StaffDashboardPage() {
                       type="button"
                       onClick={() => handleUpdateHousekeeping(r.id, "CLEAN")}
                       disabled={updatingId === r.id || r.housekeepingStatus === "CLEAN"}
-                      className="py-1 px-1 rounded bg-blue-100 hover:bg-blue-200 text-blue-800 disabled:opacity-30"
+                      className="py-1 px-1 rounded-lg bg-brand-cream hover:bg-brand-cream/80 text-brand-dark border border-brand-maroon/10 disabled:opacity-30 transition-colors"
                     >
                       Clean
                     </button>
@@ -542,7 +544,7 @@ export default function StaffDashboardPage() {
                       type="button"
                       onClick={() => handleUpdateHousekeeping(r.id, "READY")}
                       disabled={updatingId === r.id || r.housekeepingStatus === "READY"}
-                      className="py-1 px-1 rounded bg-emerald-100 hover:bg-emerald-200 text-emerald-800 disabled:opacity-30"
+                      className="py-1 px-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 disabled:opacity-30 transition-colors"
                     >
                       Ready
                     </button>
