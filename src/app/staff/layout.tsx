@@ -458,8 +458,8 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
   // Auth gate: If user is not authenticated or is a guest, prompt to sign in
   if (!user || user.role === "guest") {
     return (
-      <div className="min-h-screen bg-[#FAF9F5] flex flex-col justify-between font-sans">
-        <div className="p-4 sm:px-8 border-b border-gray-200 bg-white shadow-sm flex items-center justify-between">
+      <div className="min-h-screen bg-brand-cream flex flex-col justify-between font-sans">
+        <div className="p-4 sm:px-8 border-b border-brand-maroon/10 bg-white shadow-sm flex items-center justify-between">
           <BrandLogo size="sm" />
           <Link
             href="/"
@@ -599,9 +599,9 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
     };
 
   return (
-    <div className="h-screen h-[100dvh] max-h-screen max-h-[100dvh] w-full overflow-hidden bg-[#F8F9FA] text-[#1E0B0F] flex flex-col lg:flex-row print:h-auto print:max-h-none print:overflow-visible font-sans antialiased">
+    <div className="h-screen h-[100dvh] max-h-screen max-h-[100dvh] w-full overflow-hidden bg-brand-cream text-brand-dark flex flex-col lg:flex-row print:h-auto print:max-h-none print:overflow-visible font-sans antialiased">
       {/* Mobile Top Bar */}
-      <div className="lg:hidden bg-gradient-to-r from-[#1A070B] via-[#2A0B11] to-[#1A070B] text-white p-3 px-4 flex items-center justify-between shadow-lg flex-shrink-0 z-40 print:hidden border-b border-brand-maroon/40">
+      <div className="lg:hidden bg-gradient-to-r from-brand-maroon-dark via-brand-maroon to-brand-maroon-dark text-white p-3 px-4 flex items-center justify-between shadow-lg flex-shrink-0 z-40 print:hidden border-b border-brand-amber/20">
         <div className="flex items-center gap-2.5 min-w-0">
           <button
             type="button"
@@ -655,10 +655,10 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
         />
       )}
 
-      {/* Desktop / Mobile Sidebar Navigation — Matches Admin Luxury Design */}
+      {/* Desktop / Mobile Sidebar Navigation — Matches Main Website Royal Maroon Luxury Design */}
       <aside
         className={cn(
-          "bg-[#1A070B] text-white flex-shrink-0 flex flex-col h-full z-50 transition-all duration-300 ease-in-out border-r border-[#2C0D13] shadow-2xl print:hidden",
+          "bg-gradient-to-b from-brand-maroon-dark via-[#430912] to-brand-maroon-dark text-white flex-shrink-0 flex flex-col h-full z-50 transition-all duration-300 ease-in-out border-r border-brand-maroon/30 shadow-2xl print:hidden",
           isCollapsed ? "lg:w-20" : "lg:w-72",
           "fixed inset-y-0 left-0 w-80 max-w-[85vw] lg:static lg:h-full",
           mobileNavOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
@@ -1045,7 +1045,7 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
       {/* Main Content Workspace — Full height, independent scroll area */}
       <div className="flex-1 min-w-0 h-full flex flex-col overflow-hidden">
         {/* Dynamic Top Header Bar for Desktop — Fixed at top of workspace */}
-        <header className="hidden lg:flex items-center justify-between h-20 px-8 bg-white border-b border-gray-200/80 flex-shrink-0 shadow-2xs z-30 print:hidden">
+        <header className="hidden lg:flex items-center justify-between h-20 px-8 bg-white border-b border-brand-maroon/10 flex-shrink-0 shadow-xs z-30 print:hidden">
           <div className="flex items-center gap-3.5 min-w-0">
             {activeModule && (
               <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-maroon/10 to-brand-maroon/5 text-brand-maroon border border-brand-maroon/15 flex items-center justify-center shrink-0 shadow-2xs">
@@ -1057,8 +1057,8 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
                 <span className="text-[11px] font-bold uppercase tracking-wider text-brand-maroon/70">
                   {activeModule ? activeModule.group.sectionTitle : "Staff Operations"}
                 </span>
-                <span className="text-gray-300">•</span>
-                <span className="text-[11px] font-semibold text-gray-500">Hotel Kalya Operations</span>
+                <span className="text-brand-maroon/20">•</span>
+                <span className="text-[11px] font-semibold text-brand-dark/60">Hotel Kalya Operations</span>
               </div>
               <h1 className="text-xl font-extrabold text-brand-maroon truncate tracking-tight font-serif">
                 {activeModule ? activeModule.item.label : "Duty Dashboard"}
@@ -1068,9 +1068,10 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
 
           <div className="flex items-center gap-3">
             {/* Live East Africa Time Clock */}
-            <div className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-50/80 border border-gray-200/80 text-gray-700 text-xs font-mono font-medium shadow-2xs">
-              <Clock className="w-3.5 h-3.5 text-brand-maroon/70" />
-              <span suppressHydrationWarning>EAT: {timeStr || "12:00:00 PM"}</span>
+            <div className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-cream border border-brand-maroon/15 text-brand-maroon text-xs font-mono font-medium shadow-xs">
+              <Clock className="w-3.5 h-3.5 text-brand-amber-dark" />
+              <span suppressHydrationWarning className="font-semibold text-brand-dark">{timeStr || "12:00:00 PM"}</span>
+              <span className="text-[10px] uppercase font-sans font-bold text-brand-maroon/60">EAT</span>
             </div>
 
             {/* Shift Status Pill */}
@@ -1101,7 +1102,7 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
         </header>
 
         {/* Nested Page Body — Independently scrollable viewport with overscroll containment */}
-        <main className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-6 lg:p-8 print:p-0 print:overflow-visible">
+        <main className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-6 lg:p-8 print:p-0 print:overflow-visible bg-brand-cream text-brand-dark">
           <DepartmentAccessGuard>
             {children}
           </DepartmentAccessGuard>
