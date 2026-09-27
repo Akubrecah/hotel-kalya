@@ -219,36 +219,41 @@ export default function StaffDashboardPage() {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
-      {/* Top Banner: Authenticated Workstation Header (Role Switching Removed) */}
-      <div className="bg-white rounded-3xl p-5 sm:p-6 border border-gray-200/80 shadow-sm space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-brand-maroon text-white font-mono text-[10px] font-extrabold uppercase tracking-wider">
-                Assigned Terminal: {effectiveRole}
+      {/* Top Banner: Luxury Executive Workstation Hero */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#2A0B13] via-[#43141F] to-[#1D060D] border border-amber-500/20 text-white p-6 sm:p-7 shadow-md">
+        {/* Subtle decorative glow */}
+        <div className="absolute -right-16 -top-16 w-56 h-56 rounded-full bg-brand-amber/10 blur-3xl pointer-events-none" />
+        <div className="absolute right-1/3 -bottom-16 w-48 h-48 rounded-full bg-brand-maroon-light/20 blur-2xl pointer-events-none" />
+
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+          <div className="space-y-1.5">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="px-3 py-1 rounded-full bg-amber-400/15 border border-amber-400/25 text-amber-200 font-mono text-[11px] font-bold tracking-wide uppercase">
+                {effectiveRole} STATION
               </span>
-              <span className="text-xs text-emerald-600 font-bold flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 Shift Active • {roleMeta.dept}
               </span>
             </div>
-            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-brand-maroon mt-1">
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-white tracking-tight">
               {roleMeta.label}
             </h1>
-            <p className="text-xs text-gray-500">
-              Logged in as <strong className="text-gray-800">{user?.name || "Staff Member"}</strong> ({user?.email}). Terminal locked to your assigned operational duties.
+            <p className="text-xs text-stone-300 max-w-2xl leading-relaxed">
+              Welcome back, <strong className="text-white font-semibold">{user?.name || "Staff Member"}</strong>. Workstation connected to central hotel dispatch and operations.
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
             <button
               type="button"
               onClick={loadData}
               disabled={loading}
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gray-50 border border-gray-200 text-xs font-bold text-gray-700 hover:bg-gray-100 transition-colors shadow-sm"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-xs font-bold text-white border border-white/15 transition-all shadow-sm backdrop-blur-sm cursor-pointer"
+              title="Reload live workstation telemetry and folios"
             >
-              <RefreshCw className={`w-3.5 h-3.5 text-brand-maroon ${loading ? "animate-spin" : ""}`} />
-              <span>Refresh Operations</span>
+              <RefreshCw className={`w-3.5 h-3.5 text-brand-amber ${loading ? "animate-spin" : ""}`} />
+              <span>{loading ? "Updating..." : "Refresh Data"}</span>
             </button>
           </div>
         </div>

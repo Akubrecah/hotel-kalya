@@ -22,13 +22,14 @@ const PERMISSION_GROUPS: {
   permissions: { key: PermissionKey; label: string; desc: string }[];
 }[] = [
   {
-    category: "Front Desk & Room Inventory",
-    description: "Access to guest reservations, room folios, and inventory statuses",
+    category: "Front Desk & Guest Operations",
+    description: "Access to guest reservations, room folios, and guest inquiries",
     permissions: [
       { key: "reservations:read", label: "View Reservations", desc: "Read guest bookings & folios" },
       { key: "reservations:write", label: "Manage Reservations", desc: "Create, check-in, check-out & cancel bookings" },
       { key: "rooms:read", label: "View Rooms", desc: "Inspect room inventory and calendar" },
       { key: "rooms:write", label: "Manage Rooms", desc: "Edit room rates, descriptions, and availability" },
+      { key: "inquiries:manage", label: "Manage Guest Inquiries", desc: "Reply to customer quote requests and inquiries" },
     ],
   },
   {
@@ -41,10 +42,11 @@ const PERMISSION_GROUPS: {
   },
   {
     category: "Food, Beverage & Dining",
-    description: "Restaurant tables, guest orders, and kitchen display (KDS)",
+    description: "Restaurant tables, guest orders, menu catalogs, and kitchen display (KDS)",
     permissions: [
       { key: "restaurant:orders", label: "Waitstaff Ordering", desc: "Manage dining tables and order creation" },
       { key: "kitchen:kds", label: "Kitchen Display (KDS)", desc: "Cook progression, ticket status, and 86 items" },
+      { key: "menu:manage", label: "Manage Menu Catalog", desc: "Add, edit dishes, prices, and food categories" },
     ],
   },
   {
@@ -54,6 +56,18 @@ const PERMISSION_GROUPS: {
       { key: "conference:manage", label: "Manage Conferences", desc: "Hall bookings and delegate seating setups" },
       { key: "catering:manage", label: "Manage Outside Catering", desc: "Banquet orders and transport checklists" },
       { key: "events:manage", label: "Manage Garden Events", desc: "Kalya Gardens weddings and sundowners" },
+    ],
+  },
+  {
+    category: "Hospitality CMS & Marketing",
+    description: "Serviced apartments, promotional campaigns, media assets, and verified reviews",
+    permissions: [
+      { key: "airbnb:manage", label: "Manage Airbnb Apartments", desc: "Cottages, long-stay bookings & rates" },
+      { key: "offers:manage", label: "Manage Special Offers", desc: "Promotional packages and seasonal discounts" },
+      { key: "gallery:manage", label: "Manage Media Library", desc: "Upload and organize hotel photographs" },
+      { key: "announcements:manage", label: "Manage Announcements", desc: "Website notice banners and alerts" },
+      { key: "reviews:manage", label: "Manage Guest Reviews", desc: "Moderate customer testimonials and feedback" },
+      { key: "documents:manage", label: "Project & PDF Slips", desc: "Manage project documentation and contracts" },
     ],
   },
   {
@@ -214,8 +228,9 @@ export default function AdminRolesPage() {
   };
 
   const handleDeleteRole = async (role: RoleDefinition) => {
-    if (role.isSystem) {
-      alert("System default roles cannot be deleted.");
+    const isSys = Boolean(role.isSystemRole || role.isSystem);
+    if (isSys) {
+      alert("System default roles are protected and cannot be deleted.");
       return;
     }
     if (!confirm(`Are you sure you want to delete the role '${role.title}'?`)) {
@@ -245,8 +260,9 @@ export default function AdminRolesPage() {
     );
   });
 
-  const systemRolesCount = roles.filter((r) => r.isSystem).length;
-  const customRolesCount = roles.filter((r) => !r.isSystem).length;
+  const systemRolesCount = roles.filter((r) => Boolean(r.isSystemRole || r.isSystem)).length;
+  const customRolesCount = roles.filter((r) => !Boolean(r.isSystemRole || r.isSystem)).length;
+  const totalSystemPermissions = PERMISSION_GROUPS.reduce((acc, g) => acc + g.permissions.length, 0);
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
@@ -306,8 +322,8 @@ export default function AdminRolesPage() {
 
         <div className="bg-blue-50/70 p-5 rounded-3xl border border-blue-200/80 shadow-sm space-y-1">
           <span className="text-[10px] uppercase font-bold text-blue-800 block">System Permissions</span>
-          <p className="text-3xl font-serif font-black text-blue-900">16</p>
-          <span className="text-[10px] text-blue-700 font-semibold">Granular flags</span>
+          <p className="text-3xl font-serif font-black text-blue-900">{totalSystemPermissions}</p>
+          <span className="text-[10px] text-blue-700 font-semibold">Granular flags across 6 areas</span>
         </div>
       </div>
 
@@ -330,92 +346,96 @@ export default function AdminRolesPage() {
 
       {/* Roles Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredRoles.map((role) => (
-          <div
-            key={role.id}
-            className="bg-white rounded-3xl p-5 border border-gray-200 shadow-sm hover:shadow-md transition-all space-y-4 flex flex-col justify-between"
-          >
-            <div className="space-y-3">
-              {/* Header */}
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <h3 className="font-serif font-bold text-base text-brand-maroon">
-                    {role.title}
-                  </h3>
-                  <div className="flex items-center gap-1.5 mt-0.5">
-                    <span className="font-mono text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
-                      {role.roleCode}
-                    </span>
-                    <span className="text-[10px] font-semibold text-brand-amber-dark">
-                      • {role.department}
-                    </span>
-                  </div>
-                </div>
+        {filteredRoles.map((role) => {
+          const isSys = Boolean(role.isSystemRole || role.isSystem);
 
-                {role.isSystem ? (
-                  <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-[9px] uppercase tracking-wider flex items-center gap-1">
-                    <Lock className="w-2.5 h-2.5" />
-                    System
-                  </span>
-                ) : (
-                  <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-extrabold text-[9px] uppercase tracking-wider flex items-center gap-1">
-                    <Sparkles className="w-2.5 h-2.5" />
-                    Custom
-                  </span>
-                )}
-              </div>
-
-              {/* Description */}
-              <p className="text-xs text-gray-600 line-clamp-2">
-                {role.description || "No description provided."}
-              </p>
-
-              {/* Permissions list */}
-              <div className="space-y-1.5 pt-1">
-                <span className="text-[10px] font-extrabold uppercase text-gray-400 block tracking-wider">
-                  Granted Privileges ({role.permissions?.length || 0}):
-                </span>
-                <div className="flex flex-wrap gap-1">
-                  {role.permissions && role.permissions.length > 0 ? (
-                    role.permissions.map((p) => (
-                      <span
-                        key={p}
-                        className="px-2 py-0.5 rounded-md bg-brand-cream border border-brand-maroon/15 text-brand-maroon font-mono text-[10px] font-semibold"
-                      >
-                        {p}
+          return (
+            <div
+              key={role.id}
+              className="bg-white rounded-3xl p-5 border border-gray-200 shadow-sm hover:shadow-md transition-all space-y-4 flex flex-col justify-between"
+            >
+              <div className="space-y-3">
+                {/* Header */}
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <h3 className="font-serif font-bold text-base text-brand-maroon">
+                      {role.title}
+                    </h3>
+                    <div className="flex items-center gap-1.5 mt-0.5">
+                      <span className="font-mono text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
+                        {role.roleCode}
                       </span>
-                    ))
+                      <span className="text-[10px] font-semibold text-brand-amber-dark">
+                        • {role.department}
+                      </span>
+                    </div>
+                  </div>
+
+                  {isSys ? (
+                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-[9px] uppercase tracking-wider flex items-center gap-1">
+                      <Lock className="w-2.5 h-2.5" />
+                      System
+                    </span>
                   ) : (
-                    <span className="text-[10px] text-gray-400 italic">No permissions assigned</span>
+                    <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-extrabold text-[9px] uppercase tracking-wider flex items-center gap-1">
+                      <Sparkles className="w-2.5 h-2.5" />
+                      Custom
+                    </span>
                   )}
                 </div>
+
+                {/* Description */}
+                <p className="text-xs text-gray-600 line-clamp-2">
+                  {role.description || "No description provided."}
+                </p>
+
+                {/* Permissions list */}
+                <div className="space-y-1.5 pt-1">
+                  <span className="text-[10px] font-extrabold uppercase text-gray-400 block tracking-wider">
+                    Granted Privileges ({role.permissions?.length || 0}):
+                  </span>
+                  <div className="flex flex-wrap gap-1">
+                    {role.permissions && role.permissions.length > 0 ? (
+                      role.permissions.map((p) => (
+                        <span
+                          key={p}
+                          className="px-2 py-0.5 rounded-md bg-brand-cream border border-brand-maroon/15 text-brand-maroon font-mono text-[10px] font-semibold"
+                        >
+                          {p}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="text-[10px] text-gray-400 italic">No permissions assigned</span>
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
 
-            {/* Actions */}
-            <div className="pt-3 border-t border-gray-100 flex items-center justify-end gap-2">
-              <button
-                type="button"
-                onClick={() => openEditModal(role)}
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-700 font-bold text-xs transition-colors"
-              >
-                <Edit className="w-3.5 h-3.5 text-brand-maroon" />
-                <span>Edit Permissions</span>
-              </button>
-
-              {!role.isSystem && (
+              {/* Actions */}
+              <div className="pt-3 border-t border-gray-100 flex items-center justify-end gap-2">
                 <button
                   type="button"
-                  onClick={() => handleDeleteRole(role)}
-                  className="p-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 transition-colors"
-                  title="Delete Custom Role"
+                  onClick={() => openEditModal(role)}
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-700 font-bold text-xs transition-colors"
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
+                  <Edit className="w-3.5 h-3.5 text-brand-maroon" />
+                  <span>Edit Permissions</span>
                 </button>
-              )}
+
+                {!isSys && (
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteRole(role)}
+                    className="p-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 transition-colors"
+                    title="Delete Custom Role"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Create / Edit Role Modal */}

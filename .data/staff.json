@@ -1,0 +1,102 @@
+[
+  {
+    "id": "stf-01",
+    "name": "Sarah Rotich",
+    "email": "admin@hotelkalya.com",
+    "phone": "+254 719 766649",
+    "department": "Front Office",
+    "role": "MANAGER",
+    "whatsapp": "254719766649",
+    "status": "ACTIVE",
+    "shift": "Morning (6AM - 2PM)",
+    "joinedDate": "2024-03-15"
+  },
+  {
+    "id": "stf-02",
+    "name": "Dennis Kiplagat",
+    "email": "dennis.reception@hotelkalya.com",
+    "phone": "+254 721 334455",
+    "department": "Front Office",
+    "role": "RECEPTIONIST",
+    "whatsapp": "254719766649",
+    "status": "ACTIVE",
+    "shift": "Morning (6AM - 2PM)",
+    "joinedDate": "2025-01-10"
+  },
+  {
+    "id": "stf-03",
+    "name": "Beatrice Chebet",
+    "email": "housekeeping@hotelkalya.com",
+    "phone": "+254 723 445566",
+    "department": "Housekeeping",
+    "role": "HOUSEKEEPING",
+    "whatsapp": "254719766649",
+    "status": "ACTIVE",
+    "shift": "Morning (6AM - 2PM)",
+    "assignedRooms": [
+      "101",
+      "102",
+      "103",
+      "104",
+      "105",
+      "201",
+      "202",
+      "203"
+    ],
+    "joinedDate": "2024-06-01"
+  },
+  {
+    "id": "stf-04",
+    "name": "Wilson Kibet",
+    "email": "chef@hotelkalya.com",
+    "phone": "+254 725 667788",
+    "department": "Kitchen & Dining",
+    "role": "CHEF",
+    "whatsapp": "254719766649",
+    "status": "ACTIVE",
+    "shift": "Morning (6AM - 2PM)",
+    "joinedDate": "2023-11-20"
+  },
+  {
+    "id": "stf-05",
+    "name": "Faith Jepchirchir",
+    "email": "restaurant@hotelkalya.com",
+    "phone": "+254 726 778899",
+    "department": "Restaurant & Bar",
+    "role": "WAITRESS",
+    "whatsapp": "254719766649",
+    "status": "ACTIVE",
+    "shift": "Evening (2PM - 10PM)",
+    "assignedTables": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "Garden 1"
+    ],
+    "joinedDate": "2025-02-01"
+  },
+  {
+    "id": "stf-06",
+    "name": "Kevin Lokor",
+    "email": "conferences@hotelkalya.com",
+    "phone": "+254 727 889900",
+    "department": "Events & Conferences",
+    "role": "EVENT_COORDINATOR",
+    "whatsapp": "254719766649",
+    "status": "ACTIVE",
+    "joinedDate": "2024-08-15"
+  },
+  {
+    "id": "stf-07",
+    "name": "Grace Chepkorir",
+    "email": "catering@hotelkalya.com",
+    "phone": "+254 728 990011",
+    "department": "Outside Catering",
+    "role": "CATERING_STAFF",
+    "whatsapp": "254719766649",
+    "status": "ACTIVE",
+    "joinedDate": "2024-09-01"
+  }
+]

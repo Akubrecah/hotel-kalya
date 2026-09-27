@@ -1,5 +1,6 @@
 import { UserProfile } from "@/types";
 import { StaffMember } from "@/types/hospitality";
+import { getSessionUser } from "@/lib/auth-session";
 
 export type DepartmentCode =
   | "KITCHEN"
@@ -123,6 +124,13 @@ export const PERMISSION_ALIASES: Record<string, string[]> = {
   manage_roles: ["manage_roles", "roles:manage"],
   manage_settings: ["manage_settings", "settings:manage"],
   view_audit_logs: ["view_audit_logs", "audit:view"],
+  manage_inquiries: ["manage_inquiries", "inquiries:manage"],
+  manage_reviews: ["manage_reviews", "reviews:manage"],
+  manage_offers: ["manage_offers", "offers:manage"],
+  manage_gallery: ["manage_gallery", "gallery:manage"],
+  manage_announcements: ["manage_announcements", "announcements:manage"],
+  manage_airbnb: ["manage_airbnb", "airbnb:manage"],
+  manage_documents: ["manage_documents", "documents:manage"],
 };
 
 export const ROLE_DEFAULT_PERMISSIONS: Record<string, string[]> = {
@@ -138,6 +146,8 @@ export const ROLE_DEFAULT_PERMISSIONS: Record<string, string[]> = {
     "view_events", "manage_events",
     "view_maintenance", "manage_maintenance",
     "view_reports", "manage_staff", "manage_roles", "manage_settings", "view_audit_logs",
+    "manage_inquiries", "manage_reviews", "manage_offers", "manage_gallery",
+    "manage_announcements", "manage_airbnb", "manage_documents",
   ],
   MANAGER: [
     "view_orders", "update_order",
@@ -150,6 +160,8 @@ export const ROLE_DEFAULT_PERMISSIONS: Record<string, string[]> = {
     "view_events", "manage_events",
     "view_maintenance", "manage_maintenance",
     "view_reports", "view_audit_logs",
+    "manage_inquiries", "manage_reviews", "manage_offers", "manage_gallery",
+    "manage_announcements", "manage_airbnb", "manage_documents",
   ],
   CHEF: [
     "view_orders", "update_order", "view_menu", "manage_menu", "view_inventory",
@@ -165,6 +177,7 @@ export const ROLE_DEFAULT_PERMISSIONS: Record<string, string[]> = {
   ],
   RECEPTIONIST: [
     "view_reservations", "create_reservation", "update_reservation", "view_rooms", "update_room_status",
+    "manage_inquiries",
   ],
   EVENT_COORDINATOR: [
     "view_conference", "manage_conference", "view_events", "manage_events", "view_rooms",
@@ -174,6 +187,9 @@ export const ROLE_DEFAULT_PERMISSIONS: Record<string, string[]> = {
   ],
   MAINTENANCE: [
     "view_rooms", "view_maintenance", "manage_maintenance",
+  ],
+  ACCOUNTANT: [
+    "view_reports", "reports:view", "view_reservations", "reservations:read", "view_audit_logs", "audit:view",
   ],
 };
 
@@ -383,81 +399,13 @@ export function authorizeApiRequest(
   error?: string;
   status: number;
 } {
-  const userId = request.headers.get("x-user-id");
-  const userRole = request.headers.get("x-user-role");
-  const staffRole = request.headers.get("x-user-staff-role");
-  const department = request.headers.get("x-user-department");
-  const rawPermissions = request.headers.get("x-user-permissions");
-  const authHeader = request.headers.get("authorization");
-
-  let user: UserProfile | null = null;
-
-  if (userId) {
-    let permissions: string[] = [];
-    if (rawPermissions) {
-      try {
-        permissions = JSON.parse(rawPermissions);
-      } catch {
-        permissions = rawPermissions.split(",").map((p) => p.trim());
-      }
-    }
-
-    user = {
-      id: userId,
-      name: request.headers.get("x-user-name") || "Staff Member",
-      email: request.headers.get("x-user-email") || "staff@hotelkalya.com",
-      role: (userRole as "guest" | "staff" | "admin") || "staff",
-      staffRole: staffRole || (userRole === "admin" ? "ADMIN" : undefined),
-      department: department || undefined,
-      permissions,
-      createdAt: new Date().toISOString(),
-    };
-  } else if (authHeader?.startsWith("Bearer ")) {
-    const token = authHeader.replace("Bearer ", "").trim();
-    try {
-      // Decode simulated bearer token payload or JSON
-      const decoded = JSON.parse(Buffer.from(token, "base64").toString("utf-8"));
-      user = decoded;
-    } catch {
-      // Plain text demo token or ID fallback
-      if (token === "admin" || token.includes("sarah")) {
-        user = {
-          id: "staff_sarah_01",
-          name: "Sarah Rotich",
-          email: "admin@hotelkalya.com",
-          role: "admin",
-          staffRole: "ADMIN",
-          department: "Executive Management",
-          createdAt: new Date().toISOString(),
-        };
-      } else if (token === "chef" || token.includes("patrick")) {
-        user = {
-          id: "staff_patrick_01",
-          name: "Chef Patrick Mwangi",
-          email: "kitchen@hotelkalya.com",
-          role: "staff",
-          staffRole: "CHEF",
-          department: "Kitchen Operations",
-          createdAt: new Date().toISOString(),
-        };
-      } else if (token === "housekeeping" || token.includes("limo")) {
-        user = {
-          id: "staff_limo_01",
-          name: "Denis Limo",
-          email: "housekeeping@hotelkalya.com",
-          role: "staff",
-          staffRole: "HOUSEKEEPING",
-          department: "Housekeeping",
-          createdAt: new Date().toISOString(),
-        };
-      }
-    }
-  }
+  // Extract and cryptographically verify session from cookie or signed Authorization header
+  const user = getSessionUser(request);
 
   if (!user) {
     return {
       authorized: false,
-      error: "Unauthorized: Missing authentication headers. Please log in.",
+      error: "Unauthorized: Invalid or missing cryptographic session token. Please log in.",
       status: 401,
     };
   }
