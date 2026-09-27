@@ -3,108 +3,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { UserProfile } from "@/types";
 
-export const DEMO_ACCOUNTS: Record<string, UserProfile> = {
-  admin: {
-    id: "staff_sarah_01",
-    name: "Sarah Rotich",
-    email: "admin@hotelkalya.com",
-    phone: "+254 719 766649",
-    role: "admin",
-    staffRole: "ADMIN",
-    department: "Executive Management",
-    createdAt: "2026-08-01T08:00:00Z",
-  },
-  receptionist: {
-    id: "staff_dennis_01",
-    name: "Dennis Kiplagat",
-    email: "reception@hotelkalya.com",
-    phone: "+254 712 998877",
-    role: "staff",
-    staffRole: "RECEPTIONIST",
-    department: "Front Office",
-    createdAt: "2026-08-15T08:00:00Z",
-  },
-  housekeeping: {
-    id: "staff_limo_01",
-    name: "Denis Limo",
-    email: "housekeeping@hotelkalya.com",
-    phone: "+254 723 445566",
-    role: "staff",
-    staffRole: "HOUSEKEEPING",
-    department: "Housekeeping",
-    additionalDepartments: ["Events & Conferences"],
-    createdAt: "2026-08-20T08:00:00Z",
-  },
-  waiter: {
-    id: "staff_faith_01",
-    name: "Faith Jepchirchir",
-    email: "waiter@hotelkalya.com",
-    phone: "+254 734 556677",
-    role: "staff",
-    staffRole: "WAITER",
-    department: "Food & Beverage",
-    createdAt: "2026-08-22T08:00:00Z",
-  },
-  chef: {
-    id: "staff_patrick_01",
-    name: "Chef Patrick Mwangi",
-    email: "kitchen@hotelkalya.com",
-    phone: "+254 745 667788",
-    role: "staff",
-    staffRole: "CHEF",
-    department: "Kitchen Operations",
-    createdAt: "2026-08-10T08:00:00Z",
-  },
-  event_coordinator: {
-    id: "staff_kevin_01",
-    name: "Kevin Lokor",
-    email: "events@hotelkalya.com",
-    phone: "+254 756 778899",
-    role: "staff",
-    staffRole: "EVENT_COORDINATOR",
-    department: "Events & Conferences",
-    createdAt: "2026-08-18T08:00:00Z",
-  },
-  catering: {
-    id: "staff_grace_01",
-    name: "Grace Chepkorir",
-    email: "catering@hotelkalya.com",
-    phone: "+254 767 889900",
-    role: "staff",
-    staffRole: "CATERING_STAFF",
-    department: "Outside Catering",
-    createdAt: "2026-08-25T08:00:00Z",
-  },
-  maintenance: {
-    id: "staff_kipchumba_01",
-    name: "John Kipchumba",
-    email: "maintenance@hotelkalya.com",
-    phone: "+254 778 112233",
-    role: "staff",
-    staffRole: "MAINTENANCE",
-    department: "Engineering & Maintenance",
-    createdAt: "2026-08-05T08:00:00Z",
-  },
-  manager: {
-    id: "staff_kimutai_01",
-    name: "James Kimutai",
-    email: "manager@hotelkalya.com",
-    phone: "+254 789 223344",
-    role: "staff",
-    staffRole: "MANAGER",
-    department: "Operations Management",
-    createdAt: "2026-08-01T08:00:00Z",
-  },
-  guest: {
-    id: "user_kalya_demo_01",
-    name: "James Chemosit",
-    email: "guest@hotelkalya.com",
-    phone: "+254 712 345678",
-    role: "guest",
-    dietaryPreferences: ["Halal", "Local Cuisine"],
-    createdAt: "2026-09-01T10:00:00Z",
-  },
-};
+import { DEMO_ACCOUNTS } from "@/lib/auth-accounts";
+export { DEMO_ACCOUNTS };
 
 export interface AuthContextType {
   user: UserProfile | null;
@@ -123,6 +23,7 @@ export interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AUTH_STORAGE_KEY = "hotel_kalya_auth_user";
+const AUTH_TOKEN_KEY = "hotel_kalya_auth_token";
 const ROLE_STORAGE_KEY = "hotel_kalya_active_staff_role";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -132,10 +33,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Helper to establish server session cookie and token
+  const establishServerSession = async (userProfile: UserProfile): Promise<string | null> => {
+    try {
+      const token = typeof window !== "undefined" ? localStorage.getItem(AUTH_TOKEN_KEY) : null;
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+      const res = await fetch("/api/auth/session", {
+        method: "POST",
+        headers,
+        credentials: "include",
+        body: JSON.stringify({ user: userProfile }),
+      });
+      const data = await res.json();
+      if (data.success && data.token) {
+        localStorage.setItem(AUTH_TOKEN_KEY, data.token);
+        return data.token;
+      }
+    } catch (e) {
+      console.error("Failed to establish server session:", e);
+    }
+    return null;
+  };
+
   // Hydrate session client-side after initial mount asynchronously
   useEffect(() => {
     let cancelled = false;
-    const timer = setTimeout(() => {
+    const timer = setTimeout(async () => {
       if (cancelled) return;
       try {
         const stored = localStorage.getItem(AUTH_STORAGE_KEY);
@@ -145,8 +71,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           const resolvedRole = parsed.staffRole || (parsed.role === "admin" ? "ADMIN" : "RECEPTIONIST");
           setActiveStaffRoleState(resolvedRole);
         }
+        // Verify with server session
+        const sRes = await fetch("/api/auth/session", { credentials: "include" });
+        if (sRes.ok) {
+          const sData = await sRes.json();
+          if (sData.success && sData.user) {
+            setUser(sData.user);
+            const resolvedRole = sData.user.staffRole || (sData.user.role === "admin" ? "ADMIN" : "RECEPTIONIST");
+            setActiveStaffRoleState(resolvedRole);
+            localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(sData.user));
+          }
+        }
       } catch (e) {
-        console.error("Failed to load auth user from localStorage", e);
+        console.error("Failed to load auth user", e);
       } finally {
         setIsLoaded(true);
       }
@@ -176,9 +113,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // ignore
     }
+    establishServerSession(updated).catch(() => {});
   };
 
-  const switchAccount = (accountKey: string) => {
+  const switchAccount = async (accountKey: string) => {
     const acc = DEMO_ACCOUNTS[accountKey];
     if (acc) {
       setUser(acc);
@@ -190,14 +128,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } catch {
         // ignore
       }
+      try {
+        const res = await fetch("/api/auth/session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ accountKey }),
+        });
+        const data = await res.json();
+        if (data.success && data.token) {
+          localStorage.setItem(AUTH_TOKEN_KEY, data.token);
+        }
+      } catch (e) {
+        console.error("Failed to switch account on server:", e);
+      }
     }
   };
 
   const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
       if (!email || !password) {
         return { success: false, error: "Please provide both email and password." };
       }
@@ -206,33 +156,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return { success: false, error: "Password must be at least 4 characters long." };
       }
 
-      const lowerEmail = email.toLowerCase().trim();
-      let matchedUser: UserProfile | null = null;
+      // Call server login endpoint to establish signed session cookie
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
 
-      for (const key of Object.keys(DEMO_ACCOUNTS)) {
-        if (DEMO_ACCOUNTS[key].email.toLowerCase() === lowerEmail) {
-          matchedUser = DEMO_ACCOUNTS[key];
-          break;
-        }
+      if (!data.success || !data.user) {
+        return { success: false, error: data.error || "Authentication failed." };
       }
 
-      if (!matchedUser) {
-        matchedUser = {
-          id: "usr_" + Math.random().toString(36).substring(2, 9),
-          name: email.split("@")[0].replace(/[._]/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()),
-          email: lowerEmail,
-          role: lowerEmail.includes("admin") ? "admin" : lowerEmail.includes("staff") ? "staff" : "guest",
-          staffRole: lowerEmail.includes("admin") ? "ADMIN" : undefined,
-          createdAt: new Date().toISOString(),
-        };
-      }
-
+      const matchedUser: UserProfile = data.user;
       setUser(matchedUser);
       if (matchedUser.staffRole) {
         setActiveStaffRole(matchedUser.staffRole);
       }
+
       try {
         localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(matchedUser));
+        if (data.token) {
+          localStorage.setItem(AUTH_TOKEN_KEY, data.token);
+        }
       } catch {
         // ignore
       }
@@ -254,8 +200,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   ): Promise<{ success: boolean; error?: string }> => {
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
       if (!name || !email || !password) {
         return { success: false, error: "All required fields must be filled." };
       }
@@ -276,6 +220,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // ignore
       }
 
+      try {
+        const res = await fetch("/api/auth/session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ isGuestRegistration: true, user: newUser }),
+        });
+        const data = await res.json();
+        if (data.success && data.token) {
+          localStorage.setItem(AUTH_TOKEN_KEY, data.token);
+        }
+      } catch (e) {
+        console.error("Failed to register session cookie:", e);
+      }
       return { success: true };
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Signup failed.";
@@ -290,7 +248,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setActiveStaffRoleState("RECEPTIONIST");
     try {
       localStorage.removeItem(AUTH_STORAGE_KEY);
+      localStorage.removeItem(AUTH_TOKEN_KEY);
       localStorage.removeItem(ROLE_STORAGE_KEY);
+      await fetch("/api/auth/logout", { method: "POST" });
     } catch {
       // ignore
     }
@@ -305,6 +265,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // ignore
     }
+    await establishServerSession(updated);
   };
 
   return (

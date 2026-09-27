@@ -216,7 +216,7 @@ export default function LoginPage() {
         {/* Header */}
         <div className="text-center space-y-2 max-w-xl mx-auto">
           <div className="flex justify-center mb-3">
-            <BrandLogo size="md" />
+            <BrandLogo size="md" iconOnly />
           </div>
           <h1 className="font-serif font-black text-2xl sm:text-3xl text-brand-maroon">
             Sign In to {BRAND.name}

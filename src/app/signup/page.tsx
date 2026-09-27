@@ -66,7 +66,7 @@ export default function SignupPage() {
         <div className="bg-white rounded-2xl shadow-xl border border-brand-maroon/10 p-7 sm:p-9 space-y-6">
           <div className="text-center space-y-2">
             <div className="flex justify-center mb-2">
-              <BrandLogo size="md" />
+              <BrandLogo size="md" iconOnly />
             </div>
             <h1 className="font-serif font-black text-2xl text-brand-maroon">
               Create Guest Account
