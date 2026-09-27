@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { BRAND } from "@/lib/constants";
 import { InquiryRecord } from "@/app/api/inquiries/route";
-import { Printer, CheckCircle2 } from "lucide-react";
+import { Printer, CheckCircle2, Download, RefreshCw, Check } from "lucide-react";
+import { exportElementToRealPdf } from "@/lib/pdf-generator";
 
 interface FormFillPrintSlipProps {
   inquiry: InquiryRecord;
@@ -12,11 +13,33 @@ interface FormFillPrintSlipProps {
 }
 
 export function FormFillPrintSlip({ inquiry, onPrint }: FormFillPrintSlipProps) {
+  const [generatingPdf, setGeneratingPdf] = useState(false);
+  const [downloadSuccess, setDownloadSuccess] = useState(false);
+
   const handlePrint = () => {
     if (onPrint) {
       onPrint();
     } else {
       window.print();
+    }
+  };
+
+  const handleDownloadRealPdf = async () => {
+    setGeneratingPdf(true);
+    setDownloadSuccess(false);
+
+    const safeTitle = (inquiry.type || "Document").toUpperCase();
+    const filename = `Folio-${inquiry.id}-${safeTitle}.pdf`;
+
+    const success = await exportElementToRealPdf("form-print-slip-container", {
+      filename,
+      footerText: `Hotel Kalya Kapenguria • Folio ${inquiry.id} • Official Record`,
+    });
+
+    setGeneratingPdf(false);
+    if (success) {
+      setDownloadSuccess(true);
+      setTimeout(() => setDownloadSuccess(false), 4000);
     }
   };
 
@@ -32,10 +55,10 @@ export function FormFillPrintSlip({ inquiry, onPrint }: FormFillPrintSlipProps) 
   return (
     <div className="bg-white text-gray-900 font-sans p-6 sm:p-8 rounded-2xl max-w-3xl mx-auto border border-gray-200 shadow-lg print:shadow-none print:border-none print:p-0">
       {/* Action Toolbar (hidden on print) */}
-      <div className="flex items-center justify-between pb-6 mb-6 border-b border-gray-200 no-print">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-6 border-b border-gray-200 no-print">
         <div>
           <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">
-            Print Preview &amp; PDF Export
+            Official Document &amp; PDF Export
           </span>
           <h2 className="text-base font-bold text-brand-maroon">
             {inquiry.type === "reservation"
@@ -48,31 +71,61 @@ export function FormFillPrintSlip({ inquiry, onPrint }: FormFillPrintSlipProps) 
           </h2>
         </div>
 
-        <button
-          type="button"
-          onClick={handlePrint}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-maroon text-white font-bold text-xs hover:bg-brand-maroon-dark transition-colors shadow-md"
-        >
-          <Printer className="w-4 h-4 text-brand-amber" />
-          <span>Print / Save as PDF</span>
-        </button>
+        <div className="flex items-center gap-2">
+          {/* REAL PDF DOWNLOAD BUTTON */}
+          <button
+            type="button"
+            disabled={generatingPdf}
+            onClick={handleDownloadRealPdf}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-maroon text-white font-bold text-xs hover:bg-brand-maroon-dark transition-all shadow-md active:scale-95 disabled:opacity-50"
+            title="Download actual .pdf binary file"
+          >
+            {generatingPdf ? (
+              <>
+                <RefreshCw className="w-4 h-4 text-brand-amber animate-spin" />
+                <span>Generating PDF...</span>
+              </>
+            ) : downloadSuccess ? (
+              <>
+                <Check className="w-4 h-4 text-emerald-400" />
+                <span>PDF Downloaded!</span>
+              </>
+            ) : (
+              <>
+                <Download className="w-4 h-4 text-brand-amber" />
+                <span>Download Real PDF (.pdf)</span>
+              </>
+            )}
+          </button>
+
+          {/* Browser Print / Receipt */}
+          <button
+            type="button"
+            onClick={handlePrint}
+            className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-gray-300 text-gray-700 text-xs font-bold hover:bg-gray-100 transition-colors"
+            title="Browser printer dialog"
+          >
+            <Printer className="w-4 h-4 text-gray-500" />
+            <span>Print Slip</span>
+          </button>
+        </div>
       </div>
 
       {/* Printable Body */}
-      <div className="space-y-6">
-        {/* Header with Monogram */}
+      <div id="form-print-slip-container" className="space-y-6 bg-white p-2">
+        {/* Header with Monogram — No repeated logo and name */}
         <div className="flex items-start justify-between border-b-2 border-brand-maroon pb-4">
           <div className="flex items-center gap-3">
-            <BrandLogo size="md" />
-            <div>
-              <h1 className="font-serif text-xl font-black text-brand-maroon tracking-wider">
-                HOTEL KALYA
-              </h1>
-              <p className="text-[10px] uppercase font-bold tracking-widest text-brand-amber-dark">
-                Hospitality Redefined • Kapenguria, West Pokot County
+            <BrandLogo size="md" hideTagline />
+            <div className="border-l-2 border-brand-amber/50 pl-3 py-0.5 text-xs text-gray-600 space-y-0.5">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-brand-maroon block">
+                Official Operations Folio
+              </span>
+              <p className="text-[11px] text-gray-700">
+                P.O. Box Kapenguria, Kenya • Tel: {BRAND.phone}
               </p>
               <p className="text-[10px] text-gray-500">
-                P.O. Box Kapenguria, Kenya • Tel: {BRAND.phone} • Email: {BRAND.email}
+                Email: {BRAND.email} • Web: www.hotelkalya.com
               </p>
             </div>
           </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
+import Link from "next/link";
 import {
   FileText,
   Search,
@@ -13,10 +14,12 @@ import {
   Layers,
   Building,
   RefreshCw,
+  ExternalLink,
 } from "lucide-react";
 import { PROJECT_DOCUMENTS, ProjectDocMetadata } from "@/lib/docs-manifest";
 import { MarkdownViewer } from "@/components/admin/MarkdownViewer";
 import { DocumentPrintHeader } from "@/components/admin/DocumentPrintHeader";
+import { exportElementToRealPdf } from "@/lib/pdf-generator";
 
 export default function AdminDocumentsPage() {
   const [selectedPack, setSelectedPack] = useState<"hotel-kalya" | "template">("hotel-kalya");
@@ -28,6 +31,7 @@ export default function AdminDocumentsPage() {
   const [activeDoc, setActiveDoc] = useState<ProjectDocMetadata | null>(null);
   const [docContent, setDocContent] = useState<string>("");
   const [loadingDoc, setLoadingDoc] = useState(false);
+  const [generatingModalPdf, setGeneratingModalPdf] = useState(false);
 
   // Filtered documents list
   const filteredDocs = useMemo(() => {
@@ -85,6 +89,18 @@ export default function AdminDocumentsPage() {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleDownloadModalPdf = async () => {
+    if (!activeDoc) return;
+    setGeneratingModalPdf(true);
+    const safeTitle = activeDoc.title.replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 40);
+    const filename = `${activeDoc.id.toUpperCase()}-${safeTitle}.pdf`;
+    await exportElementToRealPdf("modal-printable-document-body", {
+      filename,
+      footerText: `Hotel Kalya Kapenguria • ${activeDoc.id.toUpperCase()} • Official Deliverable`,
+    });
+    setGeneratingModalPdf(false);
   };
 
   const handleDownloadMarkdown = (doc: ProjectDocMetadata) => {
@@ -292,18 +308,15 @@ export default function AdminDocumentsPage() {
                   <span>Read</span>
                 </button>
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActiveDoc(doc);
-                    setTimeout(() => window.print(), 500);
-                  }}
+                <a
+                  href={`/api/documents/${doc.id}/pdf?pack=${selectedPack}&download=true`}
+                  download={`${doc.id}-${doc.title.replace(/[^a-zA-Z0-9_-]/g, "_")}.pdf`}
                   className="flex items-center justify-center gap-1 py-2 px-2 rounded-xl bg-brand-maroon text-white hover:bg-brand-maroon-dark text-xs font-bold transition-colors shadow-sm"
-                  title="Print / Save as PDF"
+                  title="Download Real PDF Document"
                 >
-                  <Printer className="w-3.5 h-3.5 text-brand-amber" />
+                  <Download className="w-3.5 h-3.5 text-brand-amber" />
                   <span>PDF</span>
-                </button>
+                </a>
 
                 <button
                   type="button"
@@ -311,7 +324,7 @@ export default function AdminDocumentsPage() {
                   className="flex items-center justify-center gap-1 py-2 px-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-medium transition-colors"
                   title="Download Raw Markdown"
                 >
-                  <Download className="w-3.5 h-3.5" />
+                  <FileText className="w-3.5 h-3.5" />
                   <span>.md</span>
                 </button>
               </div>
@@ -361,14 +374,25 @@ export default function AdminDocumentsPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={handlePrint}
+                <a
+                  href={`/api/documents/${activeDoc.id}/pdf?pack=${selectedPack}&download=true`}
+                  download={`${activeDoc.id}-${activeDoc.title.replace(/[^a-zA-Z0-9_-]/g, "_")}.pdf`}
                   className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-brand-amber text-brand-maroon hover:bg-brand-amber-dark text-xs font-bold transition-all shadow"
+                  title="Download Real PDF File Directly"
                 >
-                  <Printer className="w-3.5 h-3.5" />
-                  <span>Print / Save PDF</span>
-                </button>
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Download PDF (.pdf)</span>
+                </a>
+
+                <Link
+                  href={`/admin/documents/${activeDoc.id}/print?pack=${selectedPack}`}
+                  target="_blank"
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-medium transition-colors border border-white/20"
+                  title="Open Dedicated PDF Document Studio"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">PDF Studio</span>
+                </Link>
 
                 <button
                   type="button"
@@ -381,7 +405,10 @@ export default function AdminDocumentsPage() {
             </div>
 
             {/* Modal Scrollable Body */}
-            <div className="flex-1 overflow-y-auto p-6 sm:p-10 space-y-6 print:overflow-visible print:p-0">
+            <div
+              id="modal-printable-document-body"
+              className="flex-1 overflow-y-auto p-6 sm:p-10 space-y-6 print:overflow-visible print:p-0 bg-white"
+            >
               {/* Official Letterhead */}
               <DocumentPrintHeader
                 docId={activeDoc.id}

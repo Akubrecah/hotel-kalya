@@ -36,15 +36,15 @@ export function DocumentPrintHeader({
       {/* Top Organization Header */}
       <div className="flex items-start justify-between gap-6">
         <div className="flex items-center gap-4">
-          <BrandLogo size="md" />
-          <div>
-            <h1 className="font-serif text-2xl font-black text-brand-maroon tracking-wider">
-              HOTEL KALYA
-            </h1>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-brand-amber-dark">
-              Hospitality Redefined • Kapenguria, West Pokot County
+          <BrandLogo size="md" hideTagline />
+          <div className="border-l-2 border-brand-amber/50 pl-4 py-0.5 space-y-0.5">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-brand-maroon block">
+              Official Executive Deliverable
+            </span>
+            <p className="text-[11px] text-gray-600 font-medium">
+              Kapenguria Town, West Pokot County, Kenya
             </p>
-            <p className="text-[10px] text-gray-500 mt-0.5">
+            <p className="text-[10px] text-gray-500">
               Tel: {BRAND.phone} • Email: {BRAND.email} • Web: hotelkalya.com
             </p>
           </div>
